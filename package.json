@@ -14,7 +14,8 @@
     "vercel-build": "bun run website:build",
     "website:dev": "cd website && bun install && bun run dev",
     "website:build": "cd website && bun install && bun run build.ts",
-    "website:serve": "cd website && bun run server.tsx"
+    "website:serve": "cd website && bun run server.tsx",
+    "start":"bun run website:serve"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
