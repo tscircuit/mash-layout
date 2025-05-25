@@ -6,19 +6,21 @@ import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import { applyEditOperation } from "lib/adapt/applyEditOperation"
 import type { MatchingIssue } from "lib/matching/types"
 
+export interface MatchedBoxWithChipIds {
+  candidateChipId: string | undefined
+  targetChipId: string | undefined
+  targetBoxIndex: number
+  candidateBoxIndex: number
+  issues: MatchingIssue[]
+  score: number
+}
+
 export function removeUnmatchedChips(params: {
   template: CircuitBuilder
   target: InputNetlist
 }): {
   appliedOperations: EditOperation[]
-  matchedBoxes: {
-    candidateChipId: string | undefined
-    targetChipId: string | undefined
-    targetBoxIndex: number
-    candidateBoxIndex: number
-    issues: MatchingIssue[]
-    score: number
-  }[]
+  matchedBoxes: MatchedBoxWithChipIds[]
 } {
   const appliedOperations: EditOperation[] = []
   const { template, target } = params
