@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // Environment setup & latest features
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
@@ -11,7 +11,8 @@
     "paths": {
       "lib/*": ["./lib/*"],
       "templates/*": ["./templates/*"],
-      "tests/*": ["./tests/*"]
+      "tests/*": ["./tests/*"],
+      "website/*": ["./website/*"]
     },
 
     // Bundler mode
