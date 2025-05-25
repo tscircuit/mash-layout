@@ -3,6 +3,7 @@ import type { InputNetlist } from "lib/input-types"
 import { getMatchingIssues } from "./getMatchingIssues"
 import { computeSimilarityDistanceFromIssues } from "./computeSimilarityDistanceFromIssues"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
+import type { MatchingIssue } from "./types"
 
 export const findBestMatch = (
   inputNetlist: InputNetlist,
@@ -10,6 +11,7 @@ export const findBestMatch = (
 ): CircuitBuilder | null => {
   const results: Array<{
     template: CircuitBuilder
+    issues: Array<MatchingIssue>
     similarityDistance: number
   }> = []
 
@@ -24,9 +26,17 @@ export const findBestMatch = (
 
     results.push({
       template,
+      issues,
       similarityDistance,
     })
   }
+  console.table(
+    results.map((r, i) => ({
+      template: `template${i + 1}`,
+      issues: r.issues.map((iss) => iss.type).join(", "),
+      similarityDistance: r.similarityDistance,
+    })),
+  )
 
   if (results.length === 0) {
     return null

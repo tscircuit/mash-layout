@@ -7,29 +7,28 @@ import { circuit } from "lib/builder"
  *  1.2 │                       │
  *  1.0 │       U1              │
  *  0.8 │       ┌────────┐      │
- *  0.6 ├───┬───┤1      5├      │
- *  0.4 │   │ ┌─┤2      4├──────┤
- *  0.2 │   │ │┌┤3       │      │
+ *  0.6 ├───┬───┤1      6├──────┤
+ *  0.4 │   │ ┌─┤2      5├      │
+ *  0.2 │   │ │┌┤3      4├      │
  *  0.0 │   │ ││└────────┘      │
  * -0.2 │   │ ││                │
- * -0.4 ┴   ┴ ││                │
- * -0.6       ││                ┴
- * -0.8 R2  R3││
- * -1.0       ││                R4
+ * -0.4 ┴   ┴ ││                ┴
+ * -0.6       ││
+ * -0.8 R2  R3││                R4
+ * -1.0       ││
  * -1.2       ││
- * -1.4 ┬   ┬ ││
- * -1.6 │   │ ││                ┬
+ * -1.4 ┬   ┬ ││                ┬
+ * -1.6 │   │ ││                │
  * -1.8 │  C●─┘D                │
  * -2.0 │                       │
  * -2.2 │                       │
- * -2.4 B                       │
- * -2.6                         G
+ * -2.4 B                       G
  * ```
  */
 export default () => {
   const C = circuit()
 
-  const U2 = C.chip().leftpins(3).rightpins(2).at(0, 0)
+  const U2 = C.chip().leftpins(3).rightpins(3).at(0, 0)
 
   U2.pin(1) // IN
     .line(-2, 0)
@@ -56,14 +55,14 @@ export default () => {
   U2.pin(2).line(-1, 0).intersectAtMark("en1")
   U2.pin(3).line(-0.5, 0).line(0, -2).label()
 
-  U2.pin(4) // OUT
+  U2.pin(6) // OUT
     .line(4, 0)
     .mark("VOUT")
     .line(0, -1)
     .passive() // C2 1 µF
     .line(0, -1)
     .label("GND")
-  U2.fromMark("VOUT").line(0, 1).label()
+  U2.fromMark("VOUT").line(0, 0.8).label()
 
   return C
 }
