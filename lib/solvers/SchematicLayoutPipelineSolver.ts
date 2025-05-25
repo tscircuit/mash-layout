@@ -46,30 +46,16 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
   pipelineDef = [
     // TODO partition
     // TODO match
-    definePipelineStep(
-      "matchPhaseSolver",
-      MatchPhaseSolver,
-      () => [
-        {
-          inputNetlists: [this.inputNetlist] as InputNetlist[],
-        },
-      ],
+    definePipelineStep("matchPhaseSolver", MatchPhaseSolver, () => [
       {
-        onSolved: (pipeline) => {},
+        inputNetlists: [this.inputNetlist] as InputNetlist[],
       },
-    ),
-    definePipelineStep(
-      "adaptPhaseSolver",
-      AdaptPhaseSolver,
-      () => [
-        {
-          matchedTemplates: this.matchPhaseSolver?.outputMatchedTemplates!,
-        },
-      ],
+    ]),
+    definePipelineStep("adaptPhaseSolver", AdaptPhaseSolver, () => [
       {
-        onSolved: (pipeline) => {},
+        matchedTemplates: this.matchPhaseSolver?.outputMatchedTemplates!,
       },
-    ),
+    ]),
     // TODO adapt
     // TODO refine
     // TODO stitch

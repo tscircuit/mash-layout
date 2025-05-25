@@ -84,6 +84,7 @@ export function adaptTemplateToTarget(params: {
           side,
           betweenPinNumbers: [afterPin, afterPin + 1],
         }
+        console.log("adding pin to side", op)
         applyEditOperation(template, op)
         appliedOperations.push(op)
       }
@@ -97,7 +98,14 @@ export function adaptTemplateToTarget(params: {
           type: "remove_pin_from_side",
           chipId: chip.chipId,
           side,
-          pinNumber: chip.totalPinCount, // Remove the highest numbered pin
+          pinNumber:
+            side === "left"
+              ? chip.leftPinCount
+              : side === "bottom"
+                ? chip.leftPinCount + chip.bottomPinCount
+                : side === "right"
+                  ? chip.leftPinCount + chip.bottomPinCount + chip.rightPinCount
+                  : chip.totalPinCount,
         }
         applyEditOperation(template, op)
         appliedOperations.push(op)
