@@ -22,7 +22,7 @@ export class CircuitBuilder {
   connectionPoints: ConnectionPoint[] = []
 
   public defaultChipWidth = 4
-  public defaultSingleSidedChipWidth = this.defaultChipWidth / 2
+  public defaultSingleSidedChipWidth = 3
   public defaultPinSpacing = 0.2
   public defaultPassiveWidth = 1
   public defaultPassiveHeight = 0.2
@@ -37,6 +37,11 @@ export class CircuitBuilder {
 
     /* 1.  basic scalar state */
     clone.autoLabelCounter = this.autoLabelCounter
+    clone.defaultChipWidth = this.defaultChipWidth
+    clone.defaultSingleSidedChipWidth = this.defaultSingleSidedChipWidth
+    clone.defaultPinSpacing = this.defaultPinSpacing
+    clone.defaultPassiveWidth = this.defaultPassiveWidth
+    clone.defaultPassiveHeight = this.defaultPassiveHeight
 
     /* 2.  chips ------------------------------------------------------- */
     for (const chip of this.chips) {
