@@ -62,9 +62,8 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
     [
       {
         "chipId": "U1",
-        "labelNetId": "A",
         "pinNumber": 1,
-        "type": "add_passive_with_label_to_pin",
+        "type": "add_passive_to_pin",
       },
       {
         "chipId": "U1",
@@ -80,7 +79,7 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
                  0.0         
      0.8         U1
      0.6         ┌────────┐
-     0.4 A─R2A───┤1      4├
+     0.4 A─R2────┤1      4├
      0.2         ┤2      3├
      0.0         └────────┘
     "

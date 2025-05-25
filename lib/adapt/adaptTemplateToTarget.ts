@@ -6,6 +6,7 @@ import { computeEditOperationsToFixPinSubsetNetlist } from "./computeEditOperati
 import { transformTargetForPassiveCompatibility } from "./transformTargetForPassiveCompatibility"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
+import { removeUnmatchedChips } from "./adaptation-effects/removeUnmatchedChips"
 
 /**
  * Mutates template until it has the same normalized netlist as the target.
@@ -36,25 +37,17 @@ export function adaptTemplateToTarget(params: {
   )
   const targetBoxes = target.boxes
 
-  // Remove chips that exist in template but not in target
-  const targetChipIds = new Set(targetBoxes.map((box) => box.boxId))
-  const chipsToRemove = template.chips.filter(
-    (chip) => !targetChipIds.has(chip.chipId),
-  )
-
-  for (const chip of chipsToRemove) {
-    const op: EditOperation = {
-      type: "remove_chip",
-      chipId: chip.chipId,
-    }
-    applyEditOperation(template, op)
-    appliedOperations.push(op)
-  }
+  const removal1Result = removeUnmatchedChips({
+    template,
+    target,
+  })
+  appliedOperations.push(...removal1Result.appliedOperations)
 
   // Make every box have the right number of pins per side
-  for (const chip of template.chips) {
-    const targetBox = targetBoxes.find((b) => b.boxId === chip.chipId)
-    if (!targetBox) continue // (chip removed – will be handled later)
+  for (const { candidateChipId, targetChipId } of removal1Result.matchedBoxes) {
+    const chip = template.chips.find((c) => c.chipId === candidateChipId)
+    const targetBox = targetBoxes.find((b) => b.boxId === targetChipId)
+    if (!targetBox || !chip) continue
 
     // Skip passive components - their connections should be handled semantically
     if (chip.isPassive) continue
@@ -135,46 +128,11 @@ export function adaptTemplateToTarget(params: {
     }
   }
 
-  // Remove unmatched components using box matching
-  const currentNetlist = template.getNetlist()
-  const normalizedTemplateResult = normalizeNetlist(currentNetlist)
-  const normalizedTargetResult = normalizeNetlist(target)
-  const normalizedTemplate = normalizedTemplateResult.normalizedNetlist
-  const normalizedTarget = normalizedTargetResult.normalizedNetlist
-
-  const matchedBoxes = getMatchedBoxes({
-    candidateNetlist: normalizedTemplate,
-    targetNetlist: normalizedTarget,
+  const removal2Result = removeUnmatchedChips({
+    template,
+    target,
   })
-
-  // Get the set of matched template box indices
-  const matchedTemplateBoxIndices = new Set(
-    matchedBoxes.map((match) => match.candidateBoxIndex),
-  )
-
-  // Map box indices back to original box IDs using the normalization transform
-  const matchedTemplateBoxIds = new Set<string>()
-  for (const [boxId, boxIndex] of Object.entries(
-    normalizedTemplateResult.transform.boxIdToBoxIndex,
-  )) {
-    if (matchedTemplateBoxIndices.has(boxIndex)) {
-      matchedTemplateBoxIds.add(boxId)
-    }
-  }
-
-  // Remove any chips that weren't matched
-  const unmatchedChips = currentNetlist.boxes.filter(
-    (box) => !matchedTemplateBoxIds.has(box.boxId),
-  )
-
-  for (const chip of unmatchedChips) {
-    const op: EditOperation = {
-      type: "remove_chip",
-      chipId: chip.boxId,
-    }
-    applyEditOperation(template, op)
-    appliedOperations.push(op)
-  }
+  appliedOperations.push(...removal2Result.appliedOperations)
 
   return {
     appliedOperations,
