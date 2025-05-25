@@ -12,12 +12,12 @@ test("getMatchedBoxes with an extra unmatched candidate box", () => {
 
   expect(`\n${targetCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0   
-     0.8  T1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 ┤1 │
-     0.0 └──┘
+         0.0     
+     0.8 T1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 ┤1   │
+     0.0 └────┘
     "
   `)
 
@@ -27,27 +27,27 @@ test("getMatchedBoxes with an extra unmatched candidate box", () => {
 
   expect(`\n${candidateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0   
-     3.8 ┌──┐
-     3.6 │  │
-     3.4 │ 2├
-     3.2 │ 1├
-     3.0 └──┘
+         0.0     
+     3.8 ┌────┐
+     3.6 │    │
+     3.4 │   2├
+     3.2 │   1├
+     3.0 └────┘
      2.8
      2.6
      2.4
      2.2
      2.0
      1.8
-     1.6  C2
+     1.6 C2
      1.4
      1.2
      1.0
-     0.8  C1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 ┤1 │
-     0.0 └──┘
+     0.8 C1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 ┤1   │
+     0.0 └────┘
     "
   `)
 

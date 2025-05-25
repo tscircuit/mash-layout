@@ -24,12 +24,12 @@ test("change passive orientation from vertical to horizontal", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0   
-     0.8      U1
-     0.6     ┌──┐
-     0.4     │  │
-     0.2 ┌───┤1 │
-     0.0 │   └──┘
+             0.0     
+     0.8     U1
+     0.6     ┌────┐
+     0.4     │    │
+     0.2 ┌───┤1   │
+     0.0 │   └────┘
     -0.2 │
     -0.4 │
     -0.6 │
@@ -75,12 +75,12 @@ test("change passive orientation from vertical to horizontal", () => {
   // and connections would need to be recalculated
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-              0.0   
-     0.8       U1
-     0.6      ┌──┐
-     0.4      │  │
-     0.2  ┌───┤1 │
-     0.0  │   └──┘
+              0.0     
+     0.8      U1
+     0.6      ┌────┐
+     0.4      │    │
+     0.2  ┌───┤1   │
+     0.0  │   └────┘
     -0.2  │
     -0.4  │
     -0.6  │

@@ -12,16 +12,16 @@ test("getPinSubsetNetlist should reflect connections made via .intersect()", () 
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         5.0        
-     1.0  U1
-     0.8 ┌──┐
-     0.6 │  │
-     0.4 │ 2├    ──R2──┐
-     0.2 │ 1├    ──────┼───A
-     0.0 └──┘          │
-    -0.2               │
-    -0.4               │
-    -0.6               ●
+         0.0         5.0    
+     1.0 U1
+     0.8 ┌────┐
+     0.6 │    │
+     0.4 │   2├R2──┐
+     0.2 │   1├────┼───A
+     0.0 └────┘    │
+    -0.2           │
+    -0.4           │
+    -0.6           ●
     "
   `)
 

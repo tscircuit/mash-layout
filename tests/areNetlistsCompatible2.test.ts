@@ -16,23 +16,23 @@ test("areNetlistsCompatible2: identical netlists using chip builder", () => {
   expect(`\nInput:\n${inputChip.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-         0.0        
-     0.8  U1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 │ 1├    A
-     0.0 └──┘
+         0.0     
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 │   A├
+     0.0 └────┘
     "
   `)
   expect(`\nTemplate:\n${templateChip.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-         0.0        
-     0.8  U1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 │ 1├    A
-     0.0 └──┘
+         0.0     
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 │   A├
+     0.0 └────┘
     "
   `)
 
@@ -54,24 +54,24 @@ test("areNetlistsCompatible2: template has more pins on a box", () => {
   expect(`\nInput:\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-         0.0        
-     0.8  U1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 │ 1├    A
-     0.0 └──┘
+         0.0     
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 │   A├
+     0.0 └────┘
     "
   `)
   expect(`\nTemplate:\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-         0.0        
-     1.0  U1
-     0.8 ┌──┐
-     0.6 │  │
-     0.4 │ 2├
-     0.2 │ 1├    A
-     0.0 └──┘
+         0.0     
+     1.0 U1
+     0.8 ┌────┐
+     0.6 │    │
+     0.4 │   2├
+     0.2 │   A├
+     0.0 └────┘
     "
   `)
 
@@ -96,24 +96,24 @@ test("areNetlistsCompatible2: input requires more pins than template", () => {
   expect(`\nInput:\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-         0.0        
-     1.0  U1
-     0.8 ┌──┐
-     0.6 │  │
-     0.4 │ 2├    B
-     0.2 │ 1├    A
-     0.0 └──┘
+         0.0     
+     1.0 U1
+     0.8 ┌────┐
+     0.6 │    │
+     0.4 │   B├
+     0.2 │   A├
+     0.0 └────┘
     "
   `)
   expect(`\nTemplate:\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-         0.0        
-     0.8  U1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 │ 1├    A
-     0.0 └──┘
+         0.0     
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 │   A├
+     0.0 └────┘
     "
   `)
 
@@ -137,23 +137,23 @@ test("areNetlistsCompatible2: different number of boxes (components)", () => {
   expect(`\nInput:\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-         0.0         5.0 
-     0.8  U1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 │ 1├    ──R2
-     0.0 └──┘
+         0.0       
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 │   1├R2
+     0.0 └────┘
     "
   `)
   expect(`\nTemplate:\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-         0.0        
-     0.8  U1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 │ 1├    A
-     0.0 └──┘
+         0.0     
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 │   A├
+     0.0 └────┘
     "
   `)
 
@@ -181,27 +181,27 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
   expect(`\nInput:\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-         0.0         5.0
-     1.2           ●
-     1.0  U1       │
-     0.8 ┌──┐      │
-     0.6 │  │      │
-     0.4 │ 2├    ──┤
-     0.2 │ 1├    ──┘
-     0.0 └──┘
+         0.0      
+     1.2       ●
+     1.0 U1    │
+     0.8 ┌────┐│
+     0.6 │    ││
+     0.4 │   2├┤
+     0.2 │   1├┘
+     0.0 └────┘
     "
   `)
   expect(`\nTemplate:\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-         0.0         5.0    
-     1.2           ●───A
-     1.0  U1       │
-     0.8 ┌──┐      │
-     0.6 │  │      │
-     0.4 │ 2├    ──┤
-     0.2 │ 1├    ──┘
-     0.0 └──┘
+         0.0         5.0
+     1.2       ●───A
+     1.0 U1    │
+     0.8 ┌────┐│
+     0.6 │    ││
+     0.4 │   2├┤
+     0.2 │   1├┘
+     0.0 └────┘
     "
   `)
 

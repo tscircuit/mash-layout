@@ -8,12 +8,12 @@ test("lineAt with single dimension change", () => {
 
   expect(`\n${c.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0        
-     0.8  U1
-     0.6 ┌──┐
-     0.4 │  │
-     0.2 │ 1├  ┌──
-     0.0 └──┘  A
+         0.0      
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │    │
+     0.2 │   1├┐
+     0.0 └────┘A
     "
   `)
 })
@@ -26,18 +26,18 @@ test("lineAt with two-dimensional movement from pin", () => {
 
   expect(`\n${c.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0        
+         0.0      
      2.0       A
      1.8       │
      1.6       │
      1.4       │
      1.2       │
      1.0       │
-     0.8  U1   │
-     0.6 ┌──┐  │
-     0.4 │  │  │
-     0.2 │ 1├  └──
-     0.0 └──┘
+     0.8 U1    │
+     0.6 ┌────┐│
+     0.4 │    ││
+     0.2 │   1├┘
+     0.0 └────┘
     "
   `)
 })
@@ -50,18 +50,18 @@ test("lineAt with orthogonal movement after line", () => {
 
   expect(`\n${c.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         5.0  
-     2.0         A───┐
-     1.8             │
-     1.6             │
-     1.4             │
-     1.2             │
-     1.0             │
-     0.8  U1         │
-     0.6 ┌──┐        │
-     0.4 │  │        │
-     0.2 │ 1├    ────┘
-     0.0 └──┘
+         0.0        
+     2.0         A
+     1.8         │
+     1.6         │
+     1.4         │
+     1.2         │
+     1.0         │
+     0.8 U1      │
+     0.6 ┌────┐  │
+     0.4 │    │  │
+     0.2 │   1├──┘
+     0.0 └────┘
     "
   `)
 })
@@ -75,12 +75,12 @@ test("intersectsAt functionality", () => {
   expect(`\n${c.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0
-     1.0  U1
-     0.8 ┌──┐
-     0.6 │  │
-     0.4 │ 2├┌────
-     0.2 │ 1├│   ──┐
-     0.0 └──┘│     A
+     1.0 U1
+     0.8 ┌────┐
+     0.6 │    │
+     0.4 │   2├
+     0.2 │   1├────┐
+     0.0 └────┘    A
     -0.2     │
     -0.4     │
     -0.6     │

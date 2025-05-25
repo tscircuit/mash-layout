@@ -19,26 +19,26 @@ test("areNetlistsCompatible2: input connection not satisfiable by template's con
   expect(`\nInput:\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-         0.0         5.0      
-     1.2             ●
-     1.0  U1         │
-     0.8 ┌──┐        │
-     0.6 │  │        │
-     0.4 │ 2├    ────┼───A
-     0.2 │ 1├    ────┘
-     0.0 └──┘
+         0.0         5.0  
+     1.2         ●
+     1.0 U1      │
+     0.8 ┌────┐  │
+     0.6 │    │  │
+     0.4 │   2├──┼───A
+     0.2 │   1├──┘
+     0.0 └────┘
     "
   `)
   expect(`\nTemplate:\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-         0.0         5.0    
-     1.0  U1
-     0.8 ┌──┐
-     0.6 │  │
-     0.4 │ 2├    ────A
-     0.2 │ 1├    ──────A
-     0.0 └──┘
+         0.0         5.0
+     1.0 U1
+     0.8 ┌────┐
+     0.6 │    │
+     0.4 │   2├──A
+     0.2 │   1├────A
+     0.0 └────┘
     "
   `)
 
