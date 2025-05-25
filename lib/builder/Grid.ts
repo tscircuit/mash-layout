@@ -74,6 +74,9 @@ export class Grid {
   }
 
   putOverlay(x: number, y: number, ch: string): void {
+    if (ch.length > 1) {
+      throw new Error("putOverlay only supports single characters")
+    }
     const scaledX = Math.round(x * this.gridScaleX)
     const scaledY = Math.round(y * this.gridScaleY)
     this.overlay.set(`${scaledX},${scaledY}`, ch)

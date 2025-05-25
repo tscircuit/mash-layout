@@ -211,7 +211,6 @@ export const getGridFromCircuit = (
 
   // 5. Draw passives after traces to avoid being overwritten
   for (const chip of passives) {
-    const labelText = chip.chipId
     const isHorizontal = chip.leftPinCount > 0 || chip.rightPinCount > 0
 
     if (isHorizontal) {
@@ -230,14 +229,17 @@ export const getGridFromCircuit = (
           g.putOverlay(startX + i, chip.y, "[")
         } else if (i >= chip.getWidth() - 1 / opts.gridScaleX!) {
           g.putOverlay(startX + i, chip.y, "]")
-        } else if (chip.chipId[charCount]) {
-          g.putOverlay(startX + i, chip.y, chip.chipId[charCount]!)
+        } else if (chip.chipId[charCount - 1]) {
+          g.putOverlay(startX + i, chip.y, chip.chipId[charCount - 1]!)
         }
       }
     } else {
       // Vertical passive: place label at center with boundary markers above/below
       g.putOverlay(chip.x, chip.y - chip.getHeight() / 2, "┬")
-      g.putOverlay(chip.x, chip.y, labelText)
+      g.putOverlay(chip.x, chip.y, chip.chipId[0]!)
+      if (chip.chipId[1]) {
+        g.putOverlay(chip.x + 1 / opts.gridScaleX!, chip.y, chip.chipId[1]!)
+      }
       g.putOverlay(chip.x, chip.y + chip.getHeight() / 2, "┴")
     }
   }
