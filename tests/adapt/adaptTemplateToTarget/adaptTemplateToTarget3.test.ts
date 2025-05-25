@@ -22,9 +22,8 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
            -5.0         0.0         5.0    
-     1.0             U1
-     0.8             ┌────────┐
-     0.6             │        │
+     0.8             U1
+     0.6             ┌────────┐
      0.4 A─R2────────┤1      4├────D
      0.2         B───┤2      3├────C
      0.0             └────────┘
@@ -34,13 +33,12 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0         10.0         
-     1.8                     U2
-     1.6                     ┌────────┐
-     1.4                     │        │
+     1.6                     U2
+     1.4                     ┌────────┐
      1.2               ──────┤1      2├
-     1.0 U1                  └────────┘
-     0.8 ┌────────┐
-     0.6 │        │
+     1.0                     └────────┘
+     0.8 U1
+     0.6 ┌────────┐
      0.4 ┤1      4├─────
      0.2 ┤2      3├
      0.0 └────────┘
@@ -92,9 +90,8 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
                  0.0         5.0        
-     1.0         U1
-     0.8         ┌────────┐
-     0.6         │        │
+     0.8         U1
+     0.6         ┌────────┐
      0.4 A─R2A───┤1      4├────────D
      0.2     B───┤2      3├──C
      0.0         └────────┘

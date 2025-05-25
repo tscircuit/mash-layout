@@ -28,9 +28,8 @@ test("getMatchedBoxes4 - match connected boxes properly", () => {
   expect(`\n${targetCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0         10.0 
-     0.8 T1          T2
-     0.6 ┌────────┐  ┌────────┐
-     0.4 │        │  │        │
+     0.6 T1          T2
+     0.4 ┌────────┐  ┌────────┐
      0.2 ┤1      2├──┤1      2├
      0.0 └────────┘  └────────┘
     "
@@ -39,9 +38,8 @@ test("getMatchedBoxes4 - match connected boxes properly", () => {
   expect(`\n${candidateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0         10.0 
-     5.8 C3
-     5.6 ┌────────┐
-     5.4 │        │
+     5.6 C3
+     5.4 ┌────────┐
      5.2 ┤1      2├
      5.0 └────────┘
      4.8
@@ -64,9 +62,9 @@ test("getMatchedBoxes4 - match connected boxes properly", () => {
      1.4
      1.2
      1.0
-     0.8 C1          C2
-     0.6 ┌────────┐  ┌────────┐
-     0.4 │        │  │        │
+     0.8
+     0.6 C1          C2
+     0.4 ┌────────┐  ┌────────┐
      0.2 ┤1      2├──┤1      2├
      0.0 └────────┘  └────────┘
     -0.2
@@ -89,9 +87,9 @@ test("getMatchedBoxes4 - match connected boxes properly", () => {
     -3.6
     -3.8
     -4.0
-    -4.2 C3
-    -4.4 ┌────────┐
-    -4.6 │        │
+    -4.2
+    -4.4 C3
+    -4.6 ┌────────┐
     -4.8 ┤1      2├
     -5.0 └────────┘
     "

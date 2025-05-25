@@ -30,9 +30,8 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
              -5.0         0.0         5.0      
-     1.0               U1
-     0.8               ┌────────┐
-     0.6               │        │
+     0.8               U1
+     0.6               ┌────────┐
      0.4 X─R2──────────┤1      4├──────W
      0.2         Y─────┤2      3├──────Z
      0.0               └────────┘
@@ -44,9 +43,8 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
   ).toMatchInlineSnapshot(`
     "
                -5.0         0.0         5.0      
-     1.0                 U1
-     0.8                 ┌────────┐
-     0.6                 │        │
+     0.8                 U1
+     0.6                 ┌────────┐
      0.4 ┌───────────────┤1      4├──────D
      0.2 │         ┌─────┤2      3├──────C
      0.0 │         │     └────────┘
@@ -81,9 +79,8 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
   ).toMatchInlineSnapshot(`
     "
                -5.0         0.0         5.0      
-     1.0                 U1
-     0.8                 ┌────────┐
-     0.6                 │        │
+     0.8                 U1
+     0.6                 ┌────────┐
      0.4 ┌───────────────┤1      4├──────D
      0.2 │         ┌─────┤2      3├──────C
      0.0 │         │     └────────┘
@@ -150,9 +147,8 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
     solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template.toString(),
   ).toMatchInlineSnapshot(`
     "           -5.0         0.0         5.0      
-     1.0                 U1
-     0.8                 ┌────────┐
-     0.6                 │        │
+     0.8                 U1
+     0.6                 ┌────────┐
      0.4 ┌───────────────┤1      4├──────D
      0.2 │         ┌─────┤2      3├──────C
      0.0 │         │     └────────┘

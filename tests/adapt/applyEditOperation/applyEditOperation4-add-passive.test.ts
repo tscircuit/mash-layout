@@ -8,9 +8,8 @@ test("add passive to pin", () => {
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
            0.0     
-     0.8   U1
-     0.6   ┌────┐
-     0.4   │    │
+     0.6   U1
+     0.4   ┌────┐
      0.2 ──┤1   │
      0.0   └────┘
     "
@@ -24,9 +23,8 @@ test("add passive to pin", () => {
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0     
-     0.8     U1
-     0.6     ┌────┐
-     0.4     │    │
+     0.6     U1
+     0.4     ┌────┐
      0.2 R2──┤1   │
      0.0     └────┘
     "

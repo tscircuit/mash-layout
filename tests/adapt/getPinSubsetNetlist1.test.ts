@@ -18,9 +18,8 @@ test("getPinSubsetNetlist1", () => {
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
                  0.0         5.0         10.0    
-     1.0         U1
-     0.8         ┌────────┐
-     0.6         │        │
+     0.8         U1
+     0.6         ┌────────┐
      0.4     A───┤1      4├──────────┐
      0.2 B─R2────┤2      3├──┬───R3──┼───C
      0.0         └────────┘  │       │

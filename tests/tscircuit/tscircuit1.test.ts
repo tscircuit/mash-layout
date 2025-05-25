@@ -310,9 +310,8 @@ export default () => (
   expect(`\n${C("ascii").toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0         5.0
-     1.0     U1
-     0.8     ┌────────┐
-     0.6     │        │
+     0.8     U1
+     0.6     ┌────────┐
      0.4 R2──┤1      4├
      0.2 │   ┤2      3├B
      0.0 │   └────────┘
@@ -481,7 +480,7 @@ export default () => (
       {
         "center": {
           "x": 1,
-          "y": 0.30000000000000004,
+          "y": 0.2,
         },
         "pin_spacing": 0.2,
         "pin_styles": undefined,
@@ -490,7 +489,7 @@ export default () => (
         "rotation": 0,
         "schematic_component_id": "schematic_component_0",
         "size": {
-          "height": 0.6000000000000001,
+          "height": 0.4,
           "width": 1.2,
         },
         "source_component_id": "source_component_0",
@@ -499,7 +498,7 @@ export default () => (
       {
         "center": {
           "x": -1.5,
-          "y": 0.4000000000000001,
+          "y": 0.4,
         },
         "schematic_component_id": "schematic_component_1",
         "size": {

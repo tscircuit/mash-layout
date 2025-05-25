@@ -16,9 +16,8 @@ test("adaptTemplateToTarget2 adds missing labels and removes extra labels", () =
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0         
-     1.0     U1
-     0.8     ┌────────┐
-     0.6     │        │
+     0.8     U1
+     0.6     ┌────────┐
      0.4 A───┤1      4├
      0.2     ┤2      3├
      0.0     └────────┘
@@ -28,9 +27,8 @@ test("adaptTemplateToTarget2 adds missing labels and removes extra labels", () =
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0  
-     1.0 U1
-     0.8 ┌────────┐
-     0.6 │        │
+     0.8 U1
+     0.6 ┌────────┐
      0.4 ┤1      4├──A
      0.2 ┤2      3├
      0.0 └────────┘
@@ -61,9 +59,8 @@ test("adaptTemplateToTarget2 adds missing labels and removes extra labels", () =
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0         
-     1.0     U1
-     0.8     ┌────────┐
-     0.6     │        │
+     0.8     U1
+     0.6     ┌────────┐
      0.4 B───┤1      4├
      0.2     ┤2      3├
      0.0     └────────┘

@@ -175,8 +175,7 @@ export class ChipBuilder {
     }
     return (
       Math.max(this.leftPinCount, this.rightPinCount) *
-        this.circuit.defaultPinSpacing +
-      this.circuit.defaultPinSpacing
+        this.circuit.defaultPinSpacing
     )
   }
 
@@ -266,7 +265,7 @@ export class ChipBuilder {
 
     if (side === "left" || side === "right") {
       pinX = this.x + (side === "left" ? 0 : this.getWidth())
-      pinY = this.y + this.getHeight() - spacing - indexFromTop! * spacing
+      pinY = this.y + this.getHeight() - indexFromTop! * spacing
     } else {
       // top or bottom
       pinX = this.x + indexFromLeft! * spacing

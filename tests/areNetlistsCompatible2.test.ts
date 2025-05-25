@@ -17,9 +17,8 @@ test("areNetlistsCompatible2: identical netlists using chip builder", () => {
     "
     Input:
          0.0     
-     0.8 U1
-     0.6 ┌────┐
-     0.4 │    │
+     0.6 U1
+     0.4 ┌────┐
      0.2 │   A├
      0.0 └────┘
     "
@@ -28,9 +27,8 @@ test("areNetlistsCompatible2: identical netlists using chip builder", () => {
     "
     Template:
          0.0     
-     0.8 U1
-     0.6 ┌────┐
-     0.4 │    │
+     0.6 U1
+     0.4 ┌────┐
      0.2 │   A├
      0.0 └────┘
     "
@@ -55,9 +53,8 @@ test("areNetlistsCompatible2: template has more pins on a box", () => {
     "
     Input:
          0.0     
-     0.8 U1
-     0.6 ┌────┐
-     0.4 │    │
+     0.6 U1
+     0.4 ┌────┐
      0.2 │   A├
      0.0 └────┘
     "
@@ -66,9 +63,8 @@ test("areNetlistsCompatible2: template has more pins on a box", () => {
     "
     Template:
          0.0     
-     1.0 U1
-     0.8 ┌────┐
-     0.6 │    │
+     0.8 U1
+     0.6 ┌────┐
      0.4 │   2├
      0.2 │   A├
      0.0 └────┘
@@ -97,9 +93,8 @@ test("areNetlistsCompatible2: input requires more pins than template", () => {
     "
     Input:
          0.0     
-     1.0 U1
-     0.8 ┌────┐
-     0.6 │    │
+     0.8 U1
+     0.6 ┌────┐
      0.4 │   B├
      0.2 │   A├
      0.0 └────┘
@@ -109,9 +104,8 @@ test("areNetlistsCompatible2: input requires more pins than template", () => {
     "
     Template:
          0.0     
-     0.8 U1
-     0.6 ┌────┐
-     0.4 │    │
+     0.6 U1
+     0.4 ┌────┐
      0.2 │   A├
      0.0 └────┘
     "
@@ -138,9 +132,8 @@ test("areNetlistsCompatible2: different number of boxes (components)", () => {
     "
     Input:
          0.0       
-     0.8 U1
-     0.6 ┌────┐
-     0.4 │    │
+     0.6 U1
+     0.4 ┌────┐
      0.2 │   1├R2
      0.0 └────┘
     "
@@ -149,9 +142,8 @@ test("areNetlistsCompatible2: different number of boxes (components)", () => {
     "
     Template:
          0.0     
-     0.8 U1
-     0.6 ┌────┐
-     0.4 │    │
+     0.6 U1
+     0.4 ┌────┐
      0.2 │   A├
      0.0 └────┘
     "
@@ -183,9 +175,9 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
     Input:
          0.0      
      1.2       ●
-     1.0 U1    │
-     0.8 ┌────┐│
-     0.6 │    ││
+     1.0       │
+     0.8 U1    │
+     0.6 ┌────┐│
      0.4 │   2├┤
      0.2 │   1├┘
      0.0 └────┘
@@ -196,9 +188,9 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
     Template:
          0.0         5.0
      1.2       ●───A
-     1.0 U1    │
-     0.8 ┌────┐│
-     0.6 │    ││
+     1.0       │
+     0.8 U1    │
+     0.6 ┌────┐│
      0.4 │   2├┤
      0.2 │   1├┘
      0.0 └────┘

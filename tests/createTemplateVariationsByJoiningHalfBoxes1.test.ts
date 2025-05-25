@@ -17,9 +17,8 @@ test("createTemplateVariationsByJoiningHalfBoxes1", () => {
   expect(`\n${T1.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0     
-     1.0     U1
-     0.8     ┌────┐
-     0.6     │    │
+     0.8     U1
+     0.6     ┌────┐
      0.4 A───┤1   │
      0.2 B───┤2   │
      0.0     └────┘
@@ -28,9 +27,8 @@ test("createTemplateVariationsByJoiningHalfBoxes1", () => {
   expect(`\n${T2.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0        
-     1.0 U1
-     0.8 ┌────┐
-     0.6 │    │
+     0.8 U1
+     0.6 ┌────┐
      0.4 │   2├──┐
      0.2 │   1├  │
      0.0 └────┘  │
@@ -50,9 +48,8 @@ test("createTemplateVariationsByJoiningHalfBoxes1", () => {
   expect(`\n${T1_flipped.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0        
-     1.0 U1
-     0.8 ┌────┐
-     0.6 │    │
+     0.8 U1
+     0.6 ┌────┐
      0.4 │   2├  ────A
      0.2 │   1├  ────B
      0.0 └────┘
@@ -67,9 +64,8 @@ test("createTemplateVariationsByJoiningHalfBoxes1", () => {
   expect(`\n${variations[0]!.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0         
-     1.0     U1
-     0.8     ┌────────┐
-     0.6     │        │
+     0.8     U1
+     0.6     ┌────────┐
      0.4 A───┤1      4├
      0.2 B───┤2      3├
      0.0     └────────┘
@@ -86,9 +82,8 @@ test("createTemplateVariationsByJoiningHalfBoxes1", () => {
   expect(`\n${variations[1]!.toString()}\n`).toMatchInlineSnapshot(`
     "
                  0.0        
-     1.0     U1
-     0.8     ┌────────┐
-     0.6     │        │
+     0.8     U1
+     0.6     ┌────────┐
      0.4 A───┤1      4├──A
      0.2 B───┤2      3├──B
      0.0     └────────┘

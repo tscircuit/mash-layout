@@ -20,9 +20,8 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
   expect(`\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0         10.0
-     1.2 U1
-     1.0 ┌────┐
-     0.8 │    │
+     1.0 U1
+     0.8 ┌────┐
      0.6 │   3├────────┬─────B
      0.4 │   2├──C     │
      0.2 │   1├        │
@@ -52,9 +51,9 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
          0.0         5.0         
      1.6                   A
      1.4                   │
-     1.2 U1                │
-     1.0 ┌────┐            │
-     0.8 │    │            │
+     1.2                   │
+     1.0 U1                │
+     0.8 ┌────┐            │
      0.6 │   3├──────●─────┤
      0.4 │   2├──┐   │     │
      0.2 │   1├┐ │   │     │
@@ -140,9 +139,9 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
      1.8             │
      1.6             │
      1.4             │
-     1.2 U1          │
-     1.0 ┌────┐      │
-     0.8 │    │      │
+     1.2             │
+     1.0 U1          │
+     0.8 ┌────┐      │
      0.6 │   3├──────┤
      0.4 │   2├──C   │
      0.2 │   1├┐     │
@@ -253,9 +252,9 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
      1.8             │
      1.6             │
      1.4             │
-     1.2 U1          │
-     1.0 ┌────┐      │
-     0.8 │    │      │
+     1.2             │
+     1.0 U1          │
+     0.8 ┌────┐      │
      0.6 │   3├──────┤
      0.4 │   2├──C   │
      0.2 │   1├┐     │

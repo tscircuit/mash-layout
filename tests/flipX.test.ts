@@ -10,9 +10,8 @@ test("flipX should flip the circuit horizontally", () => {
   expect(`\n${c.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0  
-     1.0 U1
-     0.8 ┌────┐
-     0.6 │    │
+     0.8 U1
+     0.6 ┌────┐
      0.4 │   2├──────A
      0.2 │   1├──B
      0.0 └────┘
@@ -26,9 +25,8 @@ test("flipX should flip the circuit horizontally", () => {
   expect(`\n${c.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         
-     1.0     U1
-     0.8     ┌────┐
-     0.6     │    │
+     0.8     U1
+     0.6     ┌────┐
      0.4 A───┤1   │
      0.2     B2   │
      0.0     └────┘

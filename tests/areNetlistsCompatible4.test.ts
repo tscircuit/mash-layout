@@ -16,9 +16,8 @@ test("areNetlistsCompatible2: template has extra connections/components not used
     "
     Input:
          0.0        
-     0.8 U1
-     0.6 ┌────┐
-     0.4 │    │
+     0.6 U1
+     0.4 ┌────┐
      0.2 │   1├──A
      0.0 └────┘
     "
@@ -27,9 +26,8 @@ test("areNetlistsCompatible2: template has extra connections/components not used
     "
     Template:
          0.0        
-     1.0 U1
-     0.8 ┌────┐
-     0.6 │    │
+     0.8 U1
+     0.6 ┌────┐
      0.4 │   2├──E
      0.2 │   1├──A
      0.0 └────┘
