@@ -15,10 +15,15 @@ export const getGridFromCircuit = (
   opts.gridScaleX ??= 1
   opts.gridScaleY ??= 1
 
+  const gridScaleX = opts.gridScaleX!
+  const gridScaleY = opts.gridScaleY!
+  const cellWidth = 1 / gridScaleX
+  const cellHeight = 1 / gridScaleY
+
   const g = new Grid({
     showAxisLabels: opts.showAxisLabels,
-    gridScaleX: opts.gridScaleX,
-    gridScaleY: opts.gridScaleY,
+    gridScaleX,
+    gridScaleY,
   })
   // Store passive info for later rendering
   const passives = []
@@ -37,28 +42,11 @@ export const getGridFromCircuit = (
     const height = Math.round(chipHeight * opts.gridScaleY!) + 2
 
     if (opts.chipLabels && chip.topPinCount === 0) {
-      const labelY = chip.y + height // One row above the chip's top border
-      const chipBodyWidth = chipWidth // Use actual chip width
+      const labelY = chip.y + chip.getHeight() + cellHeight * 2
       const labelText = chip.chipId
 
-      let displayLabel = labelText
-      let labelActualX = chip.x // Base X position for the label
-
-      if (labelText.length <= chipBodyWidth) {
-        // Center the label if it's shorter than or equal to the chip width
-        labelActualX += Math.floor((chipBodyWidth - labelText.length) / 2)
-      } else {
-        // Truncate the label if it's longer than the chip width
-        displayLabel = labelText.substring(0, chipBodyWidth)
-        // For truncated labels, they start at chip.x, so labelActualX is already correct.
-      }
-
-      for (let i = 0; i < displayLabel.length; i++) {
-        g.putOverlay(
-          (labelActualX + i) / opts.gridScaleX!,
-          labelY / opts.gridScaleY!,
-          displayLabel[i]!,
-        )
+      for (let x = chip.x, i = 0; i < labelText.length; i++, x += cellWidth) {
+        g.putOverlay(x, labelY, labelText[i]!)
       }
     }
 
