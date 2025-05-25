@@ -1,9 +1,8 @@
 import type { NormalizedNetlist } from "lib/scoring/types"
 import type { MatchingIssue } from "./types"
-import { findAllMatchedPinOutOfPlace } from "./matched-box-issue-finders/findAllMatchedPinOutOfPlace"
-import { findAllMatchedBoxMissingPinShape } from "./matched-box-issue-finders/findAllMatchedBoxMissingPinShape"
-import { findAllSideHasWrongPinCount } from "./matched-box-issue-finders/findAllSideHasWrongPinCount"
-import { findAllMatchedBoxPinShapeInWrongPosition } from "./matched-box-issue-finders/findAllMatchedBoxPinShapeInWrongPosition"
+import { findAllMatchedBoxMissingPinShape } from "lib/matching/matched-box-issue-finders/findAllMatchedBoxMissingPinShape"
+import { findAllSideHasWrongPinCount } from "lib/matching/matched-box-issue-finders/findAllSideHasWrongPinCount"
+import { findAllMatchedBoxPinShapeInWrongPosition } from "lib/matching/matched-box-issue-finders/findAllMatchedBoxPinShapeInWrongPosition"
 
 const MATCHED_BOX_ISSUE_FINDERS = [
   findAllSideHasWrongPinCount,

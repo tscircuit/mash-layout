@@ -22,6 +22,7 @@
     "@tscircuit/create-snippet-url": "^0.0.8",
     "@types/bun": "latest",
     "@types/debug": "^4.1.12",
+    "@vitejs/plugin-react": "^4.5.0",
     "bun-match-svg": "^0.0.11",
     "circuit-to-svg": "^0.0.128",
     "debug": "^4.4.1",
