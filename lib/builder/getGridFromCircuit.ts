@@ -23,9 +23,22 @@ export const getGridFromCircuit = (
   // 1. Draw every chip
   for (const chip of circuit.chips) {
     if (chip.isPassive) {
-      // For passive components, place characters adjacent without grid spacing
-      for (let i = 0; i < chip.chipId.length && i < 2; i++) {
-        g.putOverlay((chip.x * opts.gridScaleX! + i) / opts.gridScaleX!, chip.y, chip.chipId[i]!)
+      // For passive components, draw label with boundary indicators
+      const labelText = chip.chipId
+      const isHorizontal = chip.leftPinCount > 0 || chip.rightPinCount > 0
+      
+      if (isHorizontal) {
+        // Horizontal passive: surround label with boundary markers
+        const boundedText = `[${labelText}]`
+        const startX = chip.x - boundedText.length / 2
+        for (let i = 0; i < boundedText.length; i++) {
+          g.putOverlay(startX + i, chip.y, boundedText[i]!)
+        }
+      } else {
+        // Vertical passive: place label at center with boundary markers above/below
+        g.putOverlay(chip.x, chip.y - 1, "┬")
+        g.putOverlay(chip.x, chip.y, labelText)
+        g.putOverlay(chip.x, chip.y + 1, "┴")
       }
       continue
     }
