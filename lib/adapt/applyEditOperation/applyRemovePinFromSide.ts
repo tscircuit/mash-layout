@@ -36,7 +36,10 @@ export function applyRemovePinFromSide(
   if (!chip) return
 
   const totalOldPins = chip.totalPinCount
-  if (pinNumberToRemove < 1 || pinNumberToRemove > totalOldPins) return
+  if (pinNumberToRemove < 1 || pinNumberToRemove > totalOldPins)
+    throw new Error(
+      `Invalid pin number: ${pinNumberToRemove} for chip ${chip.chipId} with dimensions ${chip.leftPinCount}x${chip.bottomPinCount}x${chip.rightPinCount}x${chip.topPinCount}`,
+    )
 
   // Ensure pin positions are set before caching
   if (!chip.pinPositionsAreSet) {
@@ -91,10 +94,9 @@ export function applyRemovePinFromSide(
     (pb) => pb.pinNumber === pinNumberToRemove,
   )
   if (indexInSideArray === -1) {
-    // This might happen if the pin isn't on the specified side,
-    // or if pin numbers in PinBuilder instances are out of sync.
-    // For robustness, could search all side arrays, but op.side should be correct.
-    return
+    throw new Error(
+      `Pin number ${pinNumberToRemove} not found on side ${side} of chip ${chip.chipId}`,
+    )
   }
   sideArr.splice(indexInSideArray, 1)
   ;(chip[pinCountProp] as number)--
