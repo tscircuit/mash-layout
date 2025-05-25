@@ -50,7 +50,16 @@ export const applyCircuitLayoutToCircuitJson = (
     // Find the layout boxId
     const layoutBoxId = layoutBoxIndexToBoxId.get(boxIndex)!
 
+    if (!layoutBoxId) {
+      console.warn(`${sourceComponent.name} was not laid out`)
+      continue
+    }
+
     const layoutChip = layout.chips.find((c) => c.chipId === layoutBoxId)!
+
+    if (!layoutChip) {
+      throw new Error(`Layout chip ${layoutBoxId} not found in layout.chips`)
+    }
 
     let cjChipWidth = layoutChip.getWidth() - 0.8
     let cjChipHeight = layoutChip.getHeight()

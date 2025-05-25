@@ -3,7 +3,10 @@ import type { AddLabelToPinOp } from "../EditOperation"
 import { getUnitVecFromSide } from "lib/utils/getUnitVecFromSide"
 import { getPinSideIndex } from "lib/builder/getPinSideIndex"
 
-export function applyAddLabelToPin(C: CircuitBuilder, op: AddLabelToPinOp): void {
+export function applyAddLabelToPin(
+  C: CircuitBuilder,
+  op: AddLabelToPinOp,
+): void {
   const { chipId, pinNumber, netName } = op
   const chip = C.chips.find((c) => c.chipId === chipId)
   if (!chip) return

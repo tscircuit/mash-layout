@@ -3,8 +3,6 @@ import { PinBuilder } from "./PinBuilder"
 import type { CircuitBuilder } from "./CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
 
-const SIDES_CCW = ["left", "bottom", "right", "top"] as const
-
 interface MakePinParams {
   side: Side
   indexOnSide: number
@@ -25,7 +23,7 @@ export class ChipBuilder {
   public topPinCount = 0
   public bottomPinCount = 0
   private pinMap: Record<string, PinBuilder> = {}
-  private marks: Record<string, { pinBuilder: PinBuilder; state: any }> = {}
+  public marks: Record<string, { pinBuilder: PinBuilder; state: any }> = {}
 
   constructor(
     public readonly circuit: CircuitBuilder,
@@ -143,20 +141,42 @@ export class ChipBuilder {
 
   getWidth(): number {
     if (this.isPassive) {
-      return 1
+      // Horizontal passive (left-right pins) uses defaultPassiveWidth
+      // Vertical passive (top-bottom pins) uses defaultPassiveHeight
+      const isHorizontal = this.leftPinCount > 0 || this.rightPinCount > 0
+      return isHorizontal
+        ? this.circuit.defaultPassiveWidth
+        : this.circuit.defaultPassiveHeight
     }
-    // Temporary, eventually need to handle top and bottom pin counts
+
+    // Check if chip has pins on only one side
+    const sideCount = [
+      this.leftPinCount > 0 ? 1 : 0,
+      this.rightPinCount > 0 ? 1 : 0,
+      this.topPinCount > 0 ? 1 : 0,
+      this.bottomPinCount > 0 ? 1 : 0,
+    ].reduce((sum, count) => sum + count, 0)
+
+    if (sideCount === 1) {
+      return this.circuit.defaultSingleSidedChipWidth
+    }
+
     return this.circuit.defaultChipWidth
   }
 
   getHeight(): number {
     if (this.isPassive) {
-      return 1
+      // Horizontal passive (left-right pins) uses defaultPassiveHeight
+      // Vertical passive (top-bottom pins) uses defaultPassiveWidth
+      const isHorizontal = this.leftPinCount > 0 || this.rightPinCount > 0
+      return isHorizontal
+        ? this.circuit.defaultPassiveHeight
+        : this.circuit.defaultPassiveWidth
     }
     return (
       Math.max(this.leftPinCount, this.rightPinCount) *
         this.circuit.defaultPinSpacing +
-      this.circuit.defaultPinSpacing
+      this.circuit.defaultPinSpacing * 2
     )
   }
 
@@ -167,12 +187,6 @@ export class ChipBuilder {
         y: this.y,
       }
     }
-    console.table({
-      x: this.x,
-      y: this.y,
-      width: this.getWidth(),
-      height: this.getHeight(),
-    })
     return {
       x: this.x + this.getWidth() / 2,
       y: this.y + this.getHeight() / 2,
@@ -189,16 +203,6 @@ export class ChipBuilder {
   }
 
   setPinPositions(): void {
-    if (this.isPassive) {
-      const pb1 = this._getPin(1)
-      const pb2 = this._getPin(2)
-      pb1.x = this.x
-      pb1.y = this.y
-      pb2.x = this.x
-      pb2.y = this.y
-      return
-    }
-
     for (let pn = 1; pn <= this.totalPinCount; pn++) {
       const pb = this._getPin(pn)
       const pinLocation = this.getPinLocation(pn)
@@ -237,9 +241,12 @@ export class ChipBuilder {
     )
 
     if (this.isPassive) {
-      const dx = (this.leftPinCount > 0 ? 0.5 : 0) * (pinNumber === 1 ? 1 : -1)
+      const dx =
+        (this.leftPinCount > 0 ? this.getWidth() / 2 : 0) *
+        (pinNumber === 1 ? 1 : -1)
       const dy =
-        (this.bottomPinCount > 0 ? 0.5 : 0) * (pinNumber === 2 ? 1 : -1)
+        (this.bottomPinCount > 0 ? this.getHeight() / 2 : 0) *
+        (pinNumber === 2 ? 1 : -1)
       return { x: this.x + dx, y: this.y + dy }
     }
 
@@ -249,7 +256,11 @@ export class ChipBuilder {
 
     if (side === "left" || side === "right") {
       pinX = this.x + (side === "left" ? 0 : this.getWidth())
-      pinY = this.y + this.getHeight() - spacing - indexFromTop! * spacing
+      pinY =
+        this.y +
+        this.getHeight() -
+        indexFromTop! * spacing -
+        this.circuit.defaultPinSpacing * 2
     } else {
       // top or bottom
       pinX = this.x + indexFromLeft! * spacing

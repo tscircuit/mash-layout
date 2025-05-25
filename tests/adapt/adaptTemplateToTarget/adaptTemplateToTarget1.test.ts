@@ -13,20 +13,22 @@ test("adaptTemplateToTarget adds missing pins on a side", () => {
 
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    ┤1 4├
-    ┤2 3├
-    └───┘
+         0.0         
+     0.8 U1
+     0.6 ┌────────┐
+     0.4 ┤1      4├
+     0.2 ┤2      3├
+     0.0 └────────┘
     "
   `)
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    ┤1 2├
-    └───┘
+         0.0         
+     0.6 U1
+     0.4 ┌────────┐
+     0.2 ┤1      2├
+     0.0 └────────┘
     "
   `)
 
@@ -65,11 +67,12 @@ test("adaptTemplateToTarget adds missing pins on a side", () => {
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    ┤1 4├
-    ┤2 3├
-    └───┘
+         0.0         
+     0.8 U1
+     0.6 ┌────────┐
+     0.4 ┤1      4├
+     0.2 ┤2      3├
+     0.0 └────────┘
     "
   `)
 })

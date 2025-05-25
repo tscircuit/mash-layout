@@ -17,12 +17,21 @@ test("getPinSubsetNetlist1", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-         U1
-        ┌───┐
-      A─┤1 4├─────┐
-    B─R2┤2 3├─┬─R3●─C
-        └───┘ │
-              D
+                 0.0         5.0         10.0    
+     0.8         U1
+     0.6         ┌────────┐
+     0.4     A───┤1      4├──────────┐
+     0.2 B─R2────┤2      3├──┬───R3──┼───C
+     0.0         └────────┘  │       │
+    -0.2                     │       │
+    -0.4                     │       │
+    -0.6                     │       ●
+    -0.8                     │
+    -1.0                     │
+    -1.2                     │
+    -1.4                     │
+    -1.6                     │
+    -1.8                     D
     "
   `)
 
@@ -31,29 +40,30 @@ test("getPinSubsetNetlist1", () => {
 
 
                       ┌────────────────┐
-               A ──  1│       U1       │4  ── ...       
-            R2.2 ──  2│                │3  ── ...       
+               A ──  1│       U1       │4               
+             ... ──  2│                │3  ── ...       
                       └────────────────┘
 
 
                       ┌────────────────┐
-               B ──  1│       R2       │2  ── U1.2      
+             ... ──  1│       R2       │2               
                       └────────────────┘
 
 
                       ┌────────────────┐
-             ... ──  1│       R3       │2  ── ...       
+                     1│       R3       │2  ── ...       
                       └────────────────┘
 
     Complex Connections (more than 2 points):
       - Connection 1:
-        - Box Pin: R3, Pin 2
-        - Net: C
-        - Box Pin: U1, Pin 4
+        - Box Pin: R2, Pin 1
+        - Net: B
+        - Box Pin: U1, Pin 2
       - Connection 2:
         - Box Pin: U1, Pin 3
         - Net: D
-        - Box Pin: R3, Pin 1"
+        - Box Pin: R3, Pin 2
+        - Net: C"
   `)
 
   expect(getNetlistAsReadableTree(C.getNetlist())).toMatchInlineSnapshot(`
@@ -61,25 +71,24 @@ test("getPinSubsetNetlist1", () => {
       pin1
         A (Net #1)
       pin2
-        R2.pin2 (Box #2)
+        R2.pin1 (Box #3)
+        B (Net #2)
       pin3
-        D (Net #4)
-        R3.pin1 (Box #5)
+        D (Net #5)
+        R3.pin2 (Box #6)
+        C (Net #4)
       pin4
-        R3.pin2 (Box #5)
-        C (Net #6)
-    R2 (Box #2)
+    R2 (Box #3)
       pin1
-        B (Net #3)
-      pin2
+        B (Net #2)
         U1.pin2 (Box #0)
-    R3 (Box #5)
-      pin1
-        U1.pin3 (Box #0)
-        D (Net #4)
       pin2
-        C (Net #6)
-        U1.pin4 (Box #0)"
+    R3 (Box #6)
+      pin1
+      pin2
+        U1.pin3 (Box #0)
+        D (Net #5)
+        C (Net #4)"
   `)
 
   expect(

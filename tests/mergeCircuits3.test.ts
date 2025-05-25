@@ -23,11 +23,12 @@ test("mergeCircuits3 – merge after flipX reproduces mis-merge bug", () => {
   /* Expected (correct) rendering – currently NOT produced → test fails. */
   expect(`\n${merged.toString()}\n`).toMatchInlineSnapshot(`
     "
-       U1
-      ┌───┐
-    A─┤1 4├─A
-    B─┤2 3├─B
-      └───┘
+                 0.0        
+     0.8     U1
+     0.6     ┌────────┐
+     0.4 A───┤1      4├──A
+     0.2 B───┤2      3├──B
+     0.0     └────────┘
     "
   `)
 })

@@ -9,11 +9,15 @@ test(".intersect", () => {
 
   expect(`\n${c.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    │  2├─┐
-    │  1├─●─A
-    └───┘
+         0.0         5.0  
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │   2├──┐
+     0.2 │   1├──┼───A
+     0.0 └────┘  │
+    -0.2         │
+    -0.4         │
+    -0.6         ●
     "
   `)
 
@@ -37,10 +41,6 @@ test(".intersect", () => {
             },
             {
               "netId": "A",
-            },
-            {
-              "boxId": "U1",
-              "pinNumber": 2,
             },
           ],
         },

@@ -16,8 +16,6 @@ export class PinBuilder {
   x = 0
   y = 0
 
-  nextLineDeltaCorrection: { x: number; y: number } | null = null
-
   lastConnected: PortReference | null = null
   lastCreatedLine: Line | null = null
   lastDx = 0
@@ -34,19 +32,65 @@ export class PinBuilder {
 
   line(dx: number, dy: number): this {
     const start = { x: this.x, y: this.y, ref: this.ref }
-    const deltaCorrection = this.nextLineDeltaCorrection ?? { x: 0, y: 0 }
-    this.x += dx * this.circuit.defaultLineDistanceMultiple + deltaCorrection.x
-    this.y += dy * this.circuit.defaultLineDistanceMultiple + deltaCorrection.y
-    if (this.nextLineDeltaCorrection) {
-      this.nextLineDeltaCorrection = null
-    }
+    this.x += dx
+    this.y += dy
     const end = { x: this.x, y: this.y, ref: this.ref }
     const line = { start, end }
     this.circuit.lines.push(line)
-    this.lastDx = dx * this.circuit.defaultLineDistanceMultiple
-    this.lastDy = dy * this.circuit.defaultLineDistanceMultiple
+    this.lastDx = dx
+    this.lastDy = dy
     this.lastCreatedLine = line
     return this
+  }
+
+  lineAt(targetX: number, targetY: number): this {
+    const deltaX = targetX - this.x
+    const deltaY = targetY - this.y
+
+    // If already at target, do nothing
+    if (deltaX === 0 && deltaY === 0) {
+      return this
+    }
+
+    // If only one dimension needs to change, create a single line
+    if (deltaX === 0 || deltaY === 0) {
+      return this.line(deltaX, deltaY)
+    }
+
+    // Two lines needed - determine order based on last direction and pin context
+    let firstDirection: "x" | "y"
+
+    // If last point was a pin, move "out of" the pin based on pin direction
+    if (this.lastCreatedLine === null) {
+      const pinDirection = this.getPinDirection()
+      if (pinDirection === "horizontal") {
+        firstDirection = "x"
+      } else {
+        firstDirection = "y"
+      }
+    } else {
+      // Move orthogonal to last line direction to avoid overlap
+      if (this.lastDx !== 0) {
+        // Last move was horizontal, so move vertical first
+        firstDirection = "y"
+      } else {
+        // Last move was vertical, so move horizontal first
+        firstDirection = "x"
+      }
+    }
+
+    if (firstDirection === "x") {
+      return this.line(deltaX, 0).line(0, deltaY)
+    } else {
+      return this.line(0, deltaY).line(deltaX, 0)
+    }
+  }
+
+  private getPinDirection(): "horizontal" | "vertical" {
+    const side = this.side
+    // Pins face away from the center of the chip
+    // Left/right pins have horizontal direction, top/bottom pins have vertical direction
+    return side === "left" || side === "right" ? "horizontal" : "vertical"
   }
 
   get side(): Side {
@@ -62,19 +106,27 @@ export class PinBuilder {
   }
 
   passive(): PinBuilder {
-    const incomingRefOriginal = this.ref
-
     const entryDirection = this.lastDx === 0 ? "vertical" : "horizontal"
 
     const passive = this.circuit.passive() // Create new passive chip
-
-    passive.at(this.x, this.y)
 
     if (entryDirection === "horizontal") {
       passive.leftpins(1).rightpins(1)
     } else {
       passive.bottompins(1).toppins(1)
     }
+
+    // Position passive center by projecting half the passive dimension in the line direction
+    const halfWidth = passive.getWidth() / 2
+    const halfHeight = passive.getHeight() / 2
+    // Project by the dimension aligned with the movement direction
+    const centerX =
+      this.x +
+      Math.sign(this.lastDx) * (Math.abs(this.lastDx) > 0 ? halfWidth : 0)
+    const centerY =
+      this.y +
+      Math.sign(this.lastDy) * (Math.abs(this.lastDy) > 0 ? halfHeight : 0)
+    passive.at(centerX, centerY)
 
     const entrySide =
       this.lastDx > 0
@@ -94,18 +146,7 @@ export class PinBuilder {
         ? passive.pin(2)
         : passive.pin(1)
 
-    this.lastCreatedLine!.end.ref = entryPin.ref
-
-    // Push the end position of the lastCreatedLine back 1 unit
-    this.lastCreatedLine!.end.x -= Math.sign(this.lastDx) / 2
-    this.lastCreatedLine!.end.y -= Math.sign(this.lastDy) / 2
-
-    exitPin.x += Math.sign(this.lastDx) / 2
-    exitPin.y += Math.sign(this.lastDy) / 2
-    exitPin.nextLineDeltaCorrection = {
-      x: -Math.sign(this.lastDx) / 2,
-      y: -Math.sign(this.lastDy) / 2,
-    }
+    this.lastCreatedLine!.end.ref = exitPin.ref
 
     return exitPin
   }
@@ -147,6 +188,25 @@ export class PinBuilder {
       showAsIntersection: true,
     })
     return this
+  }
+
+  intersectsAt(targetX: number, targetY: number): this {
+    this.lineAt(targetX, targetY)
+    return this.intersect()
+  }
+
+  connectToMark(markName: string): this {
+    const mark = this.circuit.getMark(markName)
+    const markState = mark.state
+    this.lineAt(markState.x, markState.y)
+    return this.connect()
+  }
+
+  intersectAtMark(markName: string): this {
+    const mark = this.circuit.getMark(markName)
+    const markState = mark.state
+    this.lineAt(markState.x, markState.y)
+    return this.intersect()
   }
 
   mark(name: string): this {

@@ -19,21 +19,25 @@ test("areNetlistsCompatible2: input connection not satisfiable by template's con
   expect(`\nInput:\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-     U1
-    ┌───┐
-    │  2├─●─A
-    │  1├─┘
-    └───┘
+         0.0         5.0  
+     1.2         ●
+     1.0         │
+     0.8 U1      │
+     0.6 ┌────┐  │
+     0.4 │   2├──┼───A
+     0.2 │   1├──┘
+     0.0 └────┘
     "
   `)
   expect(`\nTemplate:\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-     U1
-    ┌───┐
-    │  2├─A
-    │  1├──A
-    └───┘
+         0.0         5.0
+     0.8 U1
+     0.6 ┌────┐
+     0.4 │   2├──A
+     0.2 │   1├────A
+     0.0 └────┘
     "
   `)
 
@@ -42,15 +46,12 @@ test("areNetlistsCompatible2: input connection not satisfiable by template's con
 
 
                       ┌────────────────┐
-                      │       U1       │2  ── ...       
-                      │                │1  ── ...       
+                      │       U1       │2  ── A         
+                      │                │1               
                       └────────────────┘
 
     Complex Connections (more than 2 points):
-      - Connection 1:
-        - Box Pin: U1, Pin 2
-        - Net: A
-        - Box Pin: U1, Pin 1"
+      (none)"
   `)
   expect(templateCircuit.getReadableNetlist()).toMatchInlineSnapshot(`
     "Boxes:

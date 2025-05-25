@@ -29,25 +29,77 @@ test("areNetlistsCompatible with template4", () => {
   // Create snapshots
   expect(`\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    │  3├────┼──B
-    │  2├─C  │
-    │  1├    R2
-    └───┘    │
-             A
+         0.0         5.0         10.0
+     1.0 U1
+     0.8 ┌────┐
+     0.6 │   3├────────┬─────B
+     0.4 │   2├──C     │
+     0.2 │   1├        │
+     0.0 └────┘        │
+    -0.2               │
+    -0.4               │
+    -0.6               │
+    -0.8               │
+    -1.0               │
+    -1.2               │
+    -1.4               ┴
+    -1.6
+    -1.8               R2
+    -2.0
+    -2.2
+    -2.4               ┬
+    -2.6               │
+    -2.8               │
+    -3.0               │
+    -3.2               │
+    -3.4               │
+    -3.6               │
+    -3.8               │
+    -4.0               │
+    -4.2               │
+    -4.4               A
     "
   `)
 
   expect(`\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1     A
-    ┌───┐   │
-    │  3├───┤
-    │  2├─C │
-    │  1├┐  R2
-    └───┘│  │
-         D  B
+         0.0         5.0   
+     2.6             A
+     2.4             │
+     2.2             │
+     2.0             │
+     1.8             │
+     1.6             │
+     1.4             │
+     1.2             │
+     1.0 U1          │
+     0.8 ┌────┐      │
+     0.6 │   3├──────┤
+     0.4 │   2├──C   │
+     0.2 │   1├┐     │
+     0.0 └────┘│     │
+    -0.2       │     │
+    -0.4       │     │
+    -0.6       │     │
+    -0.8       │     │
+    -1.0       │     │
+    -1.2       │     │
+    -1.4       │     ┴
+    -1.6       │
+    -1.8       D     R2
+    -2.0
+    -2.2
+    -2.4             ┬
+    -2.6             │
+    -2.8             │
+    -3.0             │
+    -3.2             │
+    -3.4             │
+    -3.6             │
+    -3.8             │
+    -4.0             │
+    -4.2             │
+    -4.4             B
     "
   `)
 
@@ -89,18 +141,10 @@ test("areNetlistsCompatible with template4", () => {
             },
             {
               "boxIndex": 1,
-              "pinNumber": 2,
+              "pinNumber": 1,
             },
             {
               "netIndex": 1,
-            },
-          ],
-        },
-        {
-          "connectedPorts": [
-            {
-              "boxIndex": 1,
-              "pinNumber": 1,
             },
             {
               "netIndex": 2,
@@ -171,18 +215,10 @@ test("areNetlistsCompatible with template4", () => {
             },
             {
               "boxIndex": 1,
-              "pinNumber": 2,
+              "pinNumber": 1,
             },
             {
               "netIndex": 2,
-            },
-          ],
-        },
-        {
-          "connectedPorts": [
-            {
-              "boxIndex": 1,
-              "pinNumber": 1,
             },
             {
               "netIndex": 3,

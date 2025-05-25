@@ -1,33 +1,33 @@
 #!/usr/bin/env bun
 
-import { mkdir, writeFile } from 'fs/promises'
-import { existsSync } from 'fs'
+import { mkdir, writeFile } from "fs/promises"
+import { existsSync } from "fs"
 
 // Create dist directory
-if (!existsSync('dist')) {
-  await mkdir('dist', { recursive: true })
+if (!existsSync("dist")) {
+  await mkdir("dist", { recursive: true })
 }
 
-console.log('Building website...')
+console.log("Building website...")
 
 // Build the client bundle
 const result = await Bun.build({
-  entrypoints: ['./src/index.tsx'],
-  target: 'browser',
+  entrypoints: ["./src/index.tsx"],
+  target: "browser",
   minify: true,
   splitting: false,
-  format: 'esm',
-  outdir: './dist',
-  naming: 'bundle.[hash].js',
+  format: "esm",
+  outdir: "./dist",
+  naming: "bundle.[hash].js",
 })
 
 if (!result.success) {
-  console.error('Build failed:', result.logs)
+  console.error("Build failed:", result.logs)
   process.exit(1)
 }
 
 const [output] = result.outputs
-const bundleName = output.path.split('/').pop()
+const bundleName = output.path.split("/").pop()
 
 // Generate static HTML
 const html = `<!DOCTYPE html>
@@ -53,6 +53,6 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`
 
-await writeFile('dist/index.html', html)
+await writeFile("dist/index.html", html)
 
-console.log('Build complete! Files created in dist/')
+console.log("Build complete! Files created in dist/")
