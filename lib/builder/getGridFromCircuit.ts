@@ -20,26 +20,14 @@ export const getGridFromCircuit = (
     gridScaleX: opts.gridScaleX,
     gridScaleY: opts.gridScaleY,
   })
+  // Store passive info for later rendering
+  const passives = []
+
   // 1. Draw every chip
   for (const chip of circuit.chips) {
     if (chip.isPassive) {
-      // For passive components, draw label with boundary indicators
-      const labelText = chip.chipId
-      const isHorizontal = chip.leftPinCount > 0 || chip.rightPinCount > 0
-      
-      if (isHorizontal) {
-        // Horizontal passive: surround label with boundary markers
-        const boundedText = `[${labelText}]`
-        const startX = chip.x - boundedText.length / 2
-        for (let i = 0; i < boundedText.length; i++) {
-          g.putOverlay(startX + i, chip.y, boundedText[i]!)
-        }
-      } else {
-        // Vertical passive: place label at center with boundary markers above/below
-        g.putOverlay(chip.x, chip.y - 1, "┬")
-        g.putOverlay(chip.x, chip.y, labelText)
-        g.putOverlay(chip.x, chip.y + 1, "┴")
-      }
+      // Store passive for later rendering after traces
+      passives.push(chip)
       continue
     }
     // Use actual chip dimensions
@@ -66,14 +54,18 @@ export const getGridFromCircuit = (
       }
 
       for (let i = 0; i < displayLabel.length; i++) {
-        g.putOverlay((labelActualX + i) / opts.gridScaleX!, labelY / opts.gridScaleY!, displayLabel[i]!)
+        g.putOverlay(
+          (labelActualX + i) / opts.gridScaleX!,
+          labelY / opts.gridScaleY!,
+          displayLabel[i]!,
+        )
       }
     }
 
     // Convert chip position to grid coordinates
     const chipGridX = Math.round(chip.x * opts.gridScaleX!)
     const chipGridY = Math.round(chip.y * opts.gridScaleY!)
-    
+
     for (let r = 0; r < height; ++r) {
       // r is visual row index from bottom (0) to top (height-1)
       let mid0 = " "
@@ -139,7 +131,9 @@ export const getGridFromCircuit = (
       // Compose row string for the variable-width chip body
       const rowStr =
         mid0 +
-        (mid1.length === chipWidth - 2 ? mid1 : mid1.padEnd(chipWidth - 2, " ")) + // Ensure mid1 is correct width
+        (mid1.length === chipWidth - 2
+          ? mid1
+          : mid1.padEnd(chipWidth - 2, " ")) + // Ensure mid1 is correct width
         mid2
       // Place each character of the variable-width chip body - use grid coordinates
       for (let col = 0; col < rowStr.length; ++col) {
@@ -171,7 +165,7 @@ export const getGridFromCircuit = (
 
       g.addEdge(x, y_start_coord, y_start_coord < y_end_coord ? "up" : "down")
       g.addEdge(x, y_end_coord, y_start_coord < y_end_coord ? "down" : "up")
-      
+
       // Fill in intermediate points using grid-scaled increments
       const gridY_min = Math.round(y_min * opts.gridScaleY!)
       const gridY_max = Math.round(y_max * opts.gridScaleY!)
@@ -196,7 +190,7 @@ export const getGridFromCircuit = (
         x_start_coord < x_end_coord ? "right" : "left",
       )
       g.addEdge(x_end_coord, y, x_start_coord < x_end_coord ? "left" : "right")
-      
+
       // Fill in intermediate points using grid-scaled increments
       const gridX_min = Math.round(x_min * opts.gridScaleX!)
       const gridX_max = Math.round(x_max * opts.gridScaleX!)
@@ -214,5 +208,39 @@ export const getGridFromCircuit = (
       g.putOverlay(cp.x, cp.y, "●")
     }
   }
+
+  // 5. Draw passives after traces to avoid being overwritten
+  for (const chip of passives) {
+    const labelText = chip.chipId
+    const isHorizontal = chip.leftPinCount > 0 || chip.rightPinCount > 0
+
+    if (isHorizontal) {
+      const startX = chip.x - chip.getWidth() / 2
+      const totalCharsPossible = chip.getWidth() / (1 / opts.gridScaleX!)
+      for (
+        let i = 0, charCount = 0;
+        i < chip.getWidth();
+        i += 1 / opts.gridScaleX!, charCount++
+      ) {
+        if (totalCharsPossible <= 3) {
+          if (chip.chipId[charCount]) {
+            g.putOverlay(startX + i, chip.y, chip.chipId[charCount]!)
+          }
+        } else if (i === 0) {
+          g.putOverlay(startX + i, chip.y, "[")
+        } else if (i >= chip.getWidth() - 1 / opts.gridScaleX!) {
+          g.putOverlay(startX + i, chip.y, "]")
+        } else if (chip.chipId[charCount]) {
+          g.putOverlay(startX + i, chip.y, chip.chipId[charCount]!)
+        }
+      }
+    } else {
+      // Vertical passive: place label at center with boundary markers above/below
+      g.putOverlay(chip.x, chip.y - chip.getHeight() / 2, "┬")
+      g.putOverlay(chip.x, chip.y, labelText)
+      g.putOverlay(chip.x, chip.y + chip.getHeight() / 2, "┴")
+    }
+  }
+
   return g
 }

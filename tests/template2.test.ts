@@ -18,18 +18,56 @@ test("template2", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1            A
-    ┌───┐          │
-    │  7├──────────┘    ┌─────────R2─────────────B
-    │  6├───────────────┘
-    │  5├─────────────────────────R3─────────────C
-    │  4├──────────────────────────────┤
-    │  3├───────────────┤              │
-    │  2├─────┐         │              │
-    │  1├─────●         │              │
-    └───┘     │         R5             R4
-              │         │              │
-              F         E              D
+         0.0         5.0         10.0    
+     3.4             A
+     3.2             │
+     3.0             │
+     2.8             │
+     2.6             │
+     2.4             │
+     2.2             │ ┌───R2────B
+     2.0  U1         │ │
+     1.8 ┌──┐        │ │
+     1.6 │  │        │ │
+     1.4 │ 7├    ────┘ │
+     1.2 │ 6├    ──────┘
+     1.0 │ 5├    ──────────R3────C
+     0.8 │ 4├    ────────────┐
+     0.6 │ 3├    ──────┐     │
+     0.4 │ 2├    ──┐   │     │
+     0.2 │ 1├    ──●   │     │
+     0.0 └──┘      │   │     │
+    -0.2           │   │     │
+    -0.4           │   │     │
+    -0.6           │   │     │
+    -0.8           │   │     │
+    -1.0           │   │     │
+    -1.2           │   │     │
+    -1.4           │   │     │
+    -1.6           │   │     │
+    -1.8           │   │     │
+    -2.0           │   │     │
+    -2.2           │   │     │
+    -2.4           │   ┴     │
+    -2.6           │         │
+    -2.8           │   R5     │
+    -3.0           │         │
+    -3.2           │         ┴
+    -3.4           │   ┬
+    -3.6           F   │     R4
+    -3.8               │
+    -4.0               │
+    -4.2               │     ┬
+    -4.4               │     │
+    -4.6               │     │
+    -4.8               │     │
+    -5.0               │     │
+    -5.2               │     │
+    -5.4               E     │
+    -5.6                     │
+    -5.8                     │
+    -6.0                     │
+    -6.2                     D
     "
   `)
   expect(C.getNetlist()).toMatchInlineSnapshot(`
@@ -92,6 +130,10 @@ test("template2", () => {
             {
               "netId": "B",
             },
+            {
+              "boxId": "U1",
+              "pinNumber": 6,
+            },
           ],
         },
         {
@@ -102,6 +144,10 @@ test("template2", () => {
             },
             {
               "netId": "C",
+            },
+            {
+              "boxId": "U1",
+              "pinNumber": 5,
             },
           ],
         },
@@ -114,6 +160,10 @@ test("template2", () => {
             {
               "netId": "D",
             },
+            {
+              "boxId": "U1",
+              "pinNumber": 4,
+            },
           ],
         },
         {
@@ -124,6 +174,10 @@ test("template2", () => {
             },
             {
               "netId": "E",
+            },
+            {
+              "boxId": "U1",
+              "pinNumber": 3,
             },
           ],
         },
@@ -139,54 +193,6 @@ test("template2", () => {
             {
               "boxId": "U1",
               "pinNumber": 1,
-            },
-          ],
-        },
-        {
-          "connectedPorts": [
-            {
-              "boxId": "U1",
-              "pinNumber": 6,
-            },
-            {
-              "boxId": "R2",
-              "pinNumber": 1,
-            },
-          ],
-        },
-        {
-          "connectedPorts": [
-            {
-              "boxId": "U1",
-              "pinNumber": 5,
-            },
-            {
-              "boxId": "R3",
-              "pinNumber": 1,
-            },
-          ],
-        },
-        {
-          "connectedPorts": [
-            {
-              "boxId": "U1",
-              "pinNumber": 4,
-            },
-            {
-              "boxId": "R4",
-              "pinNumber": 2,
-            },
-          ],
-        },
-        {
-          "connectedPorts": [
-            {
-              "boxId": "U1",
-              "pinNumber": 3,
-            },
-            {
-              "boxId": "R5",
-              "pinNumber": 2,
             },
           ],
         },
@@ -223,34 +229,38 @@ test("template2", () => {
         F (Net #1)
         U1.pin1 (Box #0)
       pin3
-        R5.pin2 (Box #2)
+        R5.pin1 (Box #3)
+        E (Net #2)
       pin4
-        R4.pin2 (Box #4)
+        R4.pin1 (Box #5)
+        D (Net #4)
       pin5
-        R3.pin1 (Box #6)
+        R3.pin2 (Box #7)
+        C (Net #6)
       pin6
-        R2.pin1 (Box #8)
+        R2.pin2 (Box #9)
+        B (Net #8)
       pin7
         A (Net #10)
-    R5 (Box #2)
+    R5 (Box #3)
       pin1
-        E (Net #3)
-      pin2
+        E (Net #2)
         U1.pin3 (Box #0)
-    R4 (Box #4)
-      pin1
-        D (Net #5)
       pin2
+    R4 (Box #5)
+      pin1
+        D (Net #4)
         U1.pin4 (Box #0)
-    R3 (Box #6)
+      pin2
+    R3 (Box #7)
       pin1
+      pin2
+        C (Net #6)
         U1.pin5 (Box #0)
-      pin2
-        C (Net #7)
-    R2 (Box #8)
+    R2 (Box #9)
       pin1
-        U1.pin6 (Box #0)
       pin2
-        B (Net #9)"
+        B (Net #8)
+        U1.pin6 (Box #0)"
   `)
 })
