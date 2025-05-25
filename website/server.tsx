@@ -1,14 +1,14 @@
 #!/usr/bin/env bun
 
-import { type ServerWebSocket } from 'bun'
+import { type ServerWebSocket } from "bun"
 
 const server = Bun.serve({
   port: 3000,
   async fetch(req) {
     const url = new URL(req.url)
-    
+
     // Serve the main HTML page
-    if (url.pathname === '/' || url.pathname === '/index.html') {
+    if (url.pathname === "/" || url.pathname === "/index.html") {
       return new Response(
         `<!DOCTYPE html>
 <html lang="en">
@@ -34,39 +34,39 @@ const server = Bun.serve({
 </html>`,
         {
           headers: {
-            'Content-Type': 'text/html',
+            "Content-Type": "text/html",
           },
-        }
+        },
       )
     }
-    
+
     // Serve the bundled JavaScript
-    if (url.pathname === '/bundle.js') {
+    if (url.pathname === "/bundle.js") {
       const result = await Bun.build({
-        entrypoints: ['./src/index.tsx'],
-        target: 'browser',
+        entrypoints: ["./src/index.tsx"],
+        target: "browser",
         minify: false,
         splitting: false,
-        format: 'esm',
+        format: "esm",
         external: [],
       })
-      
+
       if (result.success) {
         const [output] = result.outputs
         const text = await output.text()
         return new Response(text, {
           headers: {
-            'Content-Type': 'application/javascript',
-            'Cache-Control': 'no-cache',
+            "Content-Type": "application/javascript",
+            "Cache-Control": "no-cache",
           },
         })
       } else {
-        console.error('Build failed:', result.logs)
-        return new Response('Build failed', { status: 500 })
+        console.error("Build failed:", result.logs)
+        return new Response("Build failed", { status: 500 })
       }
     }
-    
-    return new Response('Not Found', { status: 404 })
+
+    return new Response("Not Found", { status: 404 })
   },
 })
 

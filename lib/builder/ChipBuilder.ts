@@ -23,7 +23,7 @@ export class ChipBuilder {
   public topPinCount = 0
   public bottomPinCount = 0
   private pinMap: Record<string, PinBuilder> = {}
-  private marks: Record<string, { pinBuilder: PinBuilder; state: any }> = {}
+  public marks: Record<string, { pinBuilder: PinBuilder; state: any }> = {}
 
   constructor(
     public readonly circuit: CircuitBuilder,
@@ -148,19 +148,19 @@ export class ChipBuilder {
         ? this.circuit.defaultPassiveWidth
         : this.circuit.defaultPassiveHeight
     }
-    
+
     // Check if chip has pins on only one side
     const sideCount = [
       this.leftPinCount > 0 ? 1 : 0,
       this.rightPinCount > 0 ? 1 : 0,
       this.topPinCount > 0 ? 1 : 0,
-      this.bottomPinCount > 0 ? 1 : 0
+      this.bottomPinCount > 0 ? 1 : 0,
     ].reduce((sum, count) => sum + count, 0)
-    
+
     if (sideCount === 1) {
       return this.circuit.defaultSingleSidedChipWidth
     }
-    
+
     return this.circuit.defaultChipWidth
   }
 

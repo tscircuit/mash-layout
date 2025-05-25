@@ -15,7 +15,7 @@ export default () => {
   const U2 = C.chip().leftpins(1).rightpins(1).at(10, 0.2)
 
   U1.pin(4).line(3, 0).mark("bus")
-  U2.pin(1).line(-3, 0).connect()
+  U2.pin(1).connectToMark("bus")
 
   return C
 }

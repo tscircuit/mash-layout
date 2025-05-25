@@ -141,30 +141,32 @@ export function adaptTemplateToTarget(params: {
   const normalizedTargetResult = normalizeNetlist(target)
   const normalizedTemplate = normalizedTemplateResult.normalizedNetlist
   const normalizedTarget = normalizedTargetResult.normalizedNetlist
-  
+
   const matchedBoxes = getMatchedBoxes({
     candidateNetlist: normalizedTemplate,
     targetNetlist: normalizedTarget,
   })
-  
+
   // Get the set of matched template box indices
   const matchedTemplateBoxIndices = new Set(
-    matchedBoxes.map(match => match.candidateBoxIndex)
+    matchedBoxes.map((match) => match.candidateBoxIndex),
   )
-  
+
   // Map box indices back to original box IDs using the normalization transform
   const matchedTemplateBoxIds = new Set<string>()
-  for (const [boxId, boxIndex] of Object.entries(normalizedTemplateResult.transform.boxIdToBoxIndex)) {
+  for (const [boxId, boxIndex] of Object.entries(
+    normalizedTemplateResult.transform.boxIdToBoxIndex,
+  )) {
     if (matchedTemplateBoxIndices.has(boxIndex)) {
       matchedTemplateBoxIds.add(boxId)
     }
   }
-  
+
   // Remove any chips that weren't matched
   const unmatchedChips = currentNetlist.boxes.filter(
-    box => !matchedTemplateBoxIds.has(box.boxId)
+    (box) => !matchedTemplateBoxIds.has(box.boxId),
   )
-  
+
   for (const chip of unmatchedChips) {
     const op: EditOperation = {
       type: "remove_chip",

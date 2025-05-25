@@ -9,7 +9,7 @@ export function applyAddPassiveWithLabelToPin(
   const { chipId, pinNumber, labelNetId } = op
   const chip = C.chips.find((ch) => ch.chipId === chipId)
   if (!chip) return
-  
+
   // Ensure the pin exists & already has at least one segment to attach
   const pin = chip.pin(pinNumber)
 

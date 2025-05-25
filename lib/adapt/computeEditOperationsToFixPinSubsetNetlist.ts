@@ -86,33 +86,37 @@ export const computeEditOperationsToFixPinSubsetNetlist = (params: {
         pinAppearsInConnection(c, pinBoxId, 1) &&
         c.connectedPorts.some((p) => "boxId" in p && /^R\d+$/.test(p.boxId)),
     )
-    
+
     let passiveLabelNetId: string | null = null
-    
+
     if (targetPassiveConnection) {
       const targetPassivePort = targetPassiveConnection.connectedPorts.find(
-        (p) => "boxId" in p && /^R\d+$/.test(p.boxId)
+        (p) => "boxId" in p && /^R\d+$/.test(p.boxId),
       )
-      
+
       if (targetPassivePort && "boxId" in targetPassivePort) {
         // Look in the full target netlist for a label on this passive
         const passiveLabelConnection = targetNetlist.connections.find(
           (c) =>
             c.connectedPorts.some(
-              (p) => "boxId" in p && p.boxId === targetPassivePort.boxId && p.pinNumber === 1
-            ) &&
-            c.connectedPorts.some((p) => "netId" in p)
+              (p) =>
+                "boxId" in p &&
+                p.boxId === targetPassivePort.boxId &&
+                p.pinNumber === 1,
+            ) && c.connectedPorts.some((p) => "netId" in p),
         )
-        
+
         if (passiveLabelConnection) {
-          const labelPort = passiveLabelConnection.connectedPorts.find((p) => "netId" in p)
+          const labelPort = passiveLabelConnection.connectedPorts.find(
+            (p) => "netId" in p,
+          )
           if (labelPort && "netId" in labelPort) {
             passiveLabelNetId = labelPort.netId
           }
         }
       }
     }
-    
+
     if (passiveLabelNetId) {
       // Add passive with label in one operation
       operations.push({

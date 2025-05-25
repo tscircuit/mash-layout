@@ -244,4 +244,14 @@ export class CircuitBuilder {
   getGrid(): any {
     return getGridFromCircuit(this)
   }
+
+  getMark(name: string): { pinBuilder: PinBuilder; state: any } {
+    for (const chip of this.chips) {
+      const mark = chip.marks?.[name]
+      if (mark) {
+        return mark
+      }
+    }
+    throw new Error(`Mark "${name}" not found in circuit`)
+  }
 }
