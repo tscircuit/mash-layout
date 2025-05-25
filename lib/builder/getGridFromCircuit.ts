@@ -39,10 +39,10 @@ export const getGridFromCircuit = (
     const chipWidth = chip.getWidth()
     const chipHeight = chip.getHeight()
     // Convert chip height to grid rows - scale the height and add borders
-    const height = Math.round(chipHeight * opts.gridScaleY!) + 2
+    const chipRowHeight = Math.round(chipHeight * opts.gridScaleY!)
 
     if (opts.chipLabels && chip.topPinCount === 0) {
-      const labelY = chip.y + chip.getHeight() + cellHeight * 2
+      const labelY = chip.y + chip.getHeight()
       const labelText = chip.chipId
 
       for (let x = chip.x, i = 0; i < labelText.length; i++, x += cellWidth) {
@@ -54,14 +54,14 @@ export const getGridFromCircuit = (
     const chipGridX = Math.round(chip.x * opts.gridScaleX!)
     const chipGridY = Math.round(chip.y * opts.gridScaleY!)
 
-    for (let r = 0; r < height; ++r) {
+    for (let r = 0; r < chipRowHeight; ++r) {
       // r is visual row index from bottom (0) to top (height-1)
       let mid0 = " "
       let mid1 = " "
       let mid2 = " "
 
       const isBottomBorder = r === 0
-      const isTopBorder = r === height - 1
+      const isTopBorder = r === chipRowHeight - 1
 
       const midWidth = chipWidth * opts.gridScaleX!
 

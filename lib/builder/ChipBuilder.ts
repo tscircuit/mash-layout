@@ -175,7 +175,8 @@ export class ChipBuilder {
     }
     return (
       Math.max(this.leftPinCount, this.rightPinCount) *
-        this.circuit.defaultPinSpacing
+        this.circuit.defaultPinSpacing +
+      this.circuit.defaultPinSpacing * 2
     )
   }
 
@@ -202,16 +203,6 @@ export class ChipBuilder {
   }
 
   setPinPositions(): void {
-    // if (this.isPassive) {
-    //   const pb1 = this._getPin(1)
-    //   const pb2 = this._getPin(2)
-    //   pb1.x = this.x
-    //   pb1.y = this.y
-    //   pb2.x = this.x
-    //   pb2.y = this.y
-    //   return
-    // }
-
     for (let pn = 1; pn <= this.totalPinCount; pn++) {
       const pb = this._getPin(pn)
       const pinLocation = this.getPinLocation(pn)
@@ -265,7 +256,11 @@ export class ChipBuilder {
 
     if (side === "left" || side === "right") {
       pinX = this.x + (side === "left" ? 0 : this.getWidth())
-      pinY = this.y + this.getHeight() - indexFromTop! * spacing
+      pinY =
+        this.y +
+        this.getHeight() -
+        indexFromTop! * spacing -
+        this.circuit.defaultPinSpacing * 2
     } else {
       // top or bottom
       pinX = this.x + indexFromLeft! * spacing

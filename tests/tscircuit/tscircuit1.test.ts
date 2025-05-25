@@ -480,7 +480,7 @@ export default () => (
       {
         "center": {
           "x": 1,
-          "y": 0.2,
+          "y": 0.4,
         },
         "pin_spacing": 0.2,
         "pin_styles": undefined,
@@ -489,7 +489,7 @@ export default () => (
         "rotation": 0,
         "schematic_component_id": "schematic_component_0",
         "size": {
-          "height": 0.4,
+          "height": 0.8,
           "width": 1.2,
         },
         "source_component_id": "source_component_0",
