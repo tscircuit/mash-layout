@@ -10,12 +10,34 @@ test("upward-passive-netlist", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-          A
-     U1   │
-    ┌───┐ R2
-    ┤1 2├ │
-    ┤2 1├─┘
-    └───┘
+         0.0         5.0   
+     5.2             A
+     5.0             │
+     4.8             │
+     4.6             │
+     4.4             │
+     4.2             │
+     4.0             │
+     3.8             │
+     3.6             │
+     3.4             │
+     3.2             ┴
+     3.0
+     2.8             R2
+     2.6
+     2.4
+     2.2             ┬
+     2.0             │
+     1.8             │
+     1.6             │
+     1.4             │
+     1.2             │
+     1.0  U1         │
+     0.8 ┌──┐        │
+     0.6 │  │        │
+     0.4 ┤1 1├       │
+     0.2 ┤2 2├   ────┘
+     0.0 └──┘
     "
   `)
 
@@ -24,12 +46,12 @@ test("upward-passive-netlist", () => {
 
 
                       ┌────────────────┐
-            R2.1 ──  1│       U1       │4               
+             ... ──  1│       U1       │4               
                      2│                │3               
                       └────────────────┘
 
 
-                              A        
+                             ...       
                               │        
                               2        
                       ┌────────────────┐
@@ -37,9 +59,12 @@ test("upward-passive-netlist", () => {
                       └────────────────┘
                               1        
                               │        
-                             U1.1      
+                                       
 
     Complex Connections (more than 2 points):
-      (none)"
+      - Connection 1:
+        - Box Pin: R2, Pin 2
+        - Net: A
+        - Box Pin: U1, Pin 1"
   `)
 })

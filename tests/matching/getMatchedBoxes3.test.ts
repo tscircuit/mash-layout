@@ -15,20 +15,24 @@ test("getMatchedBoxes3 - always match the largest target box first (even if it m
 
   expect(`\n${targetCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-             T2
-     T1     ┌───┐
-    ┌───┐   │  2├
-    ┤1  │   │  1├
-    └───┘   └───┘
+         0.0         5.0         
+     1.0          T2
+     0.8  T1             ┌──┐
+     0.6 ┌──┐            │  │
+     0.4 │  │            │ 2├
+     0.2 ┤1 │            │ 1├
+     0.0 └──┘            └──┘
     "
   `)
 
   expect(`\n${candidateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-     C1
-    ┌───┐
-    ┤1  │
-    └───┘
+         0.0   
+     0.8  C1
+     0.6 ┌──┐
+     0.4 │  │
+     0.2 ┤1 │
+     0.0 └──┘
     "
   `)
 

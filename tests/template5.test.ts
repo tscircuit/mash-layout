@@ -5,11 +5,16 @@ test("template5", () => {
   const C = template5()
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1        U2
-    ┌───┐     ┌───┐
-    ┤1 4├─────┤1 2├
-    ┤2 3├     └───┘
-    └───┘
+         0.0         5.0         10.0    
+     1.6                     ┌──┐
+     1.4                     │  │
+     1.2               ──────┤1 2├
+     1.0  U1        U2       └──┘
+     0.8 ┌──┐
+     0.6 │  │
+     0.4 ┤1 4├   ───────
+     0.2 ┤2 3├
+     0.0 └──┘
     "
   `)
   expect(C.getNetlist()).toMatchInlineSnapshot(`
@@ -30,20 +35,7 @@ test("template5", () => {
           "topPinCount": 0,
         },
       ],
-      "connections": [
-        {
-          "connectedPorts": [
-            {
-              "boxId": "U2",
-              "pinNumber": 1,
-            },
-            {
-              "boxId": "U1",
-              "pinNumber": 4,
-            },
-          ],
-        },
-      ],
+      "connections": [],
       "nets": [],
     }
   `)

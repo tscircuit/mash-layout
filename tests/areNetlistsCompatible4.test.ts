@@ -15,20 +15,24 @@ test("areNetlistsCompatible2: template has extra connections/components not used
   expect(`\nInput:\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Input:
-     U1
-    ┌───┐
-    │  1├─A
-    └───┘
+         0.0         5.0  
+     0.8  U1
+     0.6 ┌──┐
+     0.4 │  │
+     0.2 │ 1├    ────A
+     0.0 └──┘
     "
   `)
   expect(`\nTemplate:\n${templateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
     Template:
-     U1
-    ┌───┐
-    │  2├─E
-    │  1├─A
-    └───┘
+         0.0         5.0  
+     1.0  U1
+     0.8 ┌──┐
+     0.6 │  │
+     0.4 │ 2├    ────E
+     0.2 │ 1├    ────A
+     0.0 └──┘
     "
   `)
 

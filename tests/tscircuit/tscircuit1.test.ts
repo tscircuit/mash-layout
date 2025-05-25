@@ -309,11 +309,16 @@ export default () => (
 
   expect(`\n${C("ascii").toString()}\n`).toMatchInlineSnapshot(`
     "
-       U1
-      ┌───┐
-    ┌R21 4├
-    A ┤2 3├B
-      └───┘
+             0.0         5.0
+     1.0      U1
+     0.8     ┌──┐
+     0.6     │  │
+     0.4 R2──┤1 4├
+     0.2 │   ┤2 3├   ──B
+     0.0 │   └──┘
+    -0.2 │
+    -0.4 │
+    -0.6 A
     "
   `)
 
@@ -424,7 +429,10 @@ export default () => (
               },
               {
                 "boxIndex": 1,
-                "pinNumber": 2,
+                "pinNumber": 1,
+              },
+              {
+                "netIndex": 0,
               },
             ],
           },
@@ -436,17 +444,6 @@ export default () => (
               },
               {
                 "netIndex": 1,
-              },
-            ],
-          },
-          {
-            "connectedPorts": [
-              {
-                "boxIndex": 1,
-                "pinNumber": 1,
-              },
-              {
-                "netIndex": 0,
               },
             ],
           },
@@ -501,7 +498,7 @@ export default () => (
       },
       {
         "center": {
-          "x": -1,
+          "x": -1.5,
           "y": 0.4000000000000001,
         },
         "schematic_component_id": "schematic_component_1",

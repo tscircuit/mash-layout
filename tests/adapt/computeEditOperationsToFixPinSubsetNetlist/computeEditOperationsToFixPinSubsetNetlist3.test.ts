@@ -8,11 +8,13 @@ test("computeEditOperationsToFixPinSubsetNetlist1", () => {
 
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    ┤1 4├
-    ┤2 3├
-    └───┘
+         0.0    
+     1.0  U1
+     0.8 ┌──┐
+     0.6 │  │
+     0.4 ┤1 4├
+     0.2 ┤2 3├
+     0.0 └──┘
     "
   `)
 
@@ -22,11 +24,13 @@ test("computeEditOperationsToFixPinSubsetNetlist1", () => {
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-         U1
-        ┌───┐
-    A─R2┤1 4├
-        ┤2 3├
-        └───┘
+                 0.0    
+     1.0          U1
+     0.8         ┌──┐
+     0.6         │  │
+     0.4 A─R2────┤1 4├
+     0.2         ┤2 3├
+     0.0         └──┘
     "
   `)
 

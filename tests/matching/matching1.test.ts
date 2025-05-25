@@ -19,25 +19,73 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
 
   expect(`\n${inputCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    │  3├────┼──B
-    │  2├─C  │
-    │  1├    R2
-    └───┘    A
+         0.0         5.0         10.0    
+     1.2  U1
+     1.0 ┌──┐
+     0.8 │  │
+     0.6 │ 3├    ──────────┬─────B
+     0.4 │ 2├    ────C     │
+     0.2 │ 1├              │
+     0.0 └──┘              │
+    -0.2                   │
+    -0.4                   │
+    -0.6                   │
+    -0.8                   │
+    -1.0                   │
+    -1.2                   │
+    -1.4                   ┴
+    -1.6
+    -1.8                   R2
+    -2.0
+    -2.2
+    -2.4                   ┬
+    -2.6                   │
+    -2.8                   │
+    -3.0                   │
+    -3.2                   │
+    -3.4                   A
     "
   `)
 
   expect(`\n${template3().toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐      A
-    │  3├───●──┤
-    │  2├─┐ │  │
-    │  1├┐│ R3 R2
-    └───┘│└─┘  │
-         │     │
-         C     B
+         0.0         5.0         10.0   
+     1.6                       A
+     1.4                       │
+     1.2  U1                   │
+     1.0 ┌──┐                  │
+     0.8 │  │                  │
+     0.6 │ 3├    ────────●─────┤
+     0.4 │ 2├    ────┐   │     │
+     0.2 │ 1├    ──┐ │   │     │
+     0.0 └──┘      │ │   │     │
+    -0.2           │ │   │     │
+    -0.4           │ │   │     │
+    -0.6           │ │   │     │
+    -0.8           │ │   │     │
+    -1.0           │ │   │     │
+    -1.2           │ │   │     │
+    -1.4           │ │   ┴     ┴
+    -1.6           │ │
+    -1.8           │ │         R2
+    -2.0           │ │   R3
+    -2.2           │ │
+    -2.4           │ │   ┬     ┬
+    -2.6           │ │   │     │
+    -2.8           C │   │     │
+    -3.0             │   │     │
+    -3.2             │   │     │
+    -3.4             │   │     │
+    -3.6             └───┘     │
+    -3.8                       │
+    -4.0                       │
+    -4.2                       │
+    -4.4                       │
+    -4.6                       │
+    -4.8                       │
+    -5.0                       │
+    -5.2                       │
+    -5.4                       B
     "
   `)
 
@@ -47,12 +95,12 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
 
                       ┌────────────────┐
                       │                │3  ── ...       
-                      │       U1       │2  ── R3.1      
+                      │       U1       │2  ── R3.2      
                       │                │1  ── C         
                       └────────────────┘
 
 
-                             ...       
+                                       
                               │        
                               2        
                       ┌────────────────┐
@@ -60,10 +108,10 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
                       └────────────────┘
                               1        
                               │        
-                              B        
-
-
                              ...       
+
+
+                             U1.2      
                               │        
                               2        
                       ┌────────────────┐
@@ -71,24 +119,54 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
                       └────────────────┘
                               1        
                               │        
-                             U1.2      
+                                       
 
     Complex Connections (more than 2 points):
       - Connection 1:
         - Box Pin: U1, Pin 3
         - Net: A
-        - Box Pin: R2, Pin 2
-        - Box Pin: R3, Pin 2"
+        - Box Pin: R2, Pin 1
+        - Net: B"
   `)
   expect(`\n${template4().toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1     A
-    ┌───┐   │
-    │  3├───┤
-    │  2├─C │
-    │  1├┐  R2
-    └───┘│  │
-         D  B
+         0.0         5.0       
+     2.6                 A
+     2.4                 │
+     2.2                 │
+     2.0                 │
+     1.8                 │
+     1.6                 │
+     1.4                 │
+     1.2  U1             │
+     1.0 ┌──┐            │
+     0.8 │  │            │
+     0.6 │ 3├    ────────┤
+     0.4 │ 2├    ────C   │
+     0.2 │ 1├    ──┐     │
+     0.0 └──┘      │     │
+    -0.2           │     │
+    -0.4           │     │
+    -0.6           │     │
+    -0.8           │     │
+    -1.0           │     │
+    -1.2           │     │
+    -1.4           │     ┴
+    -1.6           │
+    -1.8           D     R2
+    -2.0
+    -2.2
+    -2.4                 ┬
+    -2.6                 │
+    -2.8                 │
+    -3.0                 │
+    -3.2                 │
+    -3.4                 │
+    -3.6                 │
+    -3.8                 │
+    -4.0                 │
+    -4.2                 │
+    -4.4                 B
     "
   `)
 
@@ -98,7 +176,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0|C[b0.2,b1.1,n0]"`)
+  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0|C[b0.1,b1.1,n0,n1]"`)
 
   expect(
     getPinShapeSignature({
@@ -106,7 +184,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0,L0B1R0T1|C[b0.2,b1.1,b2.2,n0]"`)
+  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0|C[b0.1,b1.1,n0,n1]"`)
 
   expect(
     getPinShapeSignature({
@@ -114,7 +192,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0|C[b0.2,b1.1,n0]"`)
+  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0|C[b0.1,b1.1,n0,n1]"`)
 
   // Matching issues
   expect(
@@ -124,24 +202,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       candidateNetlist: normalizeNetlist(template3().getNetlist())
         .normalizedNetlist,
     }),
-  ).toMatchInlineSnapshot(`
-    [
-      {
-        "candidateBoxIndex": 0,
-        "targetBoxIndex": 0,
-        "targetPinNumber": 3,
-        "targetPinShapeSignature": "L0B1R0T1,L0B0R1T0|C[b0.2,b1.1,n0]",
-        "type": "matched_box_missing_pin_shape",
-      },
-      {
-        "candidateBoxIndex": 2,
-        "targetBoxIndex": 1,
-        "targetPinNumber": 2,
-        "targetPinShapeSignature": "L0B0R3T0,L0B0R1T0|C[b0.3,b1.1,n0]",
-        "type": "matched_box_missing_pin_shape",
-      },
-    ]
-  `)
+  ).toMatchInlineSnapshot(`[]`)
   expect(
     getMatchingIssues({
       targetNetlist: normalizeNetlist(inputCircuit.getNetlist())
@@ -165,13 +226,43 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
   // TODO this is incorrect, template4 is a better match than template3
   expect(`\n${bestMatchCircuit!.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1     A
-    ┌───┐   │
-    │  3├───┤
-    │  2├─C │
-    │  1├┐  R2
-    └───┘│  │
-         D  B
+         0.0         5.0         10.0   
+     1.6                       A
+     1.4                       │
+     1.2  U1                   │
+     1.0 ┌──┐                  │
+     0.8 │  │                  │
+     0.6 │ 3├    ────────●─────┤
+     0.4 │ 2├    ────┐   │     │
+     0.2 │ 1├    ──┐ │   │     │
+     0.0 └──┘      │ │   │     │
+    -0.2           │ │   │     │
+    -0.4           │ │   │     │
+    -0.6           │ │   │     │
+    -0.8           │ │   │     │
+    -1.0           │ │   │     │
+    -1.2           │ │   │     │
+    -1.4           │ │   ┴     ┴
+    -1.6           │ │
+    -1.8           │ │         R2
+    -2.0           │ │   R3
+    -2.2           │ │
+    -2.4           │ │   ┬     ┬
+    -2.6           │ │   │     │
+    -2.8           C │   │     │
+    -3.0             │   │     │
+    -3.2             │   │     │
+    -3.4             │   │     │
+    -3.6             └───┘     │
+    -3.8                       │
+    -4.0                       │
+    -4.2                       │
+    -4.4                       │
+    -4.6                       │
+    -4.8                       │
+    -5.0                       │
+    -5.2                       │
+    -5.4                       B
     "
   `)
 })

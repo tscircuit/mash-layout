@@ -10,11 +10,13 @@ test("mergeCircuits2", () => {
 
   expect(`\n${T1.toString()}\n`).toMatchInlineSnapshot(`
     "
-       U1
-      ┌───┐
-    A─┤1  │
-    B─┤2  │
-      └───┘
+             0.0   
+     1.0      U1
+     0.8     ┌──┐
+     0.6     │  │
+     0.4 A───┤1 │
+     0.2 B───┤2 │
+     0.0     └──┘
     "
   `)
 
@@ -25,11 +27,13 @@ test("mergeCircuits2", () => {
 
   expect(`\n${T2.toString()}\n`).toMatchInlineSnapshot(`
     "
-     U1
-    ┌───┐
-    │  2├─B
-    │  1├─A
-    └───┘
+         0.0         5.0  
+     1.0  U1
+     0.8 ┌──┐
+     0.6 │  │
+     0.4 │ 2├    ────B
+     0.2 │ 1├    ────A
+     0.0 └──┘
     "
   `)
 
@@ -42,11 +46,13 @@ test("mergeCircuits2", () => {
 
   expect(`\n${merged.toString()}\n`).toMatchInlineSnapshot(`
     "
-       U1
-      ┌───┐
-    A─┤1 4├─B
-    B─┤2 3├─A
-      └───┘
+             0.0         5.0  
+     1.0      U1
+     0.8     ┌──┐
+     0.6     │  │
+     0.4 A───┤1 4├   ────B
+     0.2 B───┤2 3├   ────A
+     0.0     └──┘
     "
   `)
 })

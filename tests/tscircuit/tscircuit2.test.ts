@@ -137,15 +137,45 @@ export default () => (
 
   expect(`\n${C("ascii").toString()}\n`).toMatchInlineSnapshot(`
     "
-              C
-       B     ┌●
-       R3U1  ││
-       │┌───┐│R4
-    ┌R2┼┤1 8├┘│
-    A  └┤2 7├─┴D
-        ┤3 6├E
-        ┤4 5├┐
-        └───┘F
+                 0.0         5.0    
+     6.6                     C
+     6.4                     │
+     6.2                     │
+     6.0                     │
+     5.8                     │
+     5.6       B             │
+     5.4       │             │
+     5.2       │             │
+     5.0       │             │
+     4.8       │             │
+     4.6       ┴             │
+     4.4                     │
+     4.2       R3            │
+     4.0                     │
+     3.8                   ┌─●
+     3.6       ┬           │ ┴
+     3.4       │           │
+     3.2       │           │ R4
+     3.0       │           │
+     2.8       │           │
+     2.6       │           │ ┬
+     2.4       │           │ │
+     2.2       │           │ │
+     2.0       │           │ │
+     1.8       │           │ │
+     1.6       │           │ │
+     1.4       │  U1       │ │
+     1.2       │ ┌──┐      │ │
+     1.0       │ │  │      │ │
+     0.8 R2────┼─┤1 8├   ──┘ │
+     0.6 │     └─┤2 7├   ────┴─D
+     0.4 │       ┤3 6├   ──E
+     0.2 │       ┤4 5├   ──┐
+     0.0 │       └──┘      │
+    -0.2 A                 │
+    -0.4                   │
+    -0.6                   │
+    -0.8                   F
     "
   `)
 
@@ -191,7 +221,10 @@ export default () => (
               },
               {
                 "boxIndex": 1,
-                "pinNumber": 2,
+                "pinNumber": 1,
+              },
+              {
+                "netIndex": 0,
               },
             ],
           },
@@ -203,7 +236,10 @@ export default () => (
               },
               {
                 "boxIndex": 2,
-                "pinNumber": 1,
+                "pinNumber": 2,
+              },
+              {
+                "netIndex": 1,
               },
             ],
           },
@@ -236,17 +272,6 @@ export default () => (
                 "pinNumber": 7,
               },
               {
-                "boxIndex": 3,
-                "pinNumber": 1,
-              },
-              {
-                "netIndex": 4,
-              },
-            ],
-          },
-          {
-            "connectedPorts": [
-              {
                 "boxIndex": 0,
                 "pinNumber": 8,
               },
@@ -255,29 +280,10 @@ export default () => (
                 "pinNumber": 2,
               },
               {
+                "netIndex": 4,
+              },
+              {
                 "netIndex": 5,
-              },
-            ],
-          },
-          {
-            "connectedPorts": [
-              {
-                "boxIndex": 1,
-                "pinNumber": 1,
-              },
-              {
-                "netIndex": 0,
-              },
-            ],
-          },
-          {
-            "connectedPorts": [
-              {
-                "boxIndex": 2,
-                "pinNumber": 2,
-              },
-              {
-                "netIndex": 1,
               },
             ],
           },
@@ -313,8 +319,8 @@ export default () => (
         "netIdToNetIndex": {
           "A": 0,
           "B": 1,
-          "C": 5,
-          "D": 4,
+          "C": 4,
+          "D": 5,
           "E": 3,
           "F": 2,
         },
