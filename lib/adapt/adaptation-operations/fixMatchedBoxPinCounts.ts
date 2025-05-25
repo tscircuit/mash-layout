@@ -56,7 +56,6 @@ export function fixMatchedBoxPinCounts(params: {
           side,
           betweenPinNumbers: [afterPin, afterPin + 1],
         }
-        console.log("adding pin to side", op)
         applyEditOperation(template, op)
         appliedOperations.push(op)
       }
