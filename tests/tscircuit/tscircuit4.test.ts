@@ -105,10 +105,32 @@ export default () => {
   })
   await solver.solve()
 
+  const adaptedTemplate =
+    solver.adaptPhaseSolver!.outputAdaptedTemplates[0]!.template
+
+  expect(`\n${adaptedTemplate.toString()}\n`).toMatchInlineSnapshot(`
+    "
+         0.0         5.0         10.0         
+     2.4 U1
+     2.2 ┌────────┐
+     2.0 │      12├
+     1.8 │      11├
+     1.6 │      10├
+     1.4 │       9├
+     1.2 │       8├
+     1.0 │       7├
+     0.8 │       6├          U2
+     0.6 │       5├          ┌────────┐
+     0.4 │       4├──────────┤1      2├
+     0.2 │       3├          └────────┘
+     0.0 └────────┘
+    "
+  `)
+
   const newCircuitJson = applyCircuitLayoutToCircuitJson(
     circuitJson,
     convertCircuitJsonToInputNetlist(circuitJson),
-    solver.adaptPhaseSolver!.outputAdaptedTemplates[0]?.template!,
+    adaptedTemplate,
   )
 
   expect(
