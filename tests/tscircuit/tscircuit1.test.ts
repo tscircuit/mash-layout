@@ -310,7 +310,7 @@ export default () => (
   expect(`\n${C("ascii").toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0         5.0
-     1.0      U1
+     1.0     U1
      0.8     ┌────────┐
      0.6     │        │
      0.4 R2──┤1      4├

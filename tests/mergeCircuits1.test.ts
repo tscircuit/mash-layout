@@ -69,7 +69,7 @@ test("mergeCircuits1", () => {
   expect(`\n${mergedCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
                -5.0         0.0         5.0  
-     1.0                  U1
+     1.0                 U1
      0.8                 ┌────────┐
      0.6                 │        │
      0.4 ┌───────────────┤1      4├──B

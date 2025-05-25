@@ -75,24 +75,6 @@ test("template3", () => {
           "connectedPorts": [
             {
               "boxId": "U1",
-              "pinNumber": 3,
-            },
-            {
-              "netId": "A",
-            },
-            {
-              "boxId": "R2",
-              "pinNumber": 1,
-            },
-            {
-              "netId": "B",
-            },
-          ],
-        },
-        {
-          "connectedPorts": [
-            {
-              "boxId": "U1",
               "pinNumber": 1,
             },
             {
@@ -109,6 +91,20 @@ test("template3", () => {
             {
               "boxId": "R3",
               "pinNumber": 2,
+            },
+            {
+              "boxId": "U1",
+              "pinNumber": 3,
+            },
+            {
+              "netId": "A",
+            },
+            {
+              "boxId": "R2",
+              "pinNumber": 1,
+            },
+            {
+              "netId": "B",
             },
           ],
         },
@@ -132,7 +128,7 @@ test("template3", () => {
 
                       ┌────────────────┐
                       │                │3  ── ...       
-                      │       U1       │2  ── R3.2      
+                      │       U1       │2  ── ...       
                       │                │1  ── C         
                       └────────────────┘
 
@@ -148,7 +144,7 @@ test("template3", () => {
                              ...       
 
 
-                             U1.2      
+                             ...       
                               │        
                               2        
                       ┌────────────────┐
@@ -160,6 +156,8 @@ test("template3", () => {
 
     Complex Connections (more than 2 points):
       - Connection 1:
+        - Box Pin: U1, Pin 2
+        - Box Pin: R3, Pin 2
         - Box Pin: U1, Pin 3
         - Net: A
         - Box Pin: R2, Pin 1

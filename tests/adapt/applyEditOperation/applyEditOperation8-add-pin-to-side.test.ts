@@ -11,7 +11,7 @@ test("add pin to side", () => {
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0         
-     1.0      U1
+     1.0     U1
      0.8     ┌────────┐
      0.6     │        │
      0.4   A─┤1      3├
@@ -38,7 +38,7 @@ test("add pin to side", () => {
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
              0.0         
-     1.2      U1
+     1.2     U1
      1.0     ┌────────┐
      0.8     │        │
      0.6   A─┤1      4├
