@@ -43,6 +43,56 @@ export class PinBuilder {
     return this
   }
 
+  lineAt(targetX: number, targetY: number): this {
+    const deltaX = targetX - this.x
+    const deltaY = targetY - this.y
+    
+    // If already at target, do nothing
+    if (deltaX === 0 && deltaY === 0) {
+      return this
+    }
+    
+    // If only one dimension needs to change, create a single line
+    if (deltaX === 0 || deltaY === 0) {
+      return this.line(deltaX, deltaY)
+    }
+    
+    // Two lines needed - determine order based on last direction and pin context
+    let firstDirection: "x" | "y"
+    
+    // If last point was a pin, move "out of" the pin based on pin direction
+    if (this.lastCreatedLine === null) {
+      const pinDirection = this.getPinDirection()
+      if (pinDirection === "horizontal") {
+        firstDirection = "x"
+      } else {
+        firstDirection = "y"
+      }
+    } else {
+      // Move orthogonal to last line direction to avoid overlap
+      if (this.lastDx !== 0) {
+        // Last move was horizontal, so move vertical first
+        firstDirection = "y"
+      } else {
+        // Last move was vertical, so move horizontal first
+        firstDirection = "x"
+      }
+    }
+    
+    if (firstDirection === "x") {
+      return this.line(deltaX, 0).line(0, deltaY)
+    } else {
+      return this.line(0, deltaY).line(deltaX, 0)
+    }
+  }
+
+  private getPinDirection(): "horizontal" | "vertical" {
+    const side = this.side
+    // Pins face away from the center of the chip
+    // Left/right pins have horizontal direction, top/bottom pins have vertical direction
+    return side === "left" || side === "right" ? "horizontal" : "vertical"
+  }
+
   get side(): Side {
     const { side } = getPinSideIndex(this.pinNumber, this.chip)
     return side
@@ -138,6 +188,11 @@ export class PinBuilder {
       showAsIntersection: true,
     })
     return this
+  }
+
+  intersectsAt(targetX: number, targetY: number): this {
+    this.lineAt(targetX, targetY)
+    return this.intersect()
   }
 
   mark(name: string): this {
