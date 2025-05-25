@@ -22,7 +22,7 @@ export class CircuitBuilder {
   connectionPoints: ConnectionPoint[] = []
 
   public defaultChipWidth = 4
-  public defaultSingleSidedChipWidth = 3
+  public defaultSingleSidedChipWidth = 2
   public defaultPinSpacing = 0.2
   public defaultPassiveWidth = 1
   public defaultPassiveHeight = 0.2

@@ -75,13 +75,15 @@ export const getGridFromCircuit = (
       const isBottomBorder = r === 0
       const isTopBorder = r === height - 1
 
+      const midWidth = chipWidth * opts.gridScaleX!
+
       if (isBottomBorder) {
         mid0 = "└"
-        mid1 = "─".repeat(chipWidth - 2) // TODO: Add bottom pins display if any
+        mid1 = "─".repeat(midWidth) // TODO: Add bottom pins display if any
         mid2 = "┘"
       } else if (isTopBorder) {
         mid0 = "┌"
-        mid1 = "─".repeat(chipWidth - 2) // TODO: Add top pins display if any
+        mid1 = "─".repeat(midWidth) // TODO: Add top pins display if any
         mid2 = "┐"
       } else {
         // Pin rows - check if any pins are at this grid row
@@ -114,18 +116,17 @@ export const getGridFromCircuit = (
 
         const lpStr = leftPinData ? String(leftPinData.pinNumber) : null
         const rpStr = rightPinData ? String(rightPinData.pinNumber) : null
-        const midWidth = chipWidth - 2
 
         if (lpStr && rpStr) {
           // Place left pin at start, right pin at end, spaces in between
           const spacesNeeded = midWidth - lpStr.length - rpStr.length
           mid1 = lpStr + " ".repeat(Math.max(1, spacesNeeded)) + rpStr
         } else if (lpStr) {
-          mid1 = lpStr + " ".repeat(midWidth - lpStr.length)
+          mid1 = lpStr + " ".repeat(Math.max(0, midWidth - lpStr.length))
         } else if (rpStr) {
-          mid1 = " ".repeat(midWidth - rpStr.length) + rpStr
+          mid1 = " ".repeat(Math.max(0, midWidth - rpStr.length)) + rpStr
         } else {
-          mid1 = " ".repeat(midWidth)
+          mid1 = " ".repeat(Math.max(0, midWidth))
         }
       }
       // Compose row string for the variable-width chip body
