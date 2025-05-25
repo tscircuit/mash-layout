@@ -3,7 +3,6 @@ import template4 from "../templates/template4"
 
 test("template4", () => {
   const C = template4()
-  console.table(C.lines.map((l) => l.start))
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0   

@@ -12,7 +12,7 @@ import { circuit } from "lib/builder"
 export default () => {
   const C = circuit()
   const U1 = C.chip().leftpins(2).rightpins(2).at(0, 0)
-  const U2 = C.chip().leftpins(1).rightpins(1).at(10, 1)
+  const U2 = C.chip().leftpins(1).rightpins(1).at(10, 0.2)
 
   U1.pin(4).line(3, 0).mark("bus")
   U2.pin(1).line(-3, 0).connect()
