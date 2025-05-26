@@ -34,7 +34,9 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
 
   _step() {
     // Normalize both netlists for comparison
-    const candidateNetlist = normalizeNetlist(this.template.getNetlist()).normalizedNetlist
+    const candidateNetlist = normalizeNetlist(
+      this.template.getNetlist(),
+    ).normalizedNetlist
     const targetNetlist = normalizeNetlist(this.inputNetlist).normalizedNetlist
 
     // Find matching issues between the candidate and target
@@ -44,7 +46,17 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
     })
 
     // Compute similarity distance from the issues
-    this.outputSimilarityDistance = computeSimilarityDistanceFromIssues(this.outputIssues)
+    this.outputSimilarityDistance = computeSimilarityDistanceFromIssues(
+      this.outputIssues,
+    )
+
+    // Store stats
+    this.stats = {
+      similarityDistance: this.outputSimilarityDistance,
+      issueCount: this.outputIssues.length,
+      templateBoxCount: candidateNetlist.boxes?.length || 0,
+      templateConnectionCount: candidateNetlist.connections?.length || 0,
+    }
 
     this.solved = true
   }
@@ -52,7 +64,7 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
   visualize() {
     // Get template netlist for basic stats
     const templateNetlist = this.template.getNetlist()
-    
+
     // Create a simple ASCII representation of the template
     const ascii = `Template Netlist: ${templateNetlist.boxes?.length || 0} boxes, ${templateNetlist.connections?.length || 0} connections`
 
@@ -63,11 +75,11 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
         table: this.outputIssues.map((issue, index) => ({
           issue_index: index,
           type: issue.type,
-          candidate_box: 'candidateBoxIndex' in issue ? issue.candidateBoxIndex : 'N/A',
-          target_box: 'targetBoxIndex' in issue ? issue.targetBoxIndex : 'N/A',
-          similarity_distance: this.outputSimilarityDistance,
-        }))
-      }
+          candidate_box:
+            "candidateBoxIndex" in issue ? issue.candidateBoxIndex : "N/A",
+          target_box: "targetBoxIndex" in issue ? issue.targetBoxIndex : "N/A",
+        })),
+      },
     ]
   }
 }

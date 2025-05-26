@@ -1,7 +1,7 @@
 import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
 import type { CircuitBuilder } from "lib/builder"
-import { TEMPLATE_FNS, TEMPLATE_FN_MAP } from "templates/index"
+import { TEMPLATE_FNS } from "templates/index"
 import { ScoreNetlistTemplatePairSolver } from "./ScoreNetlistTemplatePairSolver"
 import type { MatchingIssue } from "lib/matching/types"
 
@@ -13,7 +13,7 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
 
   templates: Array<CircuitBuilder>
   scoringSolvers: Array<ScoreNetlistTemplatePairSolver> = []
-  currentScoringIndex: number = 0
+  currentScoringIndex = 0
 
   outputBestMatchTemplate: CircuitBuilder | null = null
 
@@ -29,13 +29,14 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
     super()
     this.inputNetlist = opts.inputNetlist
     this.templates = TEMPLATE_FNS.map((fn) => fn())
-    
+
     // Create scoring solvers for each template
-    this.scoringSolvers = this.templates.map(template => 
-      new ScoreNetlistTemplatePairSolver({
-        inputNetlist: this.inputNetlist,
-        template
-      })
+    this.scoringSolvers = this.templates.map(
+      (template) =>
+        new ScoreNetlistTemplatePairSolver({
+          inputNetlist: this.inputNetlist,
+          template,
+        }),
     )
   }
 
@@ -54,13 +55,13 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
     // If we haven't finished scoring all templates, continue scoring
     if (this.currentScoringIndex < this.scoringSolvers.length) {
       const currentSolver = this.scoringSolvers[this.currentScoringIndex]!
-      
+
       if (!currentSolver.solved && !currentSolver.failed) {
         this.setActiveSubSolver(currentSolver)
         currentSolver.step()
         return
       }
-      
+
       // Current solver is done, move to next
       this.clearActiveSubSolver()
       this.currentScoringIndex++
@@ -68,10 +69,10 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
     }
 
     // All scoring is complete, find the best match
-    this.templateMatchResults = this.scoringSolvers.map(solver => ({
+    this.templateMatchResults = this.scoringSolvers.map((solver) => ({
       template: solver.template,
       issues: solver.outputIssues,
-      similarityDistance: solver.outputSimilarityDistance
+      similarityDistance: solver.outputSimilarityDistance,
     }))
 
     if (this.templateMatchResults.length === 0) {
@@ -83,7 +84,10 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
     // Find the template with the lowest similarity distance
     let bestMatch = this.templateMatchResults[0]!
     for (let i = 1; i < this.templateMatchResults.length; i++) {
-      if (this.templateMatchResults[i]!.similarityDistance < bestMatch.similarityDistance) {
+      if (
+        this.templateMatchResults[i]!.similarityDistance <
+        bestMatch.similarityDistance
+      ) {
         bestMatch = this.templateMatchResults[i]!
       }
     }

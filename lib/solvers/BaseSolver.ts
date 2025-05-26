@@ -11,7 +11,7 @@ export class BaseSolver {
   usedSubSolvers: Array<BaseSolver> = []
   failedSubSolvers?: BaseSolver[]
   timeToSolve?: number
-  stats: Record<string, any> = {}
+  stats: any = {}
 
   /** DO NOT OVERRIDE! Override _step() instead */
   step() {

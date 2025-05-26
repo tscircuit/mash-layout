@@ -95,7 +95,9 @@ export const PipelineDebugger = (props: {
       <div className="flex-1 p-5 overflow-auto">
         {selectedSolver ? (
           <div>
-            <h2 className="text-2xl font-bold mb-4">{selectedSolver.constructor.name}</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {selectedSolver.constructor.name}
+            </h2>
             <div className="bg-gray-50 p-4 rounded mb-5">
               <p className="my-1">
                 <strong>Solved:</strong> {selectedSolver.solved ? "Yes" : "No"}
@@ -122,11 +124,51 @@ export const PipelineDebugger = (props: {
                 </p>
               )}
             </div>
+            {selectedSolver.stats &&
+              Object.keys(selectedSolver.stats).length > 0 && (
+                <div className="bg-gray-50 p-4 rounded mb-5">
+                  <h3 className="text-lg font-semibold mb-3">Stats</h3>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full border border-gray-300 text-sm">
+                      <thead className="bg-gray-100">
+                        <tr>
+                          <th className="border border-gray-300 px-3 py-2 text-left font-medium text-gray-700">
+                            Stat
+                          </th>
+                          <th className="border border-gray-300 px-3 py-2 text-left font-medium text-gray-700">
+                            Value
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.entries(selectedSolver.stats).map(
+                          ([key, value]) => (
+                            <tr key={key} className="hover:bg-gray-50">
+                              <td className="border border-gray-300 px-3 py-2 font-medium">
+                                {key
+                                  .replace(/([A-Z])/g, " $1")
+                                  .replace(/^./, (str) => str.toUpperCase())}
+                              </td>
+                              <td className="border border-gray-300 px-3 py-2">
+                                {typeof value === "number"
+                                  ? value.toLocaleString()
+                                  : String(value)}
+                              </td>
+                            </tr>
+                          ),
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
             <PipelineDebuggerSolverVisualizations solver={selectedSolver} />
           </div>
         ) : currentSolver ? (
           <div className="text-gray-600 italic text-center py-10">
-            <h2 className="text-xl mb-2">Select a solver stage from the sidebar to inspect its state</h2>
+            <h2 className="text-xl mb-2">
+              Select a solver stage from the sidebar to inspect its state
+            </h2>
             <p>
               Available stages: {currentSolver.constructor.name} and its
               sub-solvers
