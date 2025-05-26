@@ -11,22 +11,21 @@ export const SidebarTreeNode = (props: {
   const isSelected = props.selectedSolver === props.solver
 
   return (
-    <div style={{ marginLeft: `${depth * 20}px` }}>
+    <div style={{ marginLeft: `${depth * 4}px` }}>
       <button
         type="button"
         onClick={() => props.onSolverSelect(props.solver)}
         className={`
           w-full text-left cursor-pointer p-2 rounded border-2 my-0.5
           transition-colors duration-150
-          ${isSelected 
-            ? 'bg-blue-50 border-blue-500 font-bold' 
-            : 'bg-transparent border-transparent hover:bg-gray-50'
+          ${
+            isSelected
+              ? "bg-blue-50 border-blue-500"
+              : "bg-transparent border-transparent hover:bg-gray-50"
           }
         `}
       >
-        <div className={isSelected ? "font-bold" : "font-normal"}>
-          {props.solver.constructor.name}
-        </div>
+        <div>{props.solver.constructor.name}</div>
         <div className="text-xs text-gray-600 mt-0.5">
           {props.solver.solved ? "✅" : props.solver.failed ? "❌" : "⏳"}{" "}
           Iterations: {props.solver.iterations}
@@ -60,9 +59,7 @@ export const PipelineDebuggerSidebar = (props: {
 }) => {
   return (
     <div>
-      <h3 className="mb-4 px-2 font-semibold text-gray-800">
-        Pipeline Stages
-      </h3>
+      <h3 className="mb-4 px-2 font-semibold text-gray-800">Pipeline Stages</h3>
       <SidebarTreeNode
         solver={props.solver}
         onSolverSelect={props.onSolverSelect}
