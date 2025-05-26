@@ -26,6 +26,7 @@
     "bun-match-svg": "^0.0.11",
     "circuit-to-svg": "^0.0.128",
     "debug": "^4.4.1",
+    "graphics-debug": "^0.0.46",
     "parse5": "^7.3.0",
     "react-cosmos": "7.0.0-beta.4",
     "react-cosmos-plugin-vite": "7.0.0-beta.0",

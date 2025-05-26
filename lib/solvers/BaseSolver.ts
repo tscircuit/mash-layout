@@ -1,3 +1,5 @@
+import { GraphicsObject } from "graphics-debug"
+
 export class BaseSolver {
   MAX_ITERATIONS = 1000
   solved = false
@@ -6,6 +8,7 @@ export class BaseSolver {
   progress = 0
   error: string | null = null
   activeSubSolver?: BaseSolver | null
+  usedSubSolvers: Array<BaseSolver> = []
   failedSubSolvers?: BaseSolver[]
   timeToSolve?: number
   stats: Record<string, any> = {}
@@ -38,6 +41,43 @@ export class BaseSolver {
 
   getConstructorParams() {
     throw new Error("getConstructorParams not implemented")
+  }
+
+  setActiveSubSolver(subSolver: BaseSolver | null) {
+    this.activeSubSolver = subSolver
+    if (subSolver) {
+      this.usedSubSolvers.push(subSolver)
+    }
+  }
+
+  // Returns a GD representation of the current state
+  visualizeCurrentStateGD(): GraphicsObject | null {
+    return null
+  }
+
+  // Returns an ASCII representation of the current state
+  visualizeCurrentStateAscii(): string | null {
+    return null
+  }
+
+  // Returns a GD representation of the input
+  visualizeInputGD(): GraphicsObject | null {
+    return null
+  }
+
+  // Returns a GD representation of the output
+  visualizeOutputGD(): GraphicsObject | null {
+    return null
+  }
+
+  // Returns an ASCII representation of the input
+  visualizeInputAscii(): string | null {
+    return null
+  }
+
+  // Returns an ASCII representation of the output
+  visualizeOutputAscii(): string | null {
+    return null
   }
 
   solve() {
