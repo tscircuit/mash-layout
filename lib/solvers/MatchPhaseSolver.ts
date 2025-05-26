@@ -7,7 +7,6 @@ import type { CircuitBuilder } from "lib/builder"
  * For each input netlist, find the best match template.
  */
 export class MatchPhaseSolver extends BaseSolver {
-  activeSubSolver?: SingleMatchSolver | null = null
   inputNetlists: InputNetlist[]
   currentInputNetlistIndex = 0
 
@@ -15,6 +14,10 @@ export class MatchPhaseSolver extends BaseSolver {
     template: CircuitBuilder
     netlist: InputNetlist
   }> = []
+
+  get activeSubSolver() {
+    return this._activeSubSolver as SingleMatchSolver | null
+  }
 
   constructor(opts: {
     inputNetlists: InputNetlist[]
@@ -34,10 +37,12 @@ export class MatchPhaseSolver extends BaseSolver {
 
         this.currentInputNetlistIndex++
         this.clearActiveSubSolver()
+        return
       } else {
         return
       }
     }
+
     if (this.currentInputNetlistIndex >= this.inputNetlists.length) {
       this.solved = true
       return

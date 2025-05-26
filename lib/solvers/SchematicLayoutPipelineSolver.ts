@@ -77,6 +77,10 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
     }
 
     if (this.activeSubSolver) {
+      console.log(
+        "stepping active subsolver",
+        this.activeSubSolver.constructor.name,
+      )
       this.activeSubSolver.step()
       if (this.activeSubSolver.solved) {
         this.endTimeOfPhase[pipelineStepDef.solverName] = performance.now()
@@ -86,17 +90,23 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
         pipelineStepDef.onSolved?.(this)
         this.clearActiveSubSolver()
         this.currentPipelineStepIndex++
-      } else if (this.activeSubSolver.failed) {
+        return
+      }
+      if (this.activeSubSolver.failed) {
         this.error = this.activeSubSolver?.error
         this.failed = true
         this.clearActiveSubSolver()
+        return
       }
       return
     }
 
     const constructorParams = pipelineStepDef.getConstructorParams(this)
     // @ts-ignore
-    this.activeSubSolver = new pipelineStepDef.solverClass(...constructorParams)
+    this.setActiveSubSolver(
+      // @ts-ignore
+      new pipelineStepDef.solverClass(...constructorParams),
+    )
     ;(this as any)[pipelineStepDef.solverName] = this.activeSubSolver
     this.timeSpentOnPhase[pipelineStepDef.solverName] = 0
     this.startTimeOfPhase[pipelineStepDef.solverName] = performance.now()
