@@ -5,6 +5,8 @@ import { buildEncounterMapFromNetlist } from "./buildEncounterMapFromNetlist"
 export interface NormalizationTransform {
   boxIdToBoxIndex: Record<string, number>
   netIdToNetIndex: Record<string, number>
+  boxIndexToBoxId: Record<number, string>
+  netIndexToNetId: Record<number, string>
 }
 
 /**
@@ -21,6 +23,8 @@ export const normalizeNetlist = (
   const transform: NormalizationTransform = {
     boxIdToBoxIndex: {},
     netIdToNetIndex: {},
+    boxIndexToBoxId: {},
+    netIndexToNetId: {},
   }
 
   /* ---------- box ordering via DFS ---------- */
@@ -36,6 +40,7 @@ export const normalizeNetlist = (
   // ───────── populate transforms ─────────
   finalSortedBoxIds.forEach((id, idx) => {
     transform.boxIdToBoxIndex[id] = idx
+    transform.boxIndexToBoxId[idx] = id
   })
 
   const normalizedBoxes: NormalizedNetlist["boxes"] = finalSortedBoxIds.map(
@@ -55,9 +60,10 @@ export const normalizeNetlist = (
   const finalSortedNetIds = netlist.nets
     .map((n) => n.netId)
     .sort((a, b) => encounterMap[a]! - encounterMap[b]!)
-  finalSortedNetIds.forEach(
-    (nid, idx) => (transform.netIdToNetIndex[nid] = idx),
-  )
+  finalSortedNetIds.forEach((nid, idx) => {
+    transform.netIdToNetIndex[nid] = idx
+    transform.netIndexToNetId[idx] = nid
+  })
 
   const normalizedNets: NormalizedNetlist["nets"] = finalSortedNetIds.map(
     (nid) => ({

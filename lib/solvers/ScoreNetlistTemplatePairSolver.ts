@@ -7,8 +7,7 @@ import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import type { MatchingIssue } from "lib/matching/types"
 import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
-import type { Box } from "lib/input-types"
-import { transformTargetForPassiveCompatibility } from "lib/adapt/transformTargetForPassiveCompatibility"
+import { rotateInputBox } from "lib/matching/matching-utils/rotateInputBox"
 
 /**
  * Scores a single netlist-template pair, computing issues and similarity distance
@@ -48,39 +47,68 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
   _step() {
     const templateNetlist = this.template.getNetlist()
 
-    const inputNetlist = transformTargetForPassiveCompatibility(
-      this.template,
+    // First, normalize both netlists to get initial matching
+    const candidateResult = normalizeNetlist(templateNetlist)
+    const initialTargetResult = normalizeNetlist(
       structuredClone(this.inputNetlist),
     )
-    this.inputNetlistPassiveCompatible = inputNetlist
-
-    // Normalize both netlists for comparison
-    const candidateResult = normalizeNetlist(templateNetlist)
-    const targetResult = normalizeNetlist(inputNetlist)
 
     const candidateNetlist = candidateResult.normalizedNetlist
-    const targetNetlist = targetResult.normalizedNetlist
+    const initialTargetNetlist = initialTargetResult.normalizedNetlist
+
+    // Get matched boxes with rotation metadata
+    this.matchedBoxes = getMatchedBoxes({
+      candidateNetlist,
+      targetNetlist: initialTargetNetlist,
+    })
+
+    // Note: We apply rotations directly to the input netlist instead of using the normalized version
+
+    // Convert the rotated normalized netlist back to InputNetlist format
+    // We need to reconstruct the InputNetlist with proper rotations applied
+    const inputNetlistWithRotations = structuredClone(this.inputNetlist)
+
+    // Apply rotations to the input netlist boxes based on matched box rotations
+    for (const matchedBox of this.matchedBoxes) {
+      if (matchedBox.targetBoxRotationCcw === 0) continue
+      console.log({ matchedBox })
+      // Find the box ID corresponding to this target box index
+      const targetBoxId =
+        initialTargetResult.transform.boxIndexToBoxId[matchedBox.targetBoxIndex]
+      if (targetBoxId) {
+        const targetBoxInOriginal = inputNetlistWithRotations.boxes.find(
+          (box) => box.boxId === targetBoxId,
+        )
+        if (!targetBoxInOriginal) continue
+        // Apply rotation to the original input netlist box
+        const rotatedBox = rotateInputBox(
+          targetBoxInOriginal,
+          matchedBox.targetBoxRotationCcw,
+        )
+        Object.assign(targetBoxInOriginal, rotatedBox)
+      }
+    }
+
+    this.inputNetlistPassiveCompatible = inputNetlistWithRotations
+
+    // Re-normalize the rotated target netlist for final scoring
+    const finalTargetResult = normalizeNetlist(inputNetlistWithRotations)
+    const finalTargetNetlist = finalTargetResult.normalizedNetlist
 
     // Store transform data for visualization
     this.candidateTransform = candidateResult.transform
-    this.targetTransform = targetResult.transform
+    this.targetTransform = finalTargetResult.transform
 
-    // Find matching issues between the candidate and target
+    // Find matching issues between the candidate and final rotated target
     this.outputIssues = getMatchingIssues({
       candidateNetlist,
-      targetNetlist,
+      targetNetlist: finalTargetNetlist,
     })
 
     // Compute similarity distance from the issues
     this.outputSimilarityDistance = computeSimilarityDistanceFromIssues(
       this.outputIssues,
     )
-
-    // Get matched boxes for visualization
-    this.matchedBoxes = getMatchedBoxes({
-      candidateNetlist,
-      targetNetlist,
-    })
 
     // Store stats
     this.stats = {

@@ -3,11 +3,13 @@ import type { MatchingIssue } from "./types"
 import { computeSimilarityDistanceFromIssues } from "./computeSimilarityDistanceFromIssues"
 import { getIssuesForMatchedBoxes } from "./getIssuesForMatchedBoxes"
 import { findAllMissingConnectionBetweenBoxes } from "./matched-box-issue-finders/findAllMissingConnectionBetweenBoxes"
+import { getNetlistVariationWithPassiveRotation } from "./getNetlistVariationWithPassiveRotation"
 
 export interface MatchedBox {
   targetBoxIndex: number
   candidateBoxIndex: number
   issues: MatchingIssue[]
+  targetBoxRotationCcw: 0 | 90 | 180 | 270
   score: number
 }
 
@@ -29,7 +31,11 @@ export function getMatchedBoxes(params: {
   ) {
     const pairingResult: Map<
       { targetBoxIndex: number; candidateBoxIndex: number },
-      { issues: MatchingIssue[]; similarityDistance: number }
+      {
+        issues: MatchingIssue[]
+        similarityDistance: number
+        rotation: 0 | 90 | 180 | 270
+      }
     > = new Map()
 
     for (
@@ -41,29 +47,56 @@ export function getMatchedBoxes(params: {
         continue
       }
 
-      const issues = getIssuesForMatchedBoxes({
-        candidateNetlist,
+      // Get variations for passive rotation
+      const targetNetlistVariations = getNetlistVariationWithPassiveRotation({
         targetNetlist,
-        candidateBoxIndex,
+        candidateNetlist,
         targetBoxIndex,
+        candidateBoxIndex,
       })
 
-      // Check for missing connections between this candidate box and already matched boxes
-      const connectionIssues = findAllMissingConnectionBetweenBoxes({
-        candidateNetlist,
-        targetNetlist,
-        candidateBoxIndex,
-        targetBoxIndex,
-        matchedBoxes,
-      })
+      let bestVariationIssues: MatchingIssue[] = []
+      let bestVariationScore = Infinity
+      let bestRotation: 0 | 90 | 180 | 270 = 0
 
-      issues.push(...connectionIssues)
+      // Test each variation (including no rotation)
+      targetNetlistVariations.forEach((variationNetlist, variationIndex) => {
+        const issues = getIssuesForMatchedBoxes({
+          candidateNetlist,
+          targetNetlist: variationNetlist,
+          candidateBoxIndex,
+          targetBoxIndex,
+        })
+
+        // Check for missing connections between this candidate box and already matched boxes
+        const connectionIssues = findAllMissingConnectionBetweenBoxes({
+          candidateNetlist,
+          targetNetlist: variationNetlist,
+          candidateBoxIndex,
+          targetBoxIndex,
+          matchedBoxes,
+        })
+
+        issues.push(...connectionIssues)
+
+        const score = computeSimilarityDistanceFromIssues(issues)
+
+        if (score < bestVariationScore) {
+          bestVariationScore = score
+          bestVariationIssues = issues
+          // Map variation index to rotation degrees
+          // Variation 0: no rotation (0°)
+          // Variation 1: flipped (180°) - for passive components
+          bestRotation = variationIndex === 1 ? 180 : 0
+        }
+      })
 
       pairingResult.set(
         { targetBoxIndex, candidateBoxIndex },
         {
-          issues,
-          similarityDistance: computeSimilarityDistanceFromIssues(issues),
+          issues: bestVariationIssues,
+          similarityDistance: bestVariationScore,
+          rotation: bestRotation,
         },
       )
     }
@@ -88,8 +121,11 @@ export function getMatchedBoxes(params: {
     // If we found a valid pairing, mark the candidate box as used and add to matched boxes
     if (bestPairing) {
       const { candidateBoxIndex } = bestPairing
-      const { issues, similarityDistance: score } =
-        pairingResult.get(bestPairing)!
+      const {
+        issues,
+        similarityDistance: score,
+        rotation,
+      } = pairingResult.get(bestPairing)!
 
       // Mark the candidate box as used
       usedCandidateBoxes.add(candidateBoxIndex)
@@ -100,6 +136,7 @@ export function getMatchedBoxes(params: {
         candidateBoxIndex,
         issues,
         score,
+        targetBoxRotationCcw: rotation,
       })
     }
   }

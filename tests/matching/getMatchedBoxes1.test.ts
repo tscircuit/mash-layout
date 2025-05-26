@@ -150,12 +150,14 @@ test("getMatchedBoxes should correctly match boxes between two netlists", () => 
         "issues": [],
         "score": 0,
         "targetBoxIndex": 0,
+        "targetBoxRotationCcw": 0,
       },
       {
         "candidateBoxIndex": 1,
         "issues": [],
         "score": 0,
         "targetBoxIndex": 1,
+        "targetBoxRotationCcw": 0,
       },
     ]
   `)

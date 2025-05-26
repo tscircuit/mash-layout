@@ -67,6 +67,7 @@ test("getMatchedBoxes with an extra unmatched candidate box", () => {
         "issues": [],
         "score": 0,
         "targetBoxIndex": 0,
+        "targetBoxRotationCcw": 0,
       },
     ]
   `)
