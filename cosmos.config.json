@@ -3,7 +3,5 @@
   "plugins": ["react-cosmos-plugin-vite"],
   "fixtureFileSuffix": "page",
   "exportPath": "dist",
-  "vite": {
-    "mainScriptUrl": "/website/main.tsx"
-  }
+  "globalImports": ["./website/decorators/tailwind.tsx"]
 }

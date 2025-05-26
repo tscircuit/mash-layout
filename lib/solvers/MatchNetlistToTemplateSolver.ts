@@ -8,7 +8,7 @@ import type { MatchingIssue } from "lib/matching/types"
 /**
  * Find the best match template for a netlist
  */
-export class SingleMatchSolver extends BaseSolver {
+export class MatchNetlistToTemplateSolver extends BaseSolver {
   inputNetlist: InputNetlist
 
   templates: Array<CircuitBuilder>

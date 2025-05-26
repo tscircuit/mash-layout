@@ -1,6 +1,6 @@
 import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
-import { SingleMatchSolver } from "./SingleMatchSolver"
+import { MatchNetlistToTemplateSolver } from "./MatchNetlistToTemplateSolver"
 import type { CircuitBuilder } from "lib/builder"
 
 /**
@@ -16,7 +16,7 @@ export class MatchPhaseSolver extends BaseSolver {
   }> = []
 
   get activeSubSolver() {
-    return this._activeSubSolver as SingleMatchSolver | null
+    return this._activeSubSolver as MatchNetlistToTemplateSolver | null
   }
 
   constructor(opts: {
@@ -49,7 +49,7 @@ export class MatchPhaseSolver extends BaseSolver {
     }
 
     this.setActiveSubSolver(
-      new SingleMatchSolver({
+      new MatchNetlistToTemplateSolver({
         inputNetlist: this.inputNetlists[this.currentInputNetlistIndex]!,
       }),
     )
