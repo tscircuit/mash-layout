@@ -28,9 +28,7 @@ export const SidebarTreeNode = (props: {
         <div>{props.solver.constructor.name}</div>
         <div className="text-xs text-gray-600 mt-0.5">
           {props.solver.solved ? "✅" : props.solver.failed ? "❌" : "⏳"}{" "}
-          Iterations: {props.solver.iterations}
-          {props.solver.progress > 0 &&
-            ` (${(props.solver.progress * 100).toFixed(0)}%)`}
+          {props.solver.getStatsSummary()}
         </div>
       </button>
       <div>

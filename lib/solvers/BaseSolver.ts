@@ -39,6 +39,10 @@ export class BaseSolver {
 
   _step() {}
 
+  getStatsSummary() {
+    return `${this.iterations} iterations`
+  }
+
   get activeSubSolver() {
     return this._activeSubSolver
   }

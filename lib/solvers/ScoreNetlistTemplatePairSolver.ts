@@ -8,6 +8,7 @@ import type { MatchingIssue } from "lib/matching/types"
 import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import type { Box } from "lib/input-types"
+import { transformTargetForPassiveCompatibility } from "lib/adapt/transformTargetForPassiveCompatibility"
 
 /**
  * Scores a single netlist-template pair, computing issues and similarity distance
@@ -15,6 +16,8 @@ import type { Box } from "lib/input-types"
 export class ScoreNetlistTemplatePairSolver extends BaseSolver {
   inputNetlist: InputNetlist
   template: CircuitBuilder
+
+  inputNetlistPassiveCompatible: InputNetlist | null = null
 
   outputIssues: Array<MatchingIssue> = []
   outputSimilarityDistance: number = Infinity
@@ -38,10 +41,22 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
     }
   }
 
+  getStatsSummary() {
+    return `${this.stats.similarityDistance.toFixed(1)} SD ・ ${this.stats.issueCount} issues`
+  }
+
   _step() {
+    const templateNetlist = this.template.getNetlist()
+
+    const inputNetlist = transformTargetForPassiveCompatibility(
+      this.template,
+      structuredClone(this.inputNetlist),
+    )
+    this.inputNetlistPassiveCompatible = inputNetlist
+
     // Normalize both netlists for comparison
-    const candidateResult = normalizeNetlist(this.template.getNetlist())
-    const targetResult = normalizeNetlist(this.inputNetlist)
+    const candidateResult = normalizeNetlist(templateNetlist)
+    const targetResult = normalizeNetlist(inputNetlist)
 
     const candidateNetlist = candidateResult.normalizedNetlist
     const targetNetlist = targetResult.normalizedNetlist
@@ -99,7 +114,9 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
     isTemplate: boolean,
     maxWidth = 45,
   ): string[] {
-    const netlist = isTemplate ? this.template.getNetlist() : this.inputNetlist
+    const netlist = isTemplate
+      ? this.template.getNetlist()
+      : this.inputNetlistPassiveCompatible!
     const transform = isTemplate
       ? this.candidateTransform
       : this.targetTransform
@@ -285,6 +302,10 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
         title: "inputTargetReadableNetlist",
         ascii: getReadableNetlist(this.inputNetlist),
       },
-    ]
+      this.inputNetlistPassiveCompatible && {
+        title: "inputTargetReadableNetlistPassiveCompatible",
+        ascii: getReadableNetlist(this.inputNetlistPassiveCompatible!),
+      },
+    ].filter(Boolean)
   }
 }
