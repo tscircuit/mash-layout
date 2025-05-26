@@ -9,10 +9,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "lib": resolve(import.meta.dirname, "lib"),
-      "templates": resolve(import.meta.dirname, "templates"),
-      "tests": resolve(import.meta.dirname, "tests"),
-      "website": resolve(import.meta.dirname, "website"),
+      lib: resolve(import.meta.dirname, "lib"),
+      templates: resolve(import.meta.dirname, "templates"),
+      tests: resolve(import.meta.dirname, "tests"),
+      website: resolve(import.meta.dirname, "website"),
     },
-  }
+  },
 })

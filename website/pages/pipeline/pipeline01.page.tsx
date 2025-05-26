@@ -39,6 +39,7 @@ export default () => (
             connections={{pin1: sel.net.V3_3, pin2: sel.net.GND}}
           />
         </board> 
+    )
       `}
   />
 )
