@@ -58,34 +58,12 @@ export class BaseSolver {
     }
   }
 
-  // Returns a GD representation of the current state
-  visualizeCurrentStateGD(): GraphicsObject | null {
-    return null
-  }
-
-  // Returns an ASCII representation of the current state
-  visualizeCurrentStateAscii(): string | null {
-    return null
-  }
-
-  // Returns a GD representation of the input
-  visualizeInputGD(): GraphicsObject | null {
-    return null
-  }
-
-  // Returns a GD representation of the output
-  visualizeOutputGD(): GraphicsObject | null {
-    return null
-  }
-
-  // Returns an ASCII representation of the input
-  visualizeInputAscii(): string | null {
-    return null
-  }
-
-  // Returns an ASCII representation of the output
-  visualizeOutputAscii(): string | null {
-    return null
+  visualize(): Array<{
+    title: string
+    graphicsObject?: GraphicsObject
+    ascii?: string
+  }> {
+    return []
   }
 
   solve() {
