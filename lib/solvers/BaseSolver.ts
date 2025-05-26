@@ -62,6 +62,7 @@ export class BaseSolver {
     title: string
     graphicsObject?: GraphicsObject
     ascii?: string
+    table?: any[]
   }> {
     return []
   }
