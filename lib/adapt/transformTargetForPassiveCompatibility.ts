@@ -24,6 +24,9 @@ export function transformTargetForPassiveCompatibility(
   const templatePassives = template.chips.filter((chip) => chip.isPassive)
 
   for (const templatePassive of templatePassives) {
+    // GARBAGE!!!! NEVER MATCH TEMPLATE AND TARGET BY CHIP ID!!!!!!
+    // The chip ids are totally arbitrary, you must use normalization or box
+    // matching!
     const targetBox = transformedTarget.boxes.find(
       (box) => box.boxId === templatePassive.chipId,
     )
