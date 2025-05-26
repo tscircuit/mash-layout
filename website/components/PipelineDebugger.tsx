@@ -60,14 +60,7 @@ export const PipelineDebugger = (props: {
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-        }}
-      >
+      <div className="flex items-center justify-center h-screen">
         <div>Loading pipeline...</div>
       </div>
     )
@@ -75,15 +68,8 @@ export const PipelineDebugger = (props: {
 
   if (error) {
     return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-        }}
-      >
-        <div style={{ color: "red", textAlign: "center" }}>
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-red-600 text-center">
           <h2>Pipeline Execution Error</h2>
           <p>{error}</p>
         </div>
@@ -92,14 +78,8 @@ export const PipelineDebugger = (props: {
   }
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      <div
-        style={{
-          width: "300px",
-          borderRight: "1px solid #ccc",
-          padding: "10px",
-        }}
-      >
+    <div className="flex h-screen">
+      <div className="w-80 border-r border-gray-300 p-2.5">
         {currentSolver ? (
           <PipelineDebuggerSidebar
             solver={currentSolver}
@@ -107,73 +87,56 @@ export const PipelineDebugger = (props: {
             selectedSolver={selectedSolver}
           />
         ) : (
-          <div style={{ padding: "10px", textAlign: "center", color: "#666" }}>
+          <div className="p-2.5 text-center text-gray-600">
             No solver available.
           </div>
         )}
       </div>
-      <div style={{ flex: 1, padding: "20px", overflow: "auto" }}>
+      <div className="flex-1 p-5 overflow-auto">
         {selectedSolver ? (
           <div>
-            <h2>{selectedSolver.constructor.name}</h2>
-            <div className="solver-stats">
-              <p>
+            <h2 className="text-2xl font-bold mb-4">{selectedSolver.constructor.name}</h2>
+            <div className="bg-gray-50 p-4 rounded mb-5">
+              <p className="my-1">
                 <strong>Solved:</strong> {selectedSolver.solved ? "Yes" : "No"}
               </p>
-              <p>
+              <p className="my-1">
                 <strong>Failed:</strong> {selectedSolver.failed ? "Yes" : "No"}
               </p>
-              <p>
+              <p className="my-1">
                 <strong>Iterations:</strong> {selectedSolver.iterations}
               </p>
-              <p>
+              <p className="my-1">
                 <strong>Progress:</strong>{" "}
                 {(selectedSolver.progress * 100).toFixed(1)}%
               </p>
               {selectedSolver.timeToSolve && (
-                <p>
+                <p className="my-1">
                   <strong>Time to Solve:</strong> {selectedSolver.timeToSolve}ms
                 </p>
               )}
               {selectedSolver.error && (
-                <p>
+                <p className="my-1">
                   <strong>Error:</strong>{" "}
-                  <span style={{ color: "red" }}>{selectedSolver.error}</span>
+                  <span className="text-red-600">{selectedSolver.error}</span>
                 </p>
               )}
             </div>
             <PipelineDebuggerSolverVisualizations solver={selectedSolver} />
           </div>
         ) : currentSolver ? (
-          <div className="no-selection">
-            <h2>Select a solver stage from the sidebar to inspect its state</h2>
+          <div className="text-gray-600 italic text-center py-10">
+            <h2 className="text-xl mb-2">Select a solver stage from the sidebar to inspect its state</h2>
             <p>
               Available stages: {currentSolver.constructor.name} and its
               sub-solvers
             </p>
           </div>
         ) : (
-          <div className="no-selection">
-            <h2>No pipeline data available</h2>
+          <div className="text-gray-600 italic text-center py-10">
+            <h2 className="text-xl">No pipeline data available</h2>
           </div>
         )}
-        <style jsx>{`
-          .solver-stats {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-          }
-          .solver-stats p {
-            margin: 5px 0;
-          }
-          .no-selection {
-            color: #666;
-            font-style: italic;
-            text-align: center;
-            padding: 40px;
-          }
-        `}</style>
       </div>
     </div>
   )

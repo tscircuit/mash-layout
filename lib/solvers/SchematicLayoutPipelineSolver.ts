@@ -84,12 +84,12 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
           this.endTimeOfPhase[pipelineStepDef.solverName]! -
           this.startTimeOfPhase[pipelineStepDef.solverName]!
         pipelineStepDef.onSolved?.(this)
-        this.activeSubSolver = null
+        this.clearActiveSubSolver()
         this.currentPipelineStepIndex++
       } else if (this.activeSubSolver.failed) {
         this.error = this.activeSubSolver?.error
         this.failed = true
-        this.activeSubSolver = null
+        this.clearActiveSubSolver()
       }
       return
     }

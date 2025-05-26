@@ -12,45 +12,28 @@ export const SidebarTreeNode = (props: {
 
   return (
     <div style={{ marginLeft: `${depth * 20}px` }}>
-      <div
+      <button
+        type="button"
         onClick={() => props.onSolverSelect(props.solver)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault()
-            props.onSolverSelect(props.solver)
+        className={`
+          w-full text-left cursor-pointer p-2 rounded border-2 my-0.5
+          transition-colors duration-150
+          ${isSelected 
+            ? 'bg-blue-50 border-blue-500 font-bold' 
+            : 'bg-transparent border-transparent hover:bg-gray-50'
           }
-        }}
-        tabIndex={0}
-        role="button"
-        style={{
-          cursor: "pointer",
-          padding: "8px",
-          backgroundColor: isSelected ? "#e3f2fd" : "transparent",
-          borderRadius: "4px",
-          border: isSelected ? "2px solid #2196f3" : "2px solid transparent",
-          margin: "2px 0",
-        }}
-        onMouseEnter={(e) => {
-          if (!isSelected) {
-            e.currentTarget.style.backgroundColor = "#f5f5f5"
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!isSelected) {
-            e.currentTarget.style.backgroundColor = "transparent"
-          }
-        }}
+        `}
       >
-        <div style={{ fontWeight: isSelected ? "bold" : "normal" }}>
+        <div className={isSelected ? "font-bold" : "font-normal"}>
           {props.solver.constructor.name}
         </div>
-        <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
+        <div className="text-xs text-gray-600 mt-0.5">
           {props.solver.solved ? "✅" : props.solver.failed ? "❌" : "⏳"}{" "}
           Iterations: {props.solver.iterations}
           {props.solver.progress > 0 &&
             ` (${(props.solver.progress * 100).toFixed(0)}%)`}
         </div>
-      </div>
+      </button>
       <div>
         {props.solver.usedSubSolvers.map((subSolver, i) => (
           <SidebarTreeNode
@@ -77,7 +60,7 @@ export const PipelineDebuggerSidebar = (props: {
 }) => {
   return (
     <div>
-      <h3 style={{ margin: "0 0 15px 0", padding: "0 8px" }}>
+      <h3 className="mb-4 px-2 font-semibold text-gray-800">
         Pipeline Stages
       </h3>
       <SidebarTreeNode

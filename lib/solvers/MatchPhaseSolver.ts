@@ -33,7 +33,7 @@ export class MatchPhaseSolver extends BaseSolver {
         })
 
         this.currentInputNetlistIndex++
-        this.activeSubSolver = null
+        this.clearActiveSubSolver()
       } else {
         return
       }
@@ -43,8 +43,10 @@ export class MatchPhaseSolver extends BaseSolver {
       return
     }
 
-    this.activeSubSolver = new SingleMatchSolver({
-      inputNetlist: this.inputNetlists[this.currentInputNetlistIndex]!,
-    })
+    this.setActiveSubSolver(
+      new SingleMatchSolver({
+        inputNetlist: this.inputNetlists[this.currentInputNetlistIndex]!,
+      }),
+    )
   }
 }

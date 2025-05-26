@@ -11,18 +11,20 @@ export const PipelineDebuggerSolverVisualizations = (props: {
 
   if (currentStateAscii) {
     visualizations.push(
-      <div key="current-ascii" className="visualization-section">
-        <h3>Current State (ASCII)</h3>
-        <pre className="ascii-viz">{currentStateAscii}</pre>
+      <div key="current-ascii" className="my-5 border border-gray-300 rounded p-4">
+        <h3 className="text-lg font-semibold mb-3">Current State (ASCII)</h3>
+        <pre className="bg-gray-50 p-2.5 font-mono text-xs overflow-x-auto whitespace-pre">
+          {currentStateAscii}
+        </pre>
       </div>,
     )
   }
 
   if (currentStateGD) {
     visualizations.push(
-      <div key="current-gd" className="visualization-section">
-        <h3>Current State (Graphics)</h3>
-        <div className="graphics-viz">
+      <div key="current-gd" className="my-5 border border-gray-300 rounded p-4">
+        <h3 className="text-lg font-semibold mb-3">Current State (Graphics)</h3>
+        <div className="bg-gray-50 p-2.5 font-mono text-xs max-h-96 overflow-auto">
           {JSON.stringify(currentStateGD, null, 2)}
         </div>
       </div>,
@@ -35,18 +37,22 @@ export const PipelineDebuggerSolverVisualizations = (props: {
 
   if (inputAscii) {
     visualizations.push(
-      <div key="input-ascii" className="visualization-section">
-        <h3>Input (ASCII)</h3>
-        <pre className="ascii-viz">{inputAscii}</pre>
+      <div key="input-ascii" className="my-5 border border-gray-300 rounded p-4">
+        <h3 className="text-lg font-semibold mb-3">Input (ASCII)</h3>
+        <pre className="bg-gray-50 p-2.5 font-mono text-xs overflow-x-auto whitespace-pre">
+          {inputAscii}
+        </pre>
       </div>,
     )
   }
 
   if (inputGD) {
     visualizations.push(
-      <div key="input-gd" className="visualization-section">
-        <h3>Input (Graphics)</h3>
-        <div className="graphics-viz">{JSON.stringify(inputGD, null, 2)}</div>
+      <div key="input-gd" className="my-5 border border-gray-300 rounded p-4">
+        <h3 className="text-lg font-semibold mb-3">Input (Graphics)</h3>
+        <div className="bg-gray-50 p-2.5 font-mono text-xs max-h-96 overflow-auto">
+          {JSON.stringify(inputGD, null, 2)}
+        </div>
       </div>,
     )
   }
@@ -57,61 +63,35 @@ export const PipelineDebuggerSolverVisualizations = (props: {
 
   if (outputAscii) {
     visualizations.push(
-      <div key="output-ascii" className="visualization-section">
-        <h3>Output (ASCII)</h3>
-        <pre className="ascii-viz">{outputAscii}</pre>
+      <div key="output-ascii" className="my-5 border border-gray-300 rounded p-4">
+        <h3 className="text-lg font-semibold mb-3">Output (ASCII)</h3>
+        <pre className="bg-gray-50 p-2.5 font-mono text-xs overflow-x-auto whitespace-pre">
+          {outputAscii}
+        </pre>
       </div>,
     )
   }
 
   if (outputGD) {
     visualizations.push(
-      <div key="output-gd" className="visualization-section">
-        <h3>Output (Graphics)</h3>
-        <div className="graphics-viz">{JSON.stringify(outputGD, null, 2)}</div>
+      <div key="output-gd" className="my-5 border border-gray-300 rounded p-4">
+        <h3 className="text-lg font-semibold mb-3">Output (Graphics)</h3>
+        <div className="bg-gray-50 p-2.5 font-mono text-xs max-h-96 overflow-auto">
+          {JSON.stringify(outputGD, null, 2)}
+        </div>
       </div>,
     )
   }
 
   return (
-    <div className="visualizations">
+    <div>
       {visualizations.length > 0 ? (
         visualizations
       ) : (
-        <div className="no-visualization">
+        <div className="text-gray-600 italic text-center py-10">
           No visualizations available for this solver
         </div>
       )}
-      <style jsx>{`
-        .visualization-section {
-          margin: 20px 0;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          padding: 15px;
-        }
-        .ascii-viz {
-          background: #f5f5f5;
-          padding: 10px;
-          font-family: monospace;
-          font-size: 12px;
-          overflow-x: auto;
-          white-space: pre;
-        }
-        .graphics-viz {
-          background: #f5f5f5;
-          padding: 10px;
-          font-family: monospace;
-          font-size: 11px;
-          max-height: 400px;
-          overflow: auto;
-        }
-        .no-visualization {
-          color: #666;
-          font-style: italic;
-          text-align: center;
-          padding: 40px;
-        }
-      `}</style>
     </div>
   )
 }

@@ -7,7 +7,7 @@ export class BaseSolver {
   iterations = 0
   progress = 0
   error: string | null = null
-  activeSubSolver?: BaseSolver | null
+  _activeSubSolver?: BaseSolver | null
   usedSubSolvers: Array<BaseSolver> = []
   failedSubSolvers?: BaseSolver[]
   timeToSolve?: number
@@ -39,12 +39,20 @@ export class BaseSolver {
 
   _step() {}
 
+  get activeSubSolver() {
+    return this._activeSubSolver
+  }
+
   getConstructorParams() {
     throw new Error("getConstructorParams not implemented")
   }
 
+  clearActiveSubSolver() {
+    this._activeSubSolver = null
+  }
+
   setActiveSubSolver(subSolver: BaseSolver | null) {
-    this.activeSubSolver = subSolver
+    this._activeSubSolver = subSolver
     if (subSolver) {
       this.usedSubSolvers.push(subSolver)
     }
