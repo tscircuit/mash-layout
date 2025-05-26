@@ -16,6 +16,8 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
 
   outputIssues: Array<MatchingIssue> = []
   outputSimilarityDistance: number = Infinity
+  candidateTransform: any = null
+  targetTransform: any = null
 
   constructor(opts: {
     inputNetlist: InputNetlist
@@ -35,10 +37,15 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
 
   _step() {
     // Normalize both netlists for comparison
-    const candidateNetlist = normalizeNetlist(
-      this.template.getNetlist(),
-    ).normalizedNetlist
-    const targetNetlist = normalizeNetlist(this.inputNetlist).normalizedNetlist
+    const candidateResult = normalizeNetlist(this.template.getNetlist())
+    const targetResult = normalizeNetlist(this.inputNetlist)
+
+    const candidateNetlist = candidateResult.normalizedNetlist
+    const targetNetlist = targetResult.normalizedNetlist
+
+    // Store transform data for visualization
+    this.candidateTransform = candidateResult.transform
+    this.targetTransform = targetResult.transform
 
     // Find matching issues between the candidate and target
     this.outputIssues = getMatchingIssues({
@@ -62,6 +69,22 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
     this.solved = true
   }
 
+  private getBoxNameFromIndex(boxIndex: number, isTemplate: boolean): string {
+    const netlist = isTemplate ? this.template.getNetlist() : this.inputNetlist
+    const transform = isTemplate
+      ? this.candidateTransform
+      : this.targetTransform
+
+    if (!transform) return boxIndex.toString()
+
+    // Find the boxId that maps to this boxIndex
+    const boxId = Object.keys(transform.boxIdToBoxIndex).find(
+      (id) => transform.boxIdToBoxIndex[id] === boxIndex,
+    )
+
+    return boxId ? `${boxIndex} (${boxId})` : boxIndex.toString()
+  }
+
   visualize() {
     return [
       {
@@ -71,8 +94,13 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
           issue_index: index,
           type: issue.type,
           candidate_box:
-            "candidateBoxIndex" in issue ? issue.candidateBoxIndex : "N/A",
-          target_box: "targetBoxIndex" in issue ? issue.targetBoxIndex : "N/A",
+            "candidateBoxIndex" in issue
+              ? this.getBoxNameFromIndex(issue.candidateBoxIndex, true)
+              : "N/A",
+          target_box:
+            "targetBoxIndex" in issue
+              ? this.getBoxNameFromIndex(issue.targetBoxIndex, false)
+              : "N/A",
         })),
       },
       {
