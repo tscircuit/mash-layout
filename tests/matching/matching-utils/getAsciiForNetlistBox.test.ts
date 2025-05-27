@@ -1,3 +1,4 @@
+import { test, expect } from "bun:test"
 import { getAsciiForNetlistBox } from "lib/matching/matching-utils/getAsciiForNetlistBox"
 import type { InputNetlist } from "lib/input-types"
 import type { NormalizationTransform } from "lib/scoring/normalizeNetlist"
@@ -14,6 +15,7 @@ test("getAsciiForNetlistBox - simple resistor with top and bottom pins", () => {
       },
     ],
     connections: [],
+    nets: [],
   }
 
   const transform: NormalizationTransform = {
@@ -24,13 +26,13 @@ test("getAsciiForNetlistBox - simple resistor with top and bottom pins", () => {
   }
 
   const result = getAsciiForNetlistBox(0, netlist, transform)
-  
+
   expect(result.join("\n")).toMatchInlineSnapshot(`
-    "    2
+    "          2
       ┌────────────────┐
       │       R1       │  
       └────────────────┘
-        1"
+               1"
   `)
 })
 
@@ -46,6 +48,7 @@ test("getAsciiForNetlistBox - component with left and right pins", () => {
       },
     ],
     connections: [],
+    nets: [],
   }
 
   const transform: NormalizationTransform = {
@@ -56,7 +59,7 @@ test("getAsciiForNetlistBox - component with left and right pins", () => {
   }
 
   const result = getAsciiForNetlistBox(0, netlist, transform)
-  
+
   expect(result.join("\n")).toMatchInlineSnapshot(`
     "  ┌────────────────┐
      1│       U1       │4 
@@ -77,6 +80,7 @@ test("getAsciiForNetlistBox - component with pins on all sides", () => {
       },
     ],
     connections: [],
+    nets: [],
   }
 
   const transform: NormalizationTransform = {
@@ -87,14 +91,14 @@ test("getAsciiForNetlistBox - component with pins on all sides", () => {
   }
 
   const result = getAsciiForNetlistBox(0, netlist, transform)
-  
+
   expect(result.join("\n")).toMatchInlineSnapshot(`
-    "    7 8
+    "         7 8
       ┌────────────────┐
      1│      MCU       │6 
      2│                │5 
       └────────────────┘
-        3 4"
+              3 4"
   `)
 })
 
@@ -110,6 +114,7 @@ test("getAsciiForNetlistBox - long boxId gets truncated", () => {
       },
     ],
     connections: [],
+    nets: [],
   }
 
   const transform: NormalizationTransform = {
@@ -120,7 +125,7 @@ test("getAsciiForNetlistBox - long boxId gets truncated", () => {
   }
 
   const result = getAsciiForNetlistBox(0, netlist, transform)
-  
+
   expect(result.join("\n")).toMatchInlineSnapshot(`
     "  ┌────────────────┐
      1│ VeryLongCompo… │2 
@@ -140,6 +145,7 @@ test("getAsciiForNetlistBox - error cases", () => {
       },
     ],
     connections: [],
+    nets: [],
   }
 
   // Missing transform
@@ -179,6 +185,7 @@ test("getAsciiForNetlistBox - custom maxWidth", () => {
       },
     ],
     connections: [],
+    nets: [],
   }
 
   const transform: NormalizationTransform = {
@@ -189,7 +196,7 @@ test("getAsciiForNetlistBox - custom maxWidth", () => {
   }
 
   const result = getAsciiForNetlistBox(0, netlist, transform, 20)
-  
+
   expect(result.join("\n")).toMatchInlineSnapshot(`
     "  ┌────────────────┐
      1│       R1       │2 

@@ -35,17 +35,20 @@ export function getAsciiForNetlistBox(
     displayBoxId = `${boxId.substring(0, BOX_INNER_WIDTH - 3)}…`
   }
 
-  // Top pins (properly aligned with box)
+  // Top pins (centered above the box)
   if (topPinCount > 0) {
     let pinsRow = ""
     for (let i = 0; i < topPinCount; i++) {
       const pinNum = leftPinCount + bottomPinCount + rightPinCount + i + 1
       pinsRow += pinNum.toString().padStart(2)
     }
-    // Align with the box borders including side padding
-    output.push(
-      `${" ".repeat(SIDE_PADDING_WIDTH + 1)}${pinsRow.substring(0, BOX_INNER_WIDTH)}`,
+    // Center the pins above the box
+    const pinsRowTrimmed = pinsRow.substring(0, BOX_INNER_WIDTH)
+    const centerPadding = Math.floor(
+      (BOX_INNER_WIDTH - pinsRowTrimmed.length) / 2 - 1,
     )
+    const centeredPinsRow = " ".repeat(centerPadding) + pinsRowTrimmed
+    output.push(`${" ".repeat(SIDE_PADDING_WIDTH + 1)}${centeredPinsRow}`)
   }
 
   // Box top border (aligned with side padding)
@@ -88,17 +91,20 @@ export function getAsciiForNetlistBox(
     `${" ".repeat(SIDE_PADDING_WIDTH)}└${"─".repeat(BOX_INNER_WIDTH)}┘`,
   )
 
-  // Bottom pins (properly aligned with box)
+  // Bottom pins (centered below the box)
   if (bottomPinCount > 0) {
     let pinsRow = ""
     for (let i = 0; i < bottomPinCount; i++) {
       const pinNum = leftPinCount + i + 1
       pinsRow += pinNum.toString().padStart(2)
     }
-    // Align with the box borders including side padding
-    output.push(
-      `${" ".repeat(SIDE_PADDING_WIDTH + 1)}${pinsRow.substring(0, BOX_INNER_WIDTH)}`,
+    // Center the pins below the box
+    const pinsRowTrimmed = pinsRow.substring(0, BOX_INNER_WIDTH)
+    const centerPadding = Math.floor(
+      (BOX_INNER_WIDTH - pinsRowTrimmed.length) / 2,
     )
+    const centeredPinsRow = " ".repeat(centerPadding) + pinsRowTrimmed
+    output.push(`${" ".repeat(SIDE_PADDING_WIDTH + 1)}${centeredPinsRow}`)
   }
 
   return output
