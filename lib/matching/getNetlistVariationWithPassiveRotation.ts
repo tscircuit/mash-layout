@@ -114,7 +114,10 @@ export function getNetlistVariationWithPassiveRotation(params: {
     return [{ netlist: targetNetlist, rotation: 0 }]
   }
 
-  const variations: Array<{ netlist: NormalizedNetlist; rotation: 0 | 90 | 180 | 270 }> = []
+  const variations: Array<{
+    netlist: NormalizedNetlist
+    rotation: 0 | 90 | 180 | 270
+  }> = []
 
   // Variation 1: Rotate target box until pin counts match candidate
   let rotatedBox: NormalizedNetlistBox = { ...targetBox }
