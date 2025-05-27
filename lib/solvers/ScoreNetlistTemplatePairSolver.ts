@@ -293,14 +293,15 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
         table: this.outputIssues.map((issue, index) => ({
           issue_index: index,
           type: issue.type,
-          candidate_box:
-            "candidateBoxIndex" in issue
-              ? this.getBoxNameFromIndex(issue.candidateBoxIndex, true)
-              : "N/A",
           target_box:
             "targetBoxIndex" in issue
               ? this.getBoxNameFromIndex(issue.targetBoxIndex, false)
               : "N/A",
+          candidate_box:
+            "candidateBoxIndex" in issue
+              ? this.getBoxNameFromIndex(issue.candidateBoxIndex, true)
+              : "N/A",
+          details: issue,
         })),
       },
       {

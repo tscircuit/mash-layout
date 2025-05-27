@@ -78,7 +78,18 @@ export const PipelineDebuggerSolverVisualizations = (props: {
                             key={`${key}-${String(value)}`}
                             className="border border-gray-300 px-2 py-1"
                           >
-                            {String(value)}
+                            {key.toLowerCase().includes("details") ? (
+                              <details className="cursor-pointer">
+                                <summary className="text-blue-600 hover:text-blue-800">
+                                  Show details
+                                </summary>
+                                <pre className="mt-2 bg-gray-100 p-2 rounded text-xs overflow-x-auto max-w-md">
+                                  {JSON.stringify(value, null, 2)}
+                                </pre>
+                              </details>
+                            ) : (
+                              String(value)
+                            )}
                           </td>
                         ))}
                       </tr>
