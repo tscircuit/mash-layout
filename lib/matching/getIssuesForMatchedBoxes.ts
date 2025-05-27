@@ -1,12 +1,12 @@
 import type { NormalizedNetlist } from "lib/scoring/types"
 import type { MatchingIssue } from "./types"
-import { findAllMatchedBoxMissingPinShape } from "lib/matching/matched-box-issue-finders/findAllMatchedBoxMissingPinShape"
 import { findAllSideHasWrongPinCount } from "lib/matching/matched-box-issue-finders/findAllSideHasWrongPinCount"
 import { findAllMatchedBoxPinShapeInWrongPosition } from "lib/matching/matched-box-issue-finders/findAllMatchedBoxPinShapeInWrongPosition"
+import { findAllMatchedBoxMissingPinShapeOnSide } from "./matched-box-issue-finders/findAllMatchedBoxMissingPinShapeOnSide"
 
 const MATCHED_BOX_ISSUE_FINDERS = [
   findAllSideHasWrongPinCount,
-  findAllMatchedBoxMissingPinShape,
+  findAllMatchedBoxMissingPinShapeOnSide,
   // findAllMatchedBoxPinShapeInWrongPosition,
 ] as const
 

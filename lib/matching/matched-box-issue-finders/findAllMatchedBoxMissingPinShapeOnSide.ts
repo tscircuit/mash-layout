@@ -6,7 +6,7 @@ import { getPinSubsetNetlist } from "lib/adapt/getPinSubsetNetlist"
 import { getPinSideIndex } from "lib/builder/getPinSideIndex"
 import type { Side } from "lib/input-types"
 
-export function findAllMatchedBoxMissingPinShape(params: {
+export function findAllMatchedBoxMissingPinShapeOnSide(params: {
   candidateNetlist: NormalizedNetlist
   targetNetlist: NormalizedNetlist
   candidateBoxIndex: number
