@@ -13,6 +13,7 @@ import type { MatchedBox, MatchingIssue } from "lib/matching/types"
 import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import { getAllPinShapeSignatures } from "lib/matching/matching-utils/getAllPinShapeSignatures"
+import { getPairwisePinShapeSignatures } from "lib/matching/matching-utils/getPairwisePinShapeSignatures"
 
 /**
  * Scores a single netlist-template pair, computing issues and similarity distance
@@ -218,6 +219,16 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
         })),
       },
       {
+        title: "pairwisePinShapeSignatures",
+        table: getPairwisePinShapeSignatures({
+          targetNetlist: this.inputNetlistWithRotations!,
+          candidateNetlist: this.template.getNetlist(),
+          matchedBoxes: this.matchedBoxes,
+          targetTransform: this.targetTransform!,
+          candidateTransform: this.candidateTransform!,
+        }),
+      },
+      {
         title: "matchedBoxes",
         ascii: this.generateMatchedBoxesVisualization(),
         table: this.matchedBoxes.map((match) => ({
@@ -241,29 +252,21 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
         title: "targetReadableNetlistWithRotations",
         ascii: getReadableNetlist(this.inputNetlistWithRotations!),
       },
-      {
-        title: "pinShapeSignatures",
-        table: [
-          ...getAllPinShapeSignatures(this.inputNetlistWithRotations!).map(
-            (a) => ({
-              netlist: "target",
-              ...a,
-            }),
-          ),
-          ...getAllPinShapeSignatures(this.template.getNetlist()).map((a) => ({
-            netlist: "template",
-            ...a,
-          })),
-        ],
-      },
-      {
-        title: "pairwisePinShapeSignatures",
-        table: [
-          // TODO
-          // should have columns like this:
-          // "targetBoxId.pinNumber", "candidateBoxId.pinNumber", "targetPinShapeSignature", "candidatePinShapeSignature"
-        ],
-      },
+      // {
+      //   title: "pinShapeSignatures",
+      //   table: [
+      //     ...getAllPinShapeSignatures(this.inputNetlistWithRotations!).map(
+      //       (a) => ({
+      //         netlist: "target",
+      //         ...a,
+      //       }),
+      //     ),
+      //     ...getAllPinShapeSignatures(this.template.getNetlist()).map((a) => ({
+      //       netlist: "template",
+      //       ...a,
+      //     })),
+      //   ],
+      // },
     ].filter(Boolean)
   }
 }
