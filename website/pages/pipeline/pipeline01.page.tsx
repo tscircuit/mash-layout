@@ -10,7 +10,7 @@ export default () => (
       export default () => (
         <board routingDisabled>
           <chip
-            name="U1"
+            name="U2"
             footprint="soic6"
             pinLabels={{
               pin1: "IN",
@@ -18,7 +18,12 @@ export default () => (
               pin3: "GND",
               pin6: "OUT"
             }}
-            connections={{ pin1: sel.net.VIN, pin2: sel.net.EN, pin3: sel.net.GND }}
+            connections={{
+              pin1: sel.net.VIN,
+              pin2: sel.net.EN,
+              pin3: sel.net.GND,
+              pin6: sel.net.V3_3,
+            }}
           />
           <resistor
             name="R3"

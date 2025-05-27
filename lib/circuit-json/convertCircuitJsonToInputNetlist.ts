@@ -1,5 +1,7 @@
 import type { CircuitJson } from "circuit-json"
 import type { InputNetlist, Box, Connection, Net, Side } from "lib/input-types"
+import { getFullConnectivityMapFromCircuitJson } from "circuit-json-to-connectivity-map"
+import { cju } from "@tscircuit/circuit-json-util"
 
 /**
  * Converts a tscircuit `CircuitJson` object (array-of-records) into the very

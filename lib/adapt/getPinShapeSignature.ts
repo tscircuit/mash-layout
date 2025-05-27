@@ -36,11 +36,8 @@ export const getPinShapeSignature = (
     .map(
       (c) =>
         `[${c.connectedPorts
-          .map((cp) =>
-            "boxIndex" in cp
-              ? `b${cp.boxIndex}.${cp.pinNumber}`
-              : `n${cp.netIndex}`,
-          )
+          .filter((cp) => "boxIndex" in cp)
+          .map((cp) => `b${cp.boxIndex}.${cp.pinNumber}`)
           .join(",")}]`,
     )
     .join(",")}`

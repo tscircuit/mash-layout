@@ -12,6 +12,7 @@ import {
 import type { MatchedBox, MatchingIssue } from "lib/matching/types"
 import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
+import { getAllPinShapeSignatures } from "lib/matching/matching-utils/getAllPinShapeSignatures"
 
 /**
  * Scores a single netlist-template pair, computing issues and similarity distance
@@ -239,6 +240,21 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
       this.inputNetlistWithRotations! && {
         title: "targetReadableNetlistWithRotations",
         ascii: getReadableNetlist(this.inputNetlistWithRotations!),
+      },
+      {
+        title: "pinShapeSignatures",
+        table: [
+          ...getAllPinShapeSignatures(this.inputNetlistWithRotations!).map(
+            (a) => ({
+              netlist: "target",
+              ...a,
+            }),
+          ),
+          ...getAllPinShapeSignatures(this.template.getNetlist()).map((a) => ({
+            netlist: "template",
+            ...a,
+          })),
+        ],
       },
     ].filter(Boolean)
   }

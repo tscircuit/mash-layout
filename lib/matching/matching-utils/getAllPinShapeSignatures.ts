@@ -9,16 +9,32 @@ export const getAllPinShapeSignatures = (
   pinNumber: number
   pinShapeSignature: string
 }> => {
-  const { normalizedNetlist, transform } = normalizeNetlist(inputNetlist)
-
   const pinShapeSignatures: Array<{
     boxId: string
     pinNumber: number
     pinShapeSignature: string
   }> = []
 
-  for (const box of normalizedNetlist.boxes) {
-    // TODO
+  for (const box of inputNetlist.boxes) {
+    const totalPinCount =
+      box.leftPinCount +
+      box.rightPinCount +
+      box.topPinCount +
+      box.bottomPinCount
+
+    for (let pinNumber = 1; pinNumber <= totalPinCount; pinNumber++) {
+      const pinShapeSignature = getPinShapeSignature({
+        netlist: inputNetlist,
+        chipId: box.boxId,
+        pinNumber,
+      })
+
+      pinShapeSignatures.push({
+        boxId: box.boxId,
+        pinNumber,
+        pinShapeSignature,
+      })
+    }
   }
 
   return pinShapeSignatures
