@@ -5,6 +5,7 @@
       "name": "trait-layout",
       "dependencies": {
         "@types/glob": "^8.1.0",
+        "circuit-json-to-connectivity-map": "^0.0.22",
         "glob": "^11.0.2",
       },
       "devDependencies": {
