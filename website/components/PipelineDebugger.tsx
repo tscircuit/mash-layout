@@ -4,6 +4,7 @@ import { PipelineDebuggerSidebar } from "./PipelineDebuggerSidebar"
 import { PipelineDebuggerSolverVisualizations } from "./PipelineDebuggerSolverVisualizations"
 import { useState, useEffect } from "react"
 import { testTscircuitCodeForLayout } from "tests/tscircuit/testTscircuitCodeForLayout"
+import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
 
 /**
  * This component debugs the Schematic Layout Pipeline.
@@ -20,6 +21,9 @@ export const PipelineDebugger = (props: {
     useState<SchematicLayoutPipelineSolver | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [originalSvgString, setOriginalSvgString] = useState<string | null>(
+    null,
+  )
 
   useEffect(() => {
     const executeTscircuitCode = async () => {
@@ -38,6 +42,10 @@ export const PipelineDebugger = (props: {
           "lib/circuit-json/convertCircuitJsonToInputNetlist"
         )
 
+        setOriginalSvgString(
+          convertCircuitJsonToSchematicSvg(results.originalCircuitJson),
+        )
+
         const inputNetlist = convertCircuitJsonToInputNetlist(
           results.originalCircuitJson,
         )
@@ -47,7 +55,7 @@ export const PipelineDebugger = (props: {
         await solver.solve()
 
         setCurrentSolver(solver)
-        setSelectedSolver(null)
+        setSelectedSolver(solver)
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err))
       } finally {
@@ -160,6 +168,18 @@ export const PipelineDebugger = (props: {
                       </tbody>
                     </table>
                   </div>
+                </div>
+              )}
+            {selectedSolver.constructor.name ===
+              "SchematicLayoutPipelineSolver" &&
+              originalSvgString && (
+                <div>
+                  <div
+                    // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                    dangerouslySetInnerHTML={{
+                      __html: originalSvgString,
+                    }}
+                  />
                 </div>
               )}
             <PipelineDebuggerSolverVisualizations solver={selectedSolver} />

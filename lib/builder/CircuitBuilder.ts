@@ -107,8 +107,8 @@ export class CircuitBuilder {
     return c
   }
 
-  passive(): ChipBuilder {
-    const id = `R${this.chips.length + 1}`
+  passive(name?: string): ChipBuilder {
+    const id = name ?? `R${this.chips.length + 1}`
     const c = new ChipBuilder(this, id, true)
     this.chips.push(c)
     return c

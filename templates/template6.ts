@@ -28,7 +28,7 @@ import { circuit } from "lib/builder"
 export default () => {
   const C = circuit()
 
-  const U2 = C.chip().leftpins(3).rightpins(3).at(0, 0)
+  const U2 = C.chip("U2").leftpins(3).rightpins(3).at(0, 0)
 
   U2.pin(1) // IN
     .line(-2, 0)
@@ -38,15 +38,11 @@ export default () => {
     .line(0, 0.8)
     .label()
 
-  U2.fromMark("vin2")
-    .line(0, -1)
-    .passive() // C1
-    .line(0, -1)
-    .label()
+  U2.fromMark("vin2").line(0, -1).passive("C1").line(0, -1).label()
 
   U2.fromMark("vin1")
     .line(0, -1)
-    .passive()
+    .passive("R3")
     .line(0, -0.4)
     .mark("en1")
     .line(-0.5, 0)
@@ -59,7 +55,7 @@ export default () => {
     .line(4, 0)
     .mark("VOUT")
     .line(0, -1)
-    .passive() // C2 1 µF
+    .passive("C2")
     .line(0, -1)
     .label("GND")
   U2.fromMark("VOUT").line(0, 0.8).label()

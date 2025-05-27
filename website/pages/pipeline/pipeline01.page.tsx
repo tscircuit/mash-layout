@@ -18,22 +18,28 @@ export default () => (
               pin3: "GND",
               pin6: "OUT"
             }}
-            connections={{ pin1: sel.net.IN, pin2: sel.net.EN, pin3: sel.net.GND }}
+            connections={{ pin1: sel.net.VIN, pin2: sel.net.EN, pin3: sel.net.GND }}
           />
           <resistor
             name="R3"
+            schX={-3}
+            schRotation="90deg"
             resistance="1k"
             footprint="0402"
             connections={{ pin1: sel.net.EN, pin2: sel.net.VIN }}
           />
           <capacitor
             name="C1"
+            schX={-5}
+            schRotation="-90deg"
             capacitance="1uF"
             footprint="0402"
             connections={{ pin1: sel.net.VIN, pin2: sel.net.GND }}
           />
           <capacitor
             name="C2"
+            schX={3}
+            schRotation="-90deg"
             capacitance="1uF"
             footprint="0402"
             connections={{pin1: sel.net.V3_3, pin2: sel.net.GND}}
