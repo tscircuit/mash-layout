@@ -1,17 +1,16 @@
-import { applyMatchedBoxRotationToInputNetlist } from "lib/matching/applyMatchedBoxRotationToInputNetlist"
+import { applyMatchedBoxRotationsToInputNetlist } from "lib/matching/matching-utils/applyMatchedBoxRotationsToInputNetlist"
 import type { CircuitBuilder } from "lib/builder"
 import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
 import { getMatchingIssues } from "lib/matching/getMatchingIssues"
 import { computeSimilarityDistanceFromIssues } from "lib/matching/computeSimilarityDistanceFromIssues"
 import {
-  NormalizationTransform,
+  type NormalizationTransform,
   normalizeNetlist,
 } from "lib/scoring/normalizeNetlist"
 import type { MatchedBox, MatchingIssue } from "lib/matching/types"
 import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
-import { rotateInputBox } from "lib/matching/matching-utils/rotateInputBox"
 
 /**
  * Scores a single netlist-template pair, computing issues and similarity distance
@@ -70,7 +69,7 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
 
     // Convert the rotated normalized netlist back to InputNetlist format
     // We need to reconstruct the InputNetlist with proper rotations applied
-    const inputNetlistWithRotations = applyMatchedBoxRotationToInputNetlist({
+    const inputNetlistWithRotations = applyMatchedBoxRotationsToInputNetlist({
       inputNetlist: structuredClone(this.inputNetlist),
       matchedBoxes: this.matchedBoxes,
     })
@@ -307,6 +306,14 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
       {
         title: "matchedBoxes",
         ascii: this.generateMatchedBoxesVisualization(),
+        table: this.matchedBoxes.map((match, index) => ({
+          target_box: this.getBoxNameFromIndex(match.targetBoxIndex, false),
+          candidate_box: this.getBoxNameFromIndex(
+            match.candidateBoxIndex,
+            true,
+          ),
+          rotation: match.targetBoxRotationCcw,
+        })),
       },
       {
         title: "inputTemplateReadableNetlist",
@@ -317,7 +324,7 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
         ascii: getReadableNetlist(this.inputNetlist),
       },
       this.inputNetlistWithRotations! && {
-        title: "inputTargetReadableNetlistPassiveCompatible",
+        title: "targetReadableNetlistWithRotations",
         ascii: getReadableNetlist(this.inputNetlistWithRotations!),
       },
     ].filter(Boolean)
