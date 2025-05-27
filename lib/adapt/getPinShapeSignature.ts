@@ -37,6 +37,9 @@ export const getPinShapeSignature = (
       (c) =>
         `[${c.connectedPorts
           .filter((cp) => "boxIndex" in cp)
+          // TODO don't use the boxIndex, re-index the boxes by their size (except
+          // keeping the "owner" box index always the first), only index boxes that
+          // appear in the connection
           .map((cp) => `b${cp.boxIndex}.${cp.pinNumber}`)
           .join(",")}]`,
     )
