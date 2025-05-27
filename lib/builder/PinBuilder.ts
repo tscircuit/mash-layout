@@ -137,19 +137,12 @@ export class PinBuilder {
             ? "bottom"
             : "top"
 
-    const entryPin =
+    const [entryPin, exitPin] =
       entrySide === "left" || entrySide === "bottom"
-        ? passive.pin(1)
-        : passive.pin(2)
-    const exitPin =
-      entrySide === "left" || entrySide === "bottom"
-        ? passive.pin(2)
-        : passive.pin(1)
-    console.log(
-      `Entering via pin ${entryPin.pinNumber} exiting via pin ${exitPin.pinNumber}`,
-    )
+        ? [passive.pin(1), passive.pin(2)]
+        : [passive.pin(2), passive.pin(1)]
 
-    this.lastCreatedLine!.end.ref = exitPin.ref
+    this.lastCreatedLine!.end.ref = entryPin.ref
 
     return exitPin
   }

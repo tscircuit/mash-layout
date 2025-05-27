@@ -59,26 +59,26 @@ import { circuit } from "lib/builder"
  *
  *                   ┌────────────────┐
  *                   │                │7  ── A
- *                   │                │6  ── ...
- *                   │                │5  ── ...
- *                   │       U1       │4  ── ...
- *                   │                │3  ── ...
+ *                   │                │6  ── R2.1
+ *                   │                │5  ── R3.1
+ *                   │       U1       │4  ── R4.2
+ *                   │                │3  ── R5.2
  *                   │                │2  ── ...
  *                   │                │1  ── ...
  *                   └────────────────┘
  *
  *
  *                   ┌────────────────┐
- *                  1│       R2       │2  ── ...
+ *         U1.6 ──  1│       R2       │2  ── B
  *                   └────────────────┘
  *
  *
  *                   ┌────────────────┐
- *                  1│       R3       │2  ── ...
+ *         U1.5 ──  1│       R3       │2  ── C
  *                   └────────────────┘
  *
  *
- *
+ *                          U1.4
  *                           │
  *                           2
  *                   ┌────────────────┐
@@ -86,10 +86,10 @@ import { circuit } from "lib/builder"
  *                   └────────────────┘
  *                           1
  *                           │
- *                          ...
+ *                           D
  *
  *
- *
+ *                          U1.3
  *                           │
  *                           2
  *                   ┌────────────────┐
@@ -97,26 +97,10 @@ import { circuit } from "lib/builder"
  *                   └────────────────┘
  *                           1
  *                           │
- *                          ...
+ *                           E
  *
  * Complex Connections (more than 2 points):
  *   - Connection 1:
- *     - Box Pin: R2, Pin 2
- *     - Net: B
- *     - Box Pin: U1, Pin 6
- *   - Connection 2:
- *     - Box Pin: R3, Pin 2
- *     - Net: C
- *     - Box Pin: U1, Pin 5
- *   - Connection 3:
- *     - Box Pin: R4, Pin 1
- *     - Net: D
- *     - Box Pin: U1, Pin 4
- *   - Connection 4:
- *     - Box Pin: R5, Pin 1
- *     - Net: E
- *     - Box Pin: U1, Pin 3
- *   - Connection 5:
  *     - Box Pin: U1, Pin 2
  *     - Net: F
  *     - Box Pin: U1, Pin 1

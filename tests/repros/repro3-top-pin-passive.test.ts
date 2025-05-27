@@ -83,8 +83,16 @@ test("repro3-top-pin-passive", () => {
               "boxId": "U1",
               "pinNumber": 3,
             },
+          ],
+        },
+        {
+          "connectedPorts": [
             {
               "boxId": "U1",
+              "pinNumber": 2,
+            },
+            {
+              "boxId": "R1",
               "pinNumber": 2,
             },
           ],

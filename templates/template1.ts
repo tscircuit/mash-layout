@@ -37,12 +37,12 @@ import { circuit } from "lib/builder"
  *
  *
  *                   ┌────────────────┐
- *          ... ──  1│       U1       │4  ── D
+ *         R2.2 ──  1│       U1       │4  ── D
  *            B ──  2│                │3  ── C
  *                   └────────────────┘
  *
  *
- *
+ *                          U1.1
  *                           │
  *                           2
  *                   ┌────────────────┐
@@ -50,13 +50,10 @@ import { circuit } from "lib/builder"
  *                   └────────────────┘
  *                           1
  *                           │
- *                          ...
+ *                           A
  *
  * Complex Connections (more than 2 points):
- *   - Connection 1:
- *     - Box Pin: R2, Pin 1
- *     - Net: A
- *     - Box Pin: U1, Pin 1
+ *   (none)
  * ```
  */
 export default () => {
