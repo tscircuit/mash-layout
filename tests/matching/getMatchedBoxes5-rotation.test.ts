@@ -3,6 +3,8 @@ import { circuit } from "lib/builder"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import { getMatchedBoxString } from "./getMatchedBoxString"
+import { applyMatchedBoxRotationsToInputNetlist } from "lib/matching/matching-utils/applyMatchedBoxRotationsToInputNetlist"
+import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 
 test("getMatchedBoxes5 - correctly handles passive rotation", () => {
   const target = circuit()
@@ -50,4 +52,27 @@ test("getMatchedBoxes5 - correctly handles passive rotation", () => {
   })
 
   expect(matchedBoxes[0]!.targetBoxRotationCcw).not.toBe(0)
+
+  const inputNetlistWithRotations = applyMatchedBoxRotationsToInputNetlist({
+    inputNetlist: structuredClone(target.getNetlist()),
+    matchedBoxes,
+  })
+
+  expect(getReadableNetlist(inputNetlistWithRotations)).toMatchInlineSnapshot(`
+    "Boxes:
+
+
+                                       
+                              │        
+                              2        
+                      ┌────────────────┐
+                      │       R1       │                
+                      └────────────────┘
+                              1        
+                              │        
+                                       
+
+    Complex Connections (more than 2 points):
+      (none)"
+  `)
 })

@@ -97,7 +97,7 @@ export function getNetlistVariationWithPassiveRotation(params: {
   candidateNetlist: NormalizedNetlist
   targetBoxIndex: number
   candidateBoxIndex: number
-}): NormalizedNetlist[] {
+}): Array<{ netlist: NormalizedNetlist; rotation: 0 | 90 | 180 | 270 }> {
   const { targetNetlist, candidateNetlist, targetBoxIndex, candidateBoxIndex } =
     params
 
@@ -106,18 +106,19 @@ export function getNetlistVariationWithPassiveRotation(params: {
 
   // Check bounds and ensure boxes exist
   if (!targetBox || !candidateBox) {
-    return [targetNetlist]
+    return [{ netlist: targetNetlist, rotation: 0 }]
   }
 
   // Only apply passive rotation if both boxes are passives
   if (!isPassiveBox(targetBox) || !isPassiveBox(candidateBox)) {
-    return [targetNetlist]
+    return [{ netlist: targetNetlist, rotation: 0 }]
   }
 
-  const variations: NormalizedNetlist[] = []
+  const variations: Array<{ netlist: NormalizedNetlist; rotation: 0 | 90 | 180 | 270 }> = []
 
   // Variation 1: Rotate target box until pin counts match candidate
   let rotatedBox: NormalizedNetlistBox = { ...targetBox }
+  let rotationDegrees: 0 | 90 | 180 | 270 = 0
 
   // Try up to 4 rotations to find matching orientation
   for (let i = 0; i < 4; i++) {
@@ -130,6 +131,7 @@ export function getNetlistVariationWithPassiveRotation(params: {
       break
     }
     rotatedBox = rotatePassiveBox(rotatedBox)
+    rotationDegrees = ((rotationDegrees + 90) % 360) as 0 | 90 | 180 | 270
   }
 
   // Create variation 1 with the rotated box
@@ -139,7 +141,7 @@ export function getNetlistVariationWithPassiveRotation(params: {
       index === targetBoxIndex ? rotatedBox : box,
     ),
   }
-  variations.push(variation1)
+  variations.push({ netlist: variation1, rotation: rotationDegrees })
 
   // Variation 2: Flip the rotated box (move pins to opposite sides)
   const flippedBox = flipPassiveBox(rotatedBox)
@@ -149,7 +151,8 @@ export function getNetlistVariationWithPassiveRotation(params: {
       index === targetBoxIndex ? flippedBox : box,
     ),
   }
-  variations.push(variation2)
+  const flippedRotation = ((rotationDegrees + 180) % 360) as 0 | 90 | 180 | 270
+  variations.push({ netlist: variation2, rotation: flippedRotation })
 
   return variations
 }

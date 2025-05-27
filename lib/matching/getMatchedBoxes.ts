@@ -60,7 +60,10 @@ export function getMatchedBoxes(params: {
       let bestRotation: 0 | 90 | 180 | 270 = 0
 
       // Test each variation (including no rotation)
-      targetNetlistVariations.forEach((variationNetlist, variationIndex) => {
+      for (const {
+        netlist: variationNetlist,
+        rotation,
+      } of targetNetlistVariations) {
         const issues = getIssuesForMatchedBoxes({
           candidateNetlist,
           targetNetlist: variationNetlist,
@@ -84,12 +87,9 @@ export function getMatchedBoxes(params: {
         if (score < bestVariationScore) {
           bestVariationScore = score
           bestVariationIssues = issues
-          // Map variation index to rotation degrees
-          // Variation 0: no rotation (0°)
-          // Variation 1: flipped (180°) - for passive components
-          bestRotation = variationIndex === 1 ? 180 : 0
+          bestRotation = rotation
         }
-      })
+      }
 
       pairingResult.set(
         { targetBoxIndex, candidateBoxIndex },
