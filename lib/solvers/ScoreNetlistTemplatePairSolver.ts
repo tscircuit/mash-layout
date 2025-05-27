@@ -256,6 +256,14 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
           })),
         ],
       },
+      {
+        title: "pairwisePinShapeSignatures",
+        table: [
+          // TODO
+          // should have columns like this:
+          // "targetBoxId.pinNumber", "candidateBoxId.pinNumber", "targetPinShapeSignature", "candidatePinShapeSignature"
+        ],
+      },
     ].filter(Boolean)
   }
 }
