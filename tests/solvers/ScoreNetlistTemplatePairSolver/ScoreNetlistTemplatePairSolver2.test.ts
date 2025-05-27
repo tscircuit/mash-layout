@@ -59,7 +59,7 @@ test("ScoreNetlistTemplatePairSolver handles multiple passive orientations", () 
       score: mb.score,
     })),
     finalScore: solver.outputSimilarityDistance,
-    rotatedBoxes: solver.inputNetlistPassiveCompatible?.boxes.map((box) => ({
+    rotatedBoxes: solver.inputNetlistWithRotations?.boxes.map((box) => ({
       boxId: box.boxId,
       leftPinCount: box.leftPinCount,
       rightPinCount: box.rightPinCount,

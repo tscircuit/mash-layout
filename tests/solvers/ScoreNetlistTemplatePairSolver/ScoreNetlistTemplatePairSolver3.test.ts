@@ -39,7 +39,7 @@ test("ScoreNetlistTemplatePairSolver handles non-passive components without rota
 
   // The input should remain unchanged
   const originalBox = inputNetlist.boxes[0]
-  const rotatedBox = solver.inputNetlistPassiveCompatible?.boxes[0]
+  const rotatedBox = solver.inputNetlistWithRotations?.boxes[0]
   expect(rotatedBox).toBeDefined()
   expect(rotatedBox!.boxId).toBe(originalBox.boxId)
   expect(rotatedBox!.leftPinCount).toBe(originalBox.leftPinCount)

@@ -45,8 +45,8 @@ test("ScoreNetlistTemplatePairSolver correctly handles passive rotation", () => 
   expect(matchedBox.candidateBoxIndex).toBe(0)
 
   // The input netlist should be transformed to be passive compatible
-  expect(solver.inputNetlistPassiveCompatible).not.toBeNull()
-  const compatibleNetlist = solver.inputNetlistPassiveCompatible!
+  expect(solver.inputNetlistWithRotations).not.toBeNull()
+  const compatibleNetlist = solver.inputNetlistWithRotations!
 
   // If rotation was applied, the passive should now be horizontally oriented to match template
   const rotatedBox = compatibleNetlist.boxes[0]!
@@ -85,7 +85,7 @@ test("ScoreNetlistTemplatePairSolver correctly handles passive rotation", () => 
     finalScore: solver.outputSimilarityDistance,
     issueCount: solver.outputIssues.length,
     originalInput: inputNetlist.boxes[0],
-    rotatedInput: solver.inputNetlistPassiveCompatible?.boxes[0],
+    rotatedInput: solver.inputNetlistWithRotations?.boxes[0],
   }).toMatchInlineSnapshot(`
     {
       "finalScore": 0,

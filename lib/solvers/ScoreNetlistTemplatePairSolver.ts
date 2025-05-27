@@ -1,3 +1,4 @@
+import { applyMatchedBoxRotationToInputNetlist } from "lib/matching/applyMatchedBoxRotationToInputNetlist"
 import type { CircuitBuilder } from "lib/builder"
 import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
@@ -16,7 +17,7 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
   inputNetlist: InputNetlist
   template: CircuitBuilder
 
-  inputNetlistPassiveCompatible: InputNetlist | null = null
+  inputNetlistWithRotations: InputNetlist | null = null
 
   outputIssues: Array<MatchingIssue> = []
   outputSimilarityDistance: number = Infinity
@@ -66,30 +67,12 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
 
     // Convert the rotated normalized netlist back to InputNetlist format
     // We need to reconstruct the InputNetlist with proper rotations applied
-    const inputNetlistWithRotations = structuredClone(this.inputNetlist)
+    const inputNetlistWithRotations = applyMatchedBoxRotationToInputNetlist({
+      inputNetlist: structuredClone(this.inputNetlist),
+      matchedBoxes: this.matchedBoxes,
+    })
 
-    // Apply rotations to the input netlist boxes based on matched box rotations
-    for (const matchedBox of this.matchedBoxes) {
-      if (matchedBox.targetBoxRotationCcw === 0) continue
-      console.log({ matchedBox })
-      // Find the box ID corresponding to this target box index
-      const targetBoxId =
-        initialTargetResult.transform.boxIndexToBoxId[matchedBox.targetBoxIndex]
-      if (targetBoxId) {
-        const targetBoxInOriginal = inputNetlistWithRotations.boxes.find(
-          (box) => box.boxId === targetBoxId,
-        )
-        if (!targetBoxInOriginal) continue
-        // Apply rotation to the original input netlist box
-        const rotatedBox = rotateInputBox(
-          targetBoxInOriginal,
-          matchedBox.targetBoxRotationCcw,
-        )
-        Object.assign(targetBoxInOriginal, rotatedBox)
-      }
-    }
-
-    this.inputNetlistPassiveCompatible = inputNetlistWithRotations
+    this.inputNetlistWithRotations = inputNetlistWithRotations
 
     // Re-normalize the rotated target netlist for final scoring
     const finalTargetResult = normalizeNetlist(inputNetlistWithRotations)
@@ -144,7 +127,7 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
   ): string[] {
     const netlist = isTemplate
       ? this.template.getNetlist()
-      : this.inputNetlistPassiveCompatible!
+      : this.inputNetlistWithRotations!
     const transform = isTemplate
       ? this.candidateTransform
       : this.targetTransform
@@ -330,9 +313,9 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
         title: "inputTargetReadableNetlist",
         ascii: getReadableNetlist(this.inputNetlist),
       },
-      this.inputNetlistPassiveCompatible && {
+      this.inputNetlistWithRotations! && {
         title: "inputTargetReadableNetlistPassiveCompatible",
-        ascii: getReadableNetlist(this.inputNetlistPassiveCompatible!),
+        ascii: getReadableNetlist(this.inputNetlistWithRotations!),
       },
     ].filter(Boolean)
   }
