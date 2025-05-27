@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react"
 import { runTscircuitCode } from "@tscircuit/eval"
 import { cju } from "@tscircuit/circuit-json-util"
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
-import { convertCircuitJsonToInputNetlist } from "../lib/circuit-json/convertCircuitJsonToInputNetlist"
-import { CircuitBuilder } from "../lib/builder"
-import { applyCircuitLayoutToCircuitJson } from "../lib/circuit-json/applyCircuitLayoutToCircuitJson"
+import { convertCircuitJsonToInputNetlist } from "../../lib/circuit-json/convertCircuitJsonToInputNetlist"
+import { CircuitBuilder } from "../../lib/builder"
+import { applyCircuitLayoutToCircuitJson } from "../../lib/circuit-json/applyCircuitLayoutToCircuitJson"
 import {
   getBase64PoundSnippetString,
   getUncompressedSnippetString,
@@ -31,7 +31,7 @@ export default () => (
   </board>
 )`
 
-export default function App() {
+export default function EvalPage() {
   const [code, setCode] = useState("")
   const [originalSvg, setOriginalSvg] = useState("")
   const [layoutSvg, setLayoutSvg] = useState("")

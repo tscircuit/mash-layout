@@ -3,15 +3,22 @@ import type { InputNetlist } from "lib/input-types"
 import { getMatchingIssues } from "./getMatchingIssues"
 import { computeSimilarityDistanceFromIssues } from "./computeSimilarityDistanceFromIssues"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
+import type { MatchingIssue } from "./types"
+
+export interface TemplateMatchResult {
+  template: CircuitBuilder
+  issues: Array<MatchingIssue>
+  similarityDistance: number
+}
 
 export const findBestMatch = (
   inputNetlist: InputNetlist,
   templates: Array<CircuitBuilder>,
-): CircuitBuilder | null => {
-  const results: Array<{
-    template: CircuitBuilder
-    similarityDistance: number
-  }> = []
+): {
+  bestMatchTemplate: CircuitBuilder | null
+  templateMatchingResults: Array<TemplateMatchResult>
+} => {
+  const results: Array<TemplateMatchResult> = []
 
   for (const template of templates) {
     const issues = getMatchingIssues({
@@ -24,12 +31,16 @@ export const findBestMatch = (
 
     results.push({
       template,
+      issues,
       similarityDistance,
     })
   }
 
   if (results.length === 0) {
-    return null
+    return {
+      bestMatchTemplate: null,
+      templateMatchingResults: results,
+    }
   }
 
   let bestMatch = results[0]!
@@ -43,8 +54,14 @@ export const findBestMatch = (
   // This check depends on how computeSimilarityDistanceFromIssues handles "no match".
   // Assuming lower is better and a valid match has a finite distance.
   if (bestMatch.similarityDistance === Infinity) {
-    return null
+    return {
+      bestMatchTemplate: null,
+      templateMatchingResults: results,
+    }
   }
 
-  return bestMatch.template
+  return {
+    bestMatchTemplate: bestMatch.template,
+    templateMatchingResults: results,
+  }
 }

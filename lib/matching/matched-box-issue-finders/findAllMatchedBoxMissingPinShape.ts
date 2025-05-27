@@ -7,6 +7,9 @@ import { convertNormalizedNetlistToInputNetlist } from "lib/netlist/convertNorma
 import { getPinShapeSignature } from "lib/adapt/getPinShapeSignature"
 import { getPinSubsetNetlist } from "lib/adapt/getPinSubsetNetlist"
 
+/**
+ * @deprecated Use {@link findAllMatchedBoxMissingPinShapeOnSide} instead
+ */
 export function findAllMatchedBoxMissingPinShape(params: {
   candidateNetlist: NormalizedNetlist
   targetNetlist: NormalizedNetlist

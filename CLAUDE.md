@@ -73,3 +73,10 @@ You can create small scripts for debugging, use
 `bun` to run the scripts rather than `node`
 
 e.g. you could do `bun run debug_something.ts`
+
+## Solvers
+
+- Solver code can quickly get complex, do not create private methods or put
+  complex logic inside the `*Solver` classes. Instead create helper methods
+  inside the `lib/**/*` directory. For example, the `ScoreNetlistTemplatePairSolver`
+  imports utility functions from `lib/matching/matching-utils/*`.

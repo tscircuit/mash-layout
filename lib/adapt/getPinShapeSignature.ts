@@ -32,16 +32,19 @@ export const getPinShapeSignature = (
       (b) =>
         `L${b.leftPinCount}B${b.bottomPinCount}R${b.rightPinCount}T${b.topPinCount}`,
     )
-    .join(",")}|C${normNetlist.normalizedNetlist.connections
-    .map(
-      (c) =>
-        `[${c.connectedPorts
-          .map((cp) =>
-            "boxIndex" in cp
-              ? `b${cp.boxIndex}.${cp.pinNumber}`
-              : `n${cp.netIndex}`,
-          )
-          .join(",")}]`,
-    )
     .join(",")}`
+  // TODO for some reason, the pin numbers become messed up
+  // +
+  // `|C${normNetlist.normalizedNetlist.connections
+  // .map(
+  //   (c) =>
+  //     `[${c.connectedPorts
+  //       .filter((cp) => "boxIndex" in cp)
+  //       // TODO don't use the boxIndex, re-index the boxes by their size (except
+  //       // keeping the "owner" box index always the first), only index boxes that
+  //       // appear in the connection
+  //       .map((cp) => `b${cp.boxIndex}.${cp.pinNumber}`)
+  //       .join(",")}]`,
+  // )
+  // .join(",")}`
 }

@@ -24,7 +24,7 @@ const getPinConnectionLabel = (
   // A pin should ideally be part of only one connection object due to merging logic in the builder.
   // If it appears in multiple connection objects (e.g. if merging failed or was bypassed),
   // or if the single connection it's in is complex (connects to multiple other things),
-  // we simplify the label to "...".
+  // we truncate it
   if (relevantConnections.length > 1) {
     return "..."
   }
@@ -47,22 +47,21 @@ const getPinConnectionLabel = (
     return null
   }
 
-  if (otherPorts.length === 1) {
-    const otherPort = otherPorts[0]
-    if (
-      "boxId" in otherPort &&
-      typeof otherPort.boxId === "string" &&
-      typeof otherPort.pinNumber === "number"
-    ) {
-      return `${otherPort.boxId}.${otherPort.pinNumber}`
-    }
-    if ("netId" in otherPort && typeof otherPort.netId === "string") {
-      return otherPort.netId
-    }
-  }
-
-  // If connected to more than one other port, or if the port types are mixed/unexpected.
-  return "..."
+  const connectionsString = otherPorts
+    .map((p) => {
+      if ("boxId" in p && typeof p.boxId === "string") {
+        return `${p.boxId}.${p.pinNumber}`
+      }
+      if ("netId" in p && typeof p.netId === "string") {
+        return p.netId
+      }
+      return null
+    })
+    .filter(Boolean)
+    .join(",")
+  return connectionsString.length > 14
+    ? `${connectionsString.substring(0, 13)}…`
+    : connectionsString
 }
 
 // Helper function to format content within a cell, centering it.
@@ -88,7 +87,7 @@ const drawBoxAscii = (
     box
 
   const BOX_INNER_WIDTH = 16
-  const SIDE_PADDING_WIDTH = 16
+  const SIDE_PADDING_WIDTH = 20
 
   const lp = leftPinCount
   const rp = rightPinCount
@@ -264,12 +263,12 @@ export const getReadableNetlist = (netlist: InputNetlist): string => {
   } else {
     for (let i = 0; i < complexConnections.length; i++) {
       const connection = complexConnections[i]
-      lines.push(`  - Connection ${i + 1}:`) // Or use original index if preferred
+      lines.push(`  - complex connection[${i}]:`) // Or use original index if preferred
       for (const port of connection.connectedPorts) {
         if ("boxId" in port) {
-          lines.push(`    - Box Pin: ${port.boxId}, Pin ${port.pinNumber}`)
+          lines.push(`    - ${port.boxId}.${port.pinNumber}`)
         } else if ("netId" in port) {
-          lines.push(`    - Net: ${port.netId}`)
+          lines.push(`    - ${port.netId}`)
         }
       }
     }

@@ -1,3 +1,5 @@
+import { GraphicsObject } from "graphics-debug"
+
 export class BaseSolver {
   MAX_ITERATIONS = 1000
   solved = false
@@ -5,10 +7,11 @@ export class BaseSolver {
   iterations = 0
   progress = 0
   error: string | null = null
-  activeSubSolver?: BaseSolver | null
+  _activeSubSolver?: BaseSolver | null
+  usedSubSolvers: Array<BaseSolver> = []
   failedSubSolvers?: BaseSolver[]
   timeToSolve?: number
-  stats: Record<string, any> = {}
+  stats: any = {}
 
   /** DO NOT OVERRIDE! Override _step() instead */
   step() {
@@ -36,8 +39,36 @@ export class BaseSolver {
 
   _step() {}
 
+  getStatsSummary() {
+    return `${this.iterations} iterations`
+  }
+
+  get activeSubSolver() {
+    return this._activeSubSolver
+  }
+
   getConstructorParams() {
     throw new Error("getConstructorParams not implemented")
+  }
+
+  clearActiveSubSolver() {
+    this._activeSubSolver = null
+  }
+
+  setActiveSubSolver(subSolver: BaseSolver | null) {
+    this._activeSubSolver = subSolver
+    if (subSolver) {
+      this.usedSubSolvers.push(subSolver)
+    }
+  }
+
+  visualize(): Array<{
+    title: string
+    graphicsObject?: GraphicsObject
+    ascii?: string
+    table?: any[]
+  }> {
+    return []
   }
 
   solve() {

@@ -1,13 +1,12 @@
 import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
-import { SingleMatchSolver } from "./SingleMatchSolver"
+import { MatchNetlistToTemplateSolver } from "./MatchNetlistToTemplateSolver"
 import type { CircuitBuilder } from "lib/builder"
 
 /**
  * For each input netlist, find the best match template.
  */
 export class MatchPhaseSolver extends BaseSolver {
-  activeSubSolver?: SingleMatchSolver | null = null
   inputNetlists: InputNetlist[]
   currentInputNetlistIndex = 0
 
@@ -15,6 +14,10 @@ export class MatchPhaseSolver extends BaseSolver {
     template: CircuitBuilder
     netlist: InputNetlist
   }> = []
+
+  get activeSubSolver() {
+    return this._activeSubSolver as MatchNetlistToTemplateSolver | null
+  }
 
   constructor(opts: {
     inputNetlists: InputNetlist[]
@@ -33,18 +36,22 @@ export class MatchPhaseSolver extends BaseSolver {
         })
 
         this.currentInputNetlistIndex++
-        this.activeSubSolver = null
+        this.clearActiveSubSolver()
+        return
       } else {
         return
       }
     }
+
     if (this.currentInputNetlistIndex >= this.inputNetlists.length) {
       this.solved = true
       return
     }
 
-    this.activeSubSolver = new SingleMatchSolver({
-      inputNetlist: this.inputNetlists[this.currentInputNetlistIndex]!,
-    })
+    this.setActiveSubSolver(
+      new MatchNetlistToTemplateSolver({
+        inputNetlist: this.inputNetlists[this.currentInputNetlistIndex]!,
+      }),
+    )
   }
 }

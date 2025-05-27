@@ -12,27 +12,34 @@
     "format": "biome format --write .",
     "format:check": "biome format --check .",
     "vercel-build": "bun run website:build",
-    "website:dev": "cd website && bun install && bun run dev",
-    "website:build": "cd website && bun install && bun run build.ts",
-    "website:serve": "cd website && bun run server.tsx",
-    "start":"bun run website:serve"
+    "website:build": "cosmos-export",
+    "website:serve": "cosmos",
+    "start": "bun run website:serve"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@tscircuit/circuit-json-util": "^0.0.48",
+    "@tscircuit/create-snippet-url": "^0.0.8",
     "@types/bun": "latest",
     "@types/debug": "^4.1.12",
+    "@vitejs/plugin-react": "^4.5.0",
     "bun-match-svg": "^0.0.11",
     "circuit-to-svg": "^0.0.128",
     "debug": "^4.4.1",
+    "graphics-debug": "^0.0.46",
+    "parse5": "^7.3.0",
+    "react-cosmos": "7.0.0-beta.4",
+    "react-cosmos-plugin-vite": "7.0.0-beta.0",
     "schematic-symbols": "^0.0.139",
-    "tscircuit": "^0.0.470"
+    "tscircuit": "^0.0.470",
+    "vite": "^6.3.5"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "@types/glob": "^8.1.0",
+    "circuit-json-to-connectivity-map": "^0.0.22",
     "glob": "^11.0.2"
   }
 }

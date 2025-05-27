@@ -105,10 +105,10 @@ export class PinBuilder {
     }
   }
 
-  passive(): PinBuilder {
+  passive(name?: string): PinBuilder {
     const entryDirection = this.lastDx === 0 ? "vertical" : "horizontal"
 
-    const passive = this.circuit.passive() // Create new passive chip
+    const passive = this.circuit.passive(name) // Create new passive chip
 
     if (entryDirection === "horizontal") {
       passive.leftpins(1).rightpins(1)
@@ -137,16 +137,12 @@ export class PinBuilder {
             ? "bottom"
             : "top"
 
-    const entryPin =
+    const [entryPin, exitPin] =
       entrySide === "left" || entrySide === "bottom"
-        ? passive.pin(1)
-        : passive.pin(2)
-    const exitPin =
-      entrySide === "left" || entrySide === "bottom"
-        ? passive.pin(2)
-        : passive.pin(1)
+        ? [passive.pin(1), passive.pin(2)]
+        : [passive.pin(2), passive.pin(1)]
 
-    this.lastCreatedLine!.end.ref = exitPin.ref
+    this.lastCreatedLine!.end.ref = entryPin.ref
 
     return exitPin
   }
