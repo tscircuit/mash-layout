@@ -4,7 +4,7 @@ import { circuit } from "lib/builder"
  * ```
  *
  *              0.0         5.0
- *  1.4 A                       B
+ *  1.4 A                       C
  *  1.2 │                       │
  *  1.0 │       U2              │
  *  0.8 │       ┌────────┐      │
@@ -20,7 +20,7 @@ import { circuit } from "lib/builder"
  * -1.2       ││
  * -1.4 ┬   ┬ ││                ┬
  * -1.6 │   │ ││                │
- * -1.8 │  A●─┘G                │
+ * -1.8 │  B●─┘G                │
  * -2.0 │                       │
  * -2.2 │                       │
  * -2.4 G                       G
@@ -28,62 +28,64 @@ import { circuit } from "lib/builder"
  * Boxes:
  *
  *
- *                   ┌────────────────┐
- *          ... ──  1│                │6  ── ...
- *          ... ──  2│       U2       │5
- *          ... ──  3│                │4
- *                   └────────────────┘
+ *                       ┌────────────────┐
+ *      A,C1.2,R3.2 ──  1│                │6  ── C,C2.2
+ *           R3.1,B ──  2│       U2       │5
+ *    C1.1,GND,C2.1 ──  3│                │4
+ *                       └────────────────┘
  *
  *
- *                          ...
- *                           │
- *                           2
- *                   ┌────────────────┐
- *                   │       C1       │
- *                   └────────────────┘
- *                           1
- *                           │
- *                          ...
+ *                          U2.1,A,R3.2
+ *                               │
+ *                               2
+ *                       ┌────────────────┐
+ *                       │       C1       │
+ *                       └────────────────┘
+ *                               1
+ *                               │
+ *                         GND,U2.3,C2.1
  *
  *
- *                          ...
- *                           │
- *                           2
- *                   ┌────────────────┐
- *                   │       R3       │
- *                   └────────────────┘
- *                           1
- *                           │
- *                          ...
+ *                          U2.1,A,C1.2
+ *                               │
+ *                               2
+ *                       ┌────────────────┐
+ *                       │       R3       │
+ *                       └────────────────┘
+ *                               1
+ *                               │
+ *                             B,U2.2
  *
  *
- *                          ...
- *                           │
- *                           2
- *                   ┌────────────────┐
- *                   │       C2       │
- *                   └────────────────┘
- *                           1
- *                           │
- *                          ...
+ *                             U2.6,C
+ *                               │
+ *                               2
+ *                       ┌────────────────┐
+ *                       │       C2       │
+ *                       └────────────────┘
+ *                               1
+ *                               │
+ *                         C1.1,GND,U2.3
  *
  * Complex Connections (more than 2 points):
- *   - Connection 1:
- *     - Box Pin: U2, Pin 1
- *     - Net: A
- *     - Box Pin: R3, Pin 1
- *     - Box Pin: C1, Pin 2
- *     - Box Pin: R3, Pin 2
- *     - Box Pin: U2, Pin 2
- *   - Connection 2:
- *     - Box Pin: C1, Pin 1
- *     - Net: GND
- *     - Box Pin: U2, Pin 3
- *     - Box Pin: C2, Pin 1
- *   - Connection 3:
- *     - Box Pin: U2, Pin 6
- *     - Net: B
- *     - Box Pin: C2, Pin 2
+ *   - complex connection[0]:
+ *     - U2.1
+ *     - A
+ *     - C1.2
+ *     - R3.2
+ *   - complex connection[1]:
+ *     - C1.1
+ *     - GND
+ *     - U2.3
+ *     - C2.1
+ *   - complex connection[2]:
+ *     - R3.1
+ *     - B
+ *     - U2.2
+ *   - complex connection[3]:
+ *     - U2.6
+ *     - C
+ *     - C2.2
  * ```
  */
 export default () => {
@@ -97,7 +99,7 @@ export default () => {
     .line(-2, 0)
     .mark("vin2")
     .line(0, 0.8)
-    .label("A")
+    .label()
 
   U2.fromMark("vin2").line(0, -1).passive("C1").line(0, -1).label("GND")
 
