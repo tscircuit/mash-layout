@@ -28,7 +28,7 @@ test("getAsciiForNetlistBox - simple resistor with top and bottom pins", () => {
   const result = getAsciiForNetlistBox(0, netlist, transform)
 
   expect(result.join("\n")).toMatchInlineSnapshot(`
-    "          2
+    "           2
       ┌────────────────┐
       │       R1       │  
       └────────────────┘
@@ -93,7 +93,7 @@ test("getAsciiForNetlistBox - component with pins on all sides", () => {
   const result = getAsciiForNetlistBox(0, netlist, transform)
 
   expect(result.join("\n")).toMatchInlineSnapshot(`
-    "         7 8
+    "          7 8
       ┌────────────────┐
      1│      MCU       │6 
      2│                │5 

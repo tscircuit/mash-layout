@@ -45,7 +45,7 @@ export function getAsciiForNetlistBox(
     // Center the pins above the box
     const pinsRowTrimmed = pinsRow.substring(0, BOX_INNER_WIDTH)
     const centerPadding = Math.floor(
-      (BOX_INNER_WIDTH - pinsRowTrimmed.length) / 2 - 1,
+      (BOX_INNER_WIDTH - pinsRowTrimmed.length) / 2,
     )
     const centeredPinsRow = " ".repeat(centerPadding) + pinsRowTrimmed
     output.push(`${" ".repeat(SIDE_PADDING_WIDTH + 1)}${centeredPinsRow}`)
