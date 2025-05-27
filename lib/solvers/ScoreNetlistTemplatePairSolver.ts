@@ -4,8 +4,11 @@ import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
 import { getMatchingIssues } from "lib/matching/getMatchingIssues"
 import { computeSimilarityDistanceFromIssues } from "lib/matching/computeSimilarityDistanceFromIssues"
-import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
-import type { MatchingIssue } from "lib/matching/types"
+import {
+  NormalizationTransform,
+  normalizeNetlist,
+} from "lib/scoring/normalizeNetlist"
+import type { MatchedBox, MatchingIssue } from "lib/matching/types"
 import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import { rotateInputBox } from "lib/matching/matching-utils/rotateInputBox"
@@ -21,9 +24,9 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
 
   outputIssues: Array<MatchingIssue> = []
   outputSimilarityDistance: number = Infinity
-  candidateTransform: any = null
-  targetTransform: any = null
-  matchedBoxes: any[] = []
+  candidateTransform: NormalizationTransform | null = null
+  targetTransform: NormalizationTransform | null = null
+  matchedBoxes: MatchedBox[] = []
 
   constructor(opts: {
     inputNetlist: InputNetlist
