@@ -114,7 +114,9 @@ export const applyCircuitLayoutToCircuitJson = (
   const newSchematicNetLabels: SchematicNetLabel[] = []
   for (const layoutLabel of layout.netLabels) {
     const netIndex = layoutNorm.transform.netIdToNetIndex[layoutLabel.labelId]
-    const compositeNetId = netIndexToCompositeNetId.get(netIndex)!
+    const compositeNetId =
+      netIndexToCompositeNetId.get(netIndex)! ??
+      "ERROR: did not find netId using net index"
     const newLabel: SchematicNetLabel = {
       type: "schematic_net_label",
       schematic_net_label_id: compositeNetId,

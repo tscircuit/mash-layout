@@ -36,6 +36,14 @@ export function findAllMatchedBoxMissingPinShapeOnSide(params: {
     candidateBox.rightPinCount +
     candidateBox.topPinCount +
     candidateBox.bottomPinCount
+  const isCandidatePassive =
+    candidatePinCount === 2 &&
+    Math.max(
+      candidateBox.leftPinCount,
+      candidateBox.rightPinCount,
+      candidateBox.topPinCount,
+      candidateBox.bottomPinCount,
+    ) === 1
   for (let i = 0; i < candidatePinCount; i++) {
     const pinNumber = i + 1
     const pinShapeNetlist = getPinSubsetNetlist({
@@ -60,6 +68,14 @@ export function findAllMatchedBoxMissingPinShapeOnSide(params: {
     targetBox.rightPinCount +
     targetBox.topPinCount +
     targetBox.bottomPinCount
+  const isTargetPassive =
+    targetPinCount === 2 &&
+    Math.max(
+      targetBox.leftPinCount,
+      targetBox.rightPinCount,
+      targetBox.topPinCount,
+      targetBox.bottomPinCount,
+    ) === 1
   for (let i = 0; i < targetPinCount; i++) {
     const targetPinNumber = i + 1
     const targetPinShapeNetlist = getPinSubsetNetlist({
@@ -80,10 +96,12 @@ export function findAllMatchedBoxMissingPinShapeOnSide(params: {
       side: getPinSideIndex(targetPinNumber, targetBox).side,
     }
 
+    const bothArePassives = isTargetPassive && isCandidatePassive
+
     const matchingUnusedCandidatePinIndex = unusedCandidatePinShapes.findIndex(
       (candidatePin) =>
         candidatePin.signature === targetPin.signature &&
-        candidatePin.side === targetPin.side,
+        (candidatePin.side === targetPin.side || bothArePassives),
     )
 
     if (matchingUnusedCandidatePinIndex !== -1) {

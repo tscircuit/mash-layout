@@ -71,17 +71,6 @@ export function getMatchedBoxes(params: {
           targetBoxIndex,
         })
 
-        // Check for missing connections between this candidate box and already matched boxes
-        const connectionIssues = findAllMissingConnectionBetweenBoxes({
-          candidateNetlist,
-          targetNetlist: variationNetlist,
-          candidateBoxIndex,
-          targetBoxIndex,
-          matchedBoxes,
-        })
-
-        issues.push(...connectionIssues)
-
         const score = computeSimilarityDistanceFromIssues(issues)
 
         if (score < bestVariationScore) {

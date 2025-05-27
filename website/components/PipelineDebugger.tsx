@@ -20,7 +20,7 @@ export const PipelineDebugger = (props: {
   const [currentSolver, setCurrentSolver] =
     useState<SchematicLayoutPipelineSolver | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<Error | null>(null)
   const [originalSvgString, setOriginalSvgString] = useState<string | null>(
     null,
   )
@@ -57,7 +57,7 @@ export const PipelineDebugger = (props: {
         setCurrentSolver(solver)
         setSelectedSolver(solver)
       } catch (err) {
-        setError(err instanceof Error ? err.message : String(err))
+        setError(err as Error)
       } finally {
         setIsLoading(false)
       }
@@ -79,7 +79,10 @@ export const PipelineDebugger = (props: {
       <div className="flex items-center justify-center h-screen">
         <div className="text-red-600 text-center">
           <h2>Pipeline Execution Error</h2>
-          <p>{error}</p>
+          <p>{error.toString()}</p>
+          <pre style={{ textAlign: "left", fontSize: 8, marginTop: 16 }}>
+            {(error as Error).stack}
+          </pre>
         </div>
       </div>
     )
