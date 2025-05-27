@@ -145,6 +145,9 @@ export class PinBuilder {
       entrySide === "left" || entrySide === "bottom"
         ? passive.pin(2)
         : passive.pin(1)
+    console.log(
+      `Entering via pin ${entryPin.pinNumber} exiting via pin ${exitPin.pinNumber}`,
+    )
 
     this.lastCreatedLine!.end.ref = exitPin.ref
 
