@@ -2,10 +2,11 @@ import { circuit } from "lib/builder"
 
 /**
  * ```
+ *
  *              0.0         5.0
- *  1.4 A                       E
+ *  1.4 A                       C
  *  1.2 │                       │
- *  1.0 │       U1              │
+ *  1.0 │       U2              │
  *  0.8 │       ┌────────┐      │
  *  0.6 ├───┬───┤1      6├──────┤
  *  0.4 │   │ ┌─┤2      5├      │
@@ -14,15 +15,71 @@ import { circuit } from "lib/builder"
  * -0.2 │   │ ││                │
  * -0.4 ┴   ┴ ││                ┴
  * -0.6       ││
- * -0.8 R2  R3││                R4
+ * -0.8 C1  R3││                C2
  * -1.0       ││
  * -1.2       ││
  * -1.4 ┬   ┬ ││                ┬
  * -1.6 │   │ ││                │
- * -1.8 │  C●─┘D                │
+ * -1.8 │  B●─┘G                │
  * -2.0 │                       │
  * -2.2 │                       │
- * -2.4 B                       G
+ * -2.4 G                       G
+ *
+ * Boxes:
+ *
+ *
+ *                   ┌────────────────┐
+ *          ... ──  1│                │6  ── ...
+ *          ... ──  2│       U2       │5
+ *          ... ──  3│                │4
+ *                   └────────────────┘
+ *
+ *
+ *
+ *                           │
+ *                           2
+ *                   ┌────────────────┐
+ *                   │       C1       │
+ *                   └────────────────┘
+ *                           1
+ *                           │
+ *                          ...
+ *
+ *
+ *
+ *                           │
+ *                           2
+ *                   ┌────────────────┐
+ *                   │       R3       │
+ *                   └────────────────┘
+ *                           1
+ *                           │
+ *                          ...
+ *
+ *
+ *
+ *                           │
+ *                           2
+ *                   ┌────────────────┐
+ *                   │       C2       │
+ *                   └────────────────┘
+ *                           1
+ *                           │
+ *                          ...
+ *
+ * Complex Connections (more than 2 points):
+ *   - Connection 1:
+ *     - Box Pin: U2, Pin 6
+ *     - Net: C
+ *     - Box Pin: U2, Pin 1
+ *     - Net: A
+ *     - Box Pin: C1, Pin 1
+ *     - Net: GND
+ *     - Box Pin: U2, Pin 3
+ *     - Box Pin: C2, Pin 1
+ *     - Box Pin: R3, Pin 1
+ *     - Net: B
+ *     - Box Pin: U2, Pin 2
  * ```
  */
 export default () => {
@@ -38,7 +95,7 @@ export default () => {
     .line(0, 0.8)
     .label()
 
-  U2.fromMark("vin2").line(0, -1).passive("C1").line(0, -1).label()
+  U2.fromMark("vin2").line(0, -1).passive("C1").line(0, -1).label("GND")
 
   U2.fromMark("vin1")
     .line(0, -1)
@@ -49,7 +106,7 @@ export default () => {
     .label()
 
   U2.pin(2).line(-1, 0).intersectAtMark("en1")
-  U2.pin(3).line(-0.5, 0).line(0, -2).label()
+  U2.pin(3).line(-0.5, 0).line(0, -2).label("GND")
 
   U2.pin(6) // OUT
     .line(4, 0)

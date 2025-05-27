@@ -2,6 +2,7 @@ import { circuit } from "lib/builder"
 
 /**
  * ```
+ *
  *      0.0         5.0
  *  3.4         A
  *  3.2         │
@@ -52,6 +53,73 @@ import { circuit } from "lib/builder"
  * -5.8                 │
  * -6.0                 │
  * -6.2                 D
+ *
+ * Boxes:
+ *
+ *
+ *                   ┌────────────────┐
+ *                   │                │7  ── A
+ *                   │                │6  ── ...
+ *                   │                │5  ── ...
+ *                   │       U1       │4  ── ...
+ *                   │                │3  ── ...
+ *                   │                │2  ── ...
+ *                   │                │1  ── ...
+ *                   └────────────────┘
+ *
+ *
+ *                   ┌────────────────┐
+ *                  1│       R2       │2  ── ...
+ *                   └────────────────┘
+ *
+ *
+ *                   ┌────────────────┐
+ *                  1│       R3       │2  ── ...
+ *                   └────────────────┘
+ *
+ *
+ *
+ *                           │
+ *                           2
+ *                   ┌────────────────┐
+ *                   │       R4       │
+ *                   └────────────────┘
+ *                           1
+ *                           │
+ *                          ...
+ *
+ *
+ *
+ *                           │
+ *                           2
+ *                   ┌────────────────┐
+ *                   │       R5       │
+ *                   └────────────────┘
+ *                           1
+ *                           │
+ *                          ...
+ *
+ * Complex Connections (more than 2 points):
+ *   - Connection 1:
+ *     - Box Pin: R2, Pin 2
+ *     - Net: B
+ *     - Box Pin: U1, Pin 6
+ *   - Connection 2:
+ *     - Box Pin: R3, Pin 2
+ *     - Net: C
+ *     - Box Pin: U1, Pin 5
+ *   - Connection 3:
+ *     - Box Pin: R4, Pin 1
+ *     - Net: D
+ *     - Box Pin: U1, Pin 4
+ *   - Connection 4:
+ *     - Box Pin: R5, Pin 1
+ *     - Net: E
+ *     - Box Pin: U1, Pin 3
+ *   - Connection 5:
+ *     - Box Pin: U1, Pin 2
+ *     - Net: F
+ *     - Box Pin: U1, Pin 1
  * ```
  */
 export default () => {
