@@ -21,6 +21,7 @@ export default () => (
         pin5: "PROG",
         pin6: "VBAT"
       }}      
+      connections={{VSS: sel.net.GND}}
     />
 
     <capacitor
@@ -104,6 +105,7 @@ export default () => (
     />
   </board>
 )
+
 
 
       `}
