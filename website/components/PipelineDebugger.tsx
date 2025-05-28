@@ -24,6 +24,7 @@ export const PipelineDebugger = (props: {
   const [originalSvgString, setOriginalSvgString] = useState<string | null>(
     null,
   )
+  const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
 
   useEffect(() => {
     const executeTscircuitCode = async () => {
@@ -43,7 +44,12 @@ export const PipelineDebugger = (props: {
         )
 
         setOriginalSvgString(
-          convertCircuitJsonToSchematicSvg(results.originalCircuitJson),
+          convertCircuitJsonToSchematicSvg(results.originalCircuitJson, {
+            grid: {
+              cellSize: 1,
+              labelCells: true,
+            },
+          }),
         )
 
         const inputNetlist = convertCircuitJsonToInputNetlist(
@@ -53,6 +59,28 @@ export const PipelineDebugger = (props: {
           inputNetlist: inputNetlist,
         })
         await solver.solve()
+
+        // Generate the laid out SVG if we have an adapted template
+        if (solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template) {
+          const { applyCircuitLayoutToCircuitJson } = await import(
+            "lib/circuit-json/applyCircuitLayoutToCircuitJson"
+          )
+
+          const laidOutCircuitJson = applyCircuitLayoutToCircuitJson(
+            results.originalCircuitJson,
+            inputNetlist,
+            solver.adaptPhaseSolver.outputAdaptedTemplates[0].template,
+          )
+
+          setLaidOutSvgString(
+            convertCircuitJsonToSchematicSvg(laidOutCircuitJson, {
+              grid: {
+                cellSize: 1,
+                labelCells: true,
+              },
+            }),
+          )
+        }
 
         setCurrentSolver(solver)
         setSelectedSolver(solver)
@@ -175,14 +203,43 @@ export const PipelineDebugger = (props: {
               )}
             {selectedSolver.constructor.name ===
               "SchematicLayoutPipelineSolver" &&
-              originalSvgString && (
-                <div>
-                  <div
-                    // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-                    dangerouslySetInnerHTML={{
-                      __html: originalSvgString,
-                    }}
-                  />
+              (originalSvgString || laidOutSvgString) && (
+                <div className="mb-5">
+                  <h3 className="text-lg font-semibold mb-3">
+                    Circuit Visualization
+                  </h3>
+                  <div className="space-y-4">
+                    {originalSvgString && (
+                      <div>
+                        <h4 className="text-md font-medium mb-2">
+                          Original Circuit
+                        </h4>
+                        <div className="border border-gray-300 rounded p-2 bg-white">
+                          <div
+                            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                            dangerouslySetInnerHTML={{
+                              __html: originalSvgString,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {laidOutSvgString && (
+                      <div>
+                        <h4 className="text-md font-medium mb-2">
+                          After Layout Applied
+                        </h4>
+                        <div className="border border-gray-300 rounded p-2 bg-white">
+                          <div
+                            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                            dangerouslySetInnerHTML={{
+                              __html: laidOutSvgString,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             <PipelineDebuggerSolverVisualizations solver={selectedSolver} />
