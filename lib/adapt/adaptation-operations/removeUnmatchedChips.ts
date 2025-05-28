@@ -45,13 +45,13 @@ export function removeUnmatchedChips(params: {
     ).find(([_, boxIndex]) => boxIndex === match.targetBoxIndex)?.[0],
   }))
 
+
   // Remove chips that exist in template but not in target
   for (const chip of template.chips) {
     const wasMatched = matchedBoxes.some(
       (match) => match.candidateChipId === chip.chipId,
     )
     if (wasMatched) continue
-
     const op: EditOperation = {
       type: "remove_chip",
       chipId: chip.chipId,

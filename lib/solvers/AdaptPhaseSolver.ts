@@ -65,7 +65,7 @@ export class AdaptPhaseSolver extends BaseSolver {
 
       // Current solver is done, collect results and move to next
       this.clearActiveSubSolver()
-      
+
       if (currentSolver.solved && currentSolver.outputAdaptedTemplate) {
         this.outputAdaptedTemplates.push({
           template: currentSolver.outputAdaptedTemplate,

@@ -130,10 +130,6 @@ test("template2", () => {
             {
               "netId": "B",
             },
-            {
-              "boxId": "U1",
-              "pinNumber": 6,
-            },
           ],
         },
         {
@@ -144,10 +140,6 @@ test("template2", () => {
             },
             {
               "netId": "C",
-            },
-            {
-              "boxId": "U1",
-              "pinNumber": 5,
             },
           ],
         },
@@ -160,10 +152,6 @@ test("template2", () => {
             {
               "netId": "D",
             },
-            {
-              "boxId": "U1",
-              "pinNumber": 4,
-            },
           ],
         },
         {
@@ -174,10 +162,6 @@ test("template2", () => {
             },
             {
               "netId": "E",
-            },
-            {
-              "boxId": "U1",
-              "pinNumber": 3,
             },
           ],
         },
@@ -193,6 +177,54 @@ test("template2", () => {
             {
               "boxId": "U1",
               "pinNumber": 1,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxId": "U1",
+              "pinNumber": 6,
+            },
+            {
+              "boxId": "R2",
+              "pinNumber": 1,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxId": "U1",
+              "pinNumber": 5,
+            },
+            {
+              "boxId": "R3",
+              "pinNumber": 1,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxId": "U1",
+              "pinNumber": 4,
+            },
+            {
+              "boxId": "R4",
+              "pinNumber": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxId": "U1",
+              "pinNumber": 3,
+            },
+            {
+              "boxId": "R5",
+              "pinNumber": 2,
             },
           ],
         },
@@ -229,38 +261,34 @@ test("template2", () => {
         F (Net #1)
         U1.pin1 (Box #0)
       pin3
-        R5.pin1 (Box #3)
-        E (Net #2)
+        R5.pin2 (Box #2)
       pin4
-        R4.pin1 (Box #5)
-        D (Net #4)
+        R4.pin2 (Box #4)
       pin5
-        R3.pin2 (Box #7)
-        C (Net #6)
+        R3.pin1 (Box #6)
       pin6
-        R2.pin2 (Box #9)
-        B (Net #8)
+        R2.pin1 (Box #8)
       pin7
         A (Net #10)
-    R5 (Box #3)
+    R5 (Box #2)
       pin1
-        E (Net #2)
+        E (Net #3)
+      pin2
         U1.pin3 (Box #0)
-      pin2
-    R4 (Box #5)
+    R4 (Box #4)
       pin1
-        D (Net #4)
+        D (Net #5)
+      pin2
         U1.pin4 (Box #0)
-      pin2
-    R3 (Box #7)
+    R3 (Box #6)
       pin1
-      pin2
-        C (Net #6)
         U1.pin5 (Box #0)
-    R2 (Box #9)
-      pin1
       pin2
-        B (Net #8)
-        U1.pin6 (Box #0)"
+        C (Net #7)
+    R2 (Box #8)
+      pin1
+        U1.pin6 (Box #0)
+      pin2
+        B (Net #9)"
   `)
 })

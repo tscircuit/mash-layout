@@ -44,7 +44,7 @@ async function main() {
         continue
       }
 
-      const asciiArt = `\n${chipBuilderInstance.toString()}\n\n${chipBuilderInstance.getReadableNetlist()}`
+      const asciiArt = `\n${chipBuilderInstance.toString()}`
       let newDocstring = ""
       if (asciiArt && asciiArt.length > 0) {
         const commentLines = asciiArt

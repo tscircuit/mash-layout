@@ -29,12 +29,12 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-             -5.0         0.0         5.0      
+             -5.0         0.0         5.0  
      0.8               U1
-     0.6               ┌────────┐
-     0.4 X─R2──────────┤1      4├──────W
-     0.2         Y─────┤2      3├──────Z
-     0.0               └────────┘
+     0.6               ┌────┐
+     0.4 X─R2──────────┤1  4├──────W
+     0.2         Y─────┤2  3├──────Z
+     0.0               └────┘
     "
   `)
 
@@ -42,12 +42,12 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
     `\n${solver.matchPhaseSolver?.outputMatchedTemplates[0]?.template.toString()}\n`,
   ).toMatchInlineSnapshot(`
     "
-               -5.0         0.0         5.0      
+               -5.0         0.0         5.0  
      0.8                 U1
-     0.6                 ┌────────┐
-     0.4 ┌───────────────┤1      4├──────D
-     0.2 │         ┌─────┤2      3├──────C
-     0.0 │         │     └────────┘
+     0.6                 ┌────┐
+     0.4 ┌───────────────┤1  4├──────D
+     0.2 │         ┌─────┤2  3├──────C
+     0.0 │         │     └────┘
     -0.2 │         │
     -0.4 │         │
     -0.6 │         │
@@ -78,12 +78,12 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
     `\n${solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template.toString()}\n`,
   ).toMatchInlineSnapshot(`
     "
-               -5.0         0.0         5.0      
+               -5.0         0.0         5.0  
      0.8                 U1
-     0.6                 ┌────────┐
-     0.4 ┌───────────────┤1      4├──────D
-     0.2 │         ┌─────┤2      3├──────C
-     0.0 │         │     └────────┘
+     0.6                 ┌────┐
+     0.4 ┌───────────────┤1  4├──────D
+     0.2 │         ┌─────┤2  3├──────C
+     0.0 │         │     └────┘
     -0.2 │         │
     -0.4 │         │
     -0.6 │         │
@@ -116,27 +116,24 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
     "Boxes:
 
 
-                      ┌────────────────┐
-             ... ──  1│       U1       │4  ── D         
-               B ──  2│                │3  ── C         
-                      └────────────────┘
+                          ┌────────────────┐
+                R2.2 ──  1│       U1       │4  ── D             
+                   B ──  2│                │3  ── C             
+                          └────────────────┘
 
 
-                                       
-                              │        
-                              2        
-                      ┌────────────────┐
-                      │       R2       │                
-                      └────────────────┘
-                              1        
-                              │        
-                             ...       
+                                 U1.1      
+                                  │        
+                                  2        
+                          ┌────────────────┐
+                          │       R2       │                    
+                          └────────────────┘
+                                  1        
+                                  │        
+                                  A        
 
     Complex Connections (more than 2 points):
-      - Connection 1:
-        - Box Pin: R2, Pin 1
-        - Net: A
-        - Box Pin: U1, Pin 1"
+      (none)"
   `)
 
   expect(
@@ -146,12 +143,12 @@ test("SchematicLayoutPipelineSolver can process a CircuitBuilder netlist", () =>
   expect(
     solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template.toString(),
   ).toMatchInlineSnapshot(`
-    "           -5.0         0.0         5.0      
+    "           -5.0         0.0         5.0  
      0.8                 U1
-     0.6                 ┌────────┐
-     0.4 ┌───────────────┤1      4├──────D
-     0.2 │         ┌─────┤2      3├──────C
-     0.0 │         │     └────────┘
+     0.6                 ┌────┐
+     0.4 ┌───────────────┤1  4├──────D
+     0.2 │         ┌─────┤2  3├──────C
+     0.0 │         │     └────┘
     -0.2 │         │
     -0.4 │         │
     -0.6 │         │

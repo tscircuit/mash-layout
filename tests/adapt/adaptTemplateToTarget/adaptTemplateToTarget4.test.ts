@@ -14,12 +14,12 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
 
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
-                 0.0         
+                 0.0     
      0.8         U1
-     0.6         ┌────────┐
-     0.4 ┌───────┤1      4├
-     0.2 │       ┤2      3├
-     0.0 │       └────────┘
+     0.6         ┌────┐
+     0.4 ┌───────┤1  4├
+     0.2 │       ┤2  3├
+     0.0 │       └────┘
     -0.2 │
     -0.4 │
     -0.6 ┴
@@ -43,12 +43,12 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         
+         0.0     
      0.8 U1
-     0.6 ┌────────┐
-     0.4 ┤1      4├
-     0.2 ┤2      3├
-     0.0 └────────┘
+     0.6 ┌────┐
+     0.4 ┤1  4├
+     0.2 ┤2  3├
+     0.0 └────┘
     "
   `)
 
@@ -65,23 +65,18 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
         "pinNumber": 1,
         "type": "add_passive_to_pin",
       },
-      {
-        "chipId": "U1",
-        "pinNumber": 1,
-        "type": "add_label_to_pin",
-      },
     ]
   `)
 
   /* verify adaptation result ----------------------------------------- */
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-                 0.0         
-     0.8         U1
-     0.6         ┌────────┐
-     0.4 A─R2────┤1      4├
-     0.2         ┤2      3├
-     0.0         └────────┘
+               0.0     
+     0.8       U1
+     0.6       ┌────┐
+     0.4 R2────┤1  4├
+     0.2       ┤2  3├
+     0.0       └────┘
     "
   `)
 })

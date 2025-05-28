@@ -141,10 +141,18 @@ test("areNetlistsCompatible with template4", () => {
             },
             {
               "boxIndex": 1,
-              "pinNumber": 1,
+              "pinNumber": 2,
             },
             {
               "netIndex": 1,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 1,
+              "pinNumber": 1,
             },
             {
               "netIndex": 2,
@@ -215,10 +223,18 @@ test("areNetlistsCompatible with template4", () => {
             },
             {
               "boxIndex": 1,
-              "pinNumber": 1,
+              "pinNumber": 2,
             },
             {
               "netIndex": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 1,
+              "pinNumber": 1,
             },
             {
               "netIndex": 3,

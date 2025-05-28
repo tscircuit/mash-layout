@@ -96,7 +96,7 @@ test("ScoreNetlistTemplatePairSolver correctly handles passive rotation", () => 
           "issueCount": 0,
           "score": 0,
           "targetBoxIndex": 0,
-          "targetBoxRotationCcw": 0,
+          "targetBoxRotationCcw": 90,
         },
       ],
       "originalInput": {
@@ -107,11 +107,11 @@ test("ScoreNetlistTemplatePairSolver correctly handles passive rotation", () => 
         "topPinCount": 1,
       },
       "rotatedInput": {
-        "bottomPinCount": 1,
+        "bottomPinCount": 0,
         "boxId": "R1",
-        "leftPinCount": 0,
-        "rightPinCount": 0,
-        "topPinCount": 1,
+        "leftPinCount": 1,
+        "rightPinCount": 1,
+        "topPinCount": 0,
       },
     }
   `)

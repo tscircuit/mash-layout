@@ -38,9 +38,9 @@ test("areNetlistsCompatible2: template has extra connections/components not used
     "Boxes:
 
 
-                      ┌────────────────┐
-                      │       U1       │1  ── A         
-                      └────────────────┘
+                          ┌────────────────┐
+                          │       U1       │1  ── A             
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
       (none)"
@@ -49,10 +49,10 @@ test("areNetlistsCompatible2: template has extra connections/components not used
     "Boxes:
 
 
-                      ┌────────────────┐
-                      │       U1       │2  ── E         
-                      │                │1  ── A         
-                      └────────────────┘
+                          ┌────────────────┐
+                          │       U1       │2  ── E             
+                          │                │1  ── A             
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
       (none)"

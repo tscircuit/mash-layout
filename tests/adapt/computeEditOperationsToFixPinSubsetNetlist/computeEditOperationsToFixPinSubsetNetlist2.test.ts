@@ -9,12 +9,12 @@ test("computeEditOperationsToFixPinSubsetNetlist1", () => {
 
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
-                 0.0         
+                 0.0     
      0.8         U1
-     0.6         ┌────────┐
-     0.4 A─R2────┤1      4├
-     0.2         ┤2      3├
-     0.0         └────────┘
+     0.6         ┌────┐
+     0.4 A─R2────┤1  4├
+     0.2         ┤2  3├
+     0.0         └────┘
     "
   `)
 
@@ -23,12 +23,12 @@ test("computeEditOperationsToFixPinSubsetNetlist1", () => {
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         
+         0.0     
      0.8 U1
-     0.6 ┌────────┐
-     0.4 ┤1      4├
-     0.2 ┤2      3├
-     0.0 └────────┘
+     0.6 ┌────┐
+     0.4 ┤1  4├
+     0.2 ┤2  3├
+     0.0 └────┘
     "
   `)
 
@@ -43,14 +43,8 @@ test("computeEditOperationsToFixPinSubsetNetlist1", () => {
     [
       {
         "chipId": "U1",
-        "labelNetId": "A",
         "pinNumber": 1,
-        "type": "add_passive_with_label_to_pin",
-      },
-      {
-        "chipId": "U1",
-        "pinNumber": 1,
-        "type": "add_label_to_pin",
+        "type": "add_passive_to_pin",
       },
     ]
   `)

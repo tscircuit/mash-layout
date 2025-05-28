@@ -47,7 +47,7 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
   }
 
   getStatsSummary() {
-    return `${this.stats.similarityDistance.toFixed(1)} SD ・ ${this.stats.issueCount} issues`
+    return `${this.stats.similarityDistance.toFixed(1)} SD ・ ${this.stats.issueCount} issues ・ ${this.template.name}`
   }
 
   _step() {
@@ -238,6 +238,8 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
             true,
           ),
           rotation: match.targetBoxRotationCcw,
+          issueCount: match.issues.length,
+          details: match,
         })),
       },
       {

@@ -1,8 +1,10 @@
 import { CircuitBuilder } from "./CircuitBuilder"
 
-export function circuit(opts: {
-  name?: string
-} = {}): CircuitBuilder {
+export function circuit(
+  opts: {
+    name?: string
+  } = {},
+): CircuitBuilder {
   return new CircuitBuilder({
     name: opts.name,
   })

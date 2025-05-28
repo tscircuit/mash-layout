@@ -229,6 +229,7 @@ export default () => (
       ],
       "connections": [
         {
+          "_connectivityNetId": "connectivity_net0",
           "connectedPorts": [
             {
               "boxId": "U1",
@@ -238,37 +239,51 @@ export default () => (
               "boxId": "R1",
               "pinNumber": 1,
             },
+            {
+              "netId": "connectivity_net0",
+            },
           ],
         },
         {
+          "_connectivityNetId": "connectivity_net21",
+          "connectedPorts": [
+            {
+              "boxId": "U1",
+              "pinNumber": 2,
+            },
+          ],
+        },
+        {
+          "_connectivityNetId": "connectivity_net3",
           "connectedPorts": [
             {
               "boxId": "U1",
               "pinNumber": 3,
             },
+          ],
+        },
+        {
+          "_connectivityNetId": "connectivity_net22",
+          "connectedPorts": [
             {
-              "netId": "GND1,U1.3",
+              "boxId": "U1",
+              "pinNumber": 4,
             },
           ],
         },
         {
+          "_connectivityNetId": "connectivity_net6",
           "connectedPorts": [
             {
               "boxId": "R1",
               "pinNumber": 2,
-            },
-            {
-              "netId": "GND2,R1.2",
             },
           ],
         },
       ],
       "nets": [
         {
-          "netId": "GND1,U1.3",
-        },
-        {
-          "netId": "GND2,R1.2",
+          "netId": "connectivity_net0",
         },
       ],
     }
@@ -280,18 +295,21 @@ export default () => (
     "Boxes:
 
 
-                      ┌────────────────┐
-            R1.1 ──  1│       U1       │4               
-                     2│                │3  ── GND1,U1.3 
-                      └────────────────┘
+                          ┌────────────────┐
+      R1.1,connecti… ──  1│       U1       │4                   
+                         2│                │3                   
+                          └────────────────┘
 
 
-                      ┌────────────────┐
-            U1.1 ──  1│       R1       │2  ── GND2,R1.2 
-                      └────────────────┘
+                          ┌────────────────┐
+      U1.1,connecti… ──  1│       R1       │2                   
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
-      (none)"
+      - complex connection[0]:
+        - U1.1
+        - R1.1
+        - connectivity_net0"
   `)
 
   const C = (mode?: "cj" | "ascii") => {
@@ -309,12 +327,12 @@ export default () => (
 
   expect(`\n${C("ascii").toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0         5.0
+             0.0      
      0.8     U1
-     0.6     ┌────────┐
-     0.4 R2──┤1      4├
-     0.2 │   ┤2      3├B
-     0.0 │   └────────┘
+     0.6     ┌────┐
+     0.4 R2──┤1  4├
+     0.2 │   ┤2  3├B
+     0.0 │   └────┘
     -0.2 │
     -0.4 │
     -0.6 A
@@ -353,6 +371,17 @@ export default () => (
                 "boxIndex": 1,
                 "pinNumber": 1,
               },
+              {
+                "netIndex": 0,
+              },
+            ],
+          },
+          {
+            "connectedPorts": [
+              {
+                "boxIndex": 0,
+                "pinNumber": 2,
+              },
             ],
           },
           {
@@ -361,8 +390,13 @@ export default () => (
                 "boxIndex": 0,
                 "pinNumber": 3,
               },
+            ],
+          },
+          {
+            "connectedPorts": [
               {
-                "netIndex": 1,
+                "boxIndex": 0,
+                "pinNumber": 4,
               },
             ],
           },
@@ -372,18 +406,12 @@ export default () => (
                 "boxIndex": 1,
                 "pinNumber": 2,
               },
-              {
-                "netIndex": 0,
-              },
             ],
           },
         ],
         "nets": [
           {
             "netIndex": 0,
-          },
-          {
-            "netIndex": 1,
           },
         ],
       },
@@ -392,9 +420,15 @@ export default () => (
           "R1": 1,
           "U1": 0,
         },
+        "boxIndexToBoxId": {
+          "0": "U1",
+          "1": "R1",
+        },
         "netIdToNetIndex": {
-          "GND1,U1.3": 1,
-          "GND2,R1.2": 0,
+          "connectivity_net0": 0,
+        },
+        "netIndexToNetId": {
+          "0": "connectivity_net0",
         },
       },
     }
@@ -428,10 +462,7 @@ export default () => (
               },
               {
                 "boxIndex": 1,
-                "pinNumber": 1,
-              },
-              {
-                "netIndex": 0,
+                "pinNumber": 2,
               },
             ],
           },
@@ -443,6 +474,17 @@ export default () => (
               },
               {
                 "netIndex": 1,
+              },
+            ],
+          },
+          {
+            "connectedPorts": [
+              {
+                "boxIndex": 1,
+                "pinNumber": 1,
+              },
+              {
+                "netIndex": 0,
               },
             ],
           },
@@ -461,9 +503,17 @@ export default () => (
           "R2": 1,
           "U1": 0,
         },
+        "boxIndexToBoxId": {
+          "0": "U1",
+          "1": "R2",
+        },
         "netIdToNetIndex": {
           "A": 0,
           "B": 1,
+        },
+        "netIndexToNetId": {
+          "0": "A",
+          "1": "B",
         },
       },
     }

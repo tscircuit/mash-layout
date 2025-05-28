@@ -40,32 +40,6 @@ import { circuit } from "lib/builder"
  * -4.0             │
  * -4.2             │
  * -4.4             B
- *
- * Boxes:
- *
- *
- *                       ┌────────────────┐
- *                       │                │3  ── A,R2.2
- *                       │       U1       │2  ── C
- *                       │                │1  ── D
- *                       └────────────────┘
- *
- *
- *                             U1.3,A
- *                               │
- *                               2
- *                       ┌────────────────┐
- *                       │       R2       │
- *                       └────────────────┘
- *                               1
- *                               │
- *                               B
- *
- * Complex Connections (more than 2 points):
- *   - complex connection[0]:
- *     - U1.3
- *     - A
- *     - R2.2
  * ```
  */
 export default () => {

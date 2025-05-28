@@ -57,7 +57,8 @@ export const convertCircuitJsonToInputNetlist = (
             pin_number: source_port.pin_number!,
             connectivity_net_id,
           }
-        }),
+        })
+        .filter(({ schematic_port }) => Boolean(schematic_port)),
     }))
 
   const boxes: Box[] = []

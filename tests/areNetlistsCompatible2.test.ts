@@ -201,10 +201,10 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
     "Boxes:
 
 
-                      ┌────────────────┐
-                      │       U1       │2               
-                      │                │1               
-                      └────────────────┘
+                          ┌────────────────┐
+                          │       U1       │2                   
+                          │                │1                   
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
       (none)"
@@ -214,10 +214,10 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
     "Boxes:
 
 
-                      ┌────────────────┐
-                      │       U1       │2               
-                      │                │1  ── A         
-                      └────────────────┘
+                          ┌────────────────┐
+                          │       U1       │2                   
+                          │                │1  ── A             
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
       (none)"
