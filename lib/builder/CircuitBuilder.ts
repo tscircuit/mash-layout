@@ -29,11 +29,23 @@ export class CircuitBuilder {
 
   private autoLabelCounter = 1
 
+  public name: string
+
+  constructor(
+    opts: {
+      name?: string
+    } = {},
+  ) {
+    this.name = opts.name ?? "Circuit"
+  }
+
   /* ------------------------------------------------------------------ *
    * Deep-clone without JSON.stringify (avoids cyclic-structure error)  *
    * ------------------------------------------------------------------ */
   clone(): CircuitBuilder {
-    const clone = new CircuitBuilder()
+    const clone = new CircuitBuilder({
+      name: this.name,
+    })
 
     /* 1.  basic scalar state */
     clone.autoLabelCounter = this.autoLabelCounter

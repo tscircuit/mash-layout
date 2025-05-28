@@ -1,6 +1,10 @@
 import { CircuitBuilder } from "./CircuitBuilder"
 
-export function circuit(): CircuitBuilder {
-  return new CircuitBuilder()
+export function circuit(opts: {
+  name?: string
+} = {}): CircuitBuilder {
+  return new CircuitBuilder({
+    name: opts.name,
+  })
 }
 export default circuit
