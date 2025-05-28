@@ -26,6 +26,8 @@ export const PipelineDebugger = (props: {
     null,
   )
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
+  const [inputNetlist, setInputNetlist] = useState<any>(null)
+  const [originalCircuitJson, setOriginalCircuitJson] = useState<any>(null)
 
   useEffect(() => {
     const executeTscircuitCode = async () => {
@@ -47,6 +49,10 @@ export const PipelineDebugger = (props: {
         const inputNetlist = convertCircuitJsonToInputNetlist(
           results.originalCircuitJson,
         )
+        
+        // Store for download buttons
+        setInputNetlist(inputNetlist)
+        setOriginalCircuitJson(results.originalCircuitJson)
         const solver = new SchematicLayoutPipelineSolver({
           inputNetlist: inputNetlist,
         })
@@ -85,6 +91,19 @@ export const PipelineDebugger = (props: {
 
     executeTscircuitCode()
   }, [props.tscircuitCode])
+
+  const downloadJson = (data: any, filename: string) => {
+    const json = JSON.stringify(data, null, 2)
+    const blob = new Blob([json], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
 
   if (isLoading) {
     return (
@@ -190,6 +209,30 @@ export const PipelineDebugger = (props: {
                         )}
                       </tbody>
                     </table>
+                  </div>
+                </div>
+              )}
+            {selectedSolver.constructor.name === "SchematicLayoutPipelineSolver" && 
+              (inputNetlist || originalCircuitJson) && (
+                <div className="bg-gray-50 p-4 rounded mb-5">
+                  <h3 className="text-lg font-semibold mb-3">Downloads</h3>
+                  <div className="space-x-2">
+                    {inputNetlist && (
+                      <button
+                        onClick={() => downloadJson(inputNetlist, 'input-netlist.json')}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                      >
+                        Download Input Netlist
+                      </button>
+                    )}
+                    {originalCircuitJson && (
+                      <button
+                        onClick={() => downloadJson(originalCircuitJson, 'original-circuit.json')}
+                        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                      >
+                        Download Original Circuit JSON
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
