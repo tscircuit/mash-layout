@@ -1,8 +1,8 @@
 import type { InputNetlist } from "lib/input-types"
 import type { CircuitBuilder } from "lib/builder"
 import { BaseSolver } from "./BaseSolver"
-import { adaptTemplateToTarget } from "lib/adapt/adaptTemplateToTarget"
 import type { EditOperation } from "lib/adapt/EditOperation"
+import { AdaptTemplateToNetlistSolver } from "./AdaptTemplateToNetlistSolver"
 
 /**
  * Adapts matched templates to fit their target netlists by applying edit operations.
@@ -13,7 +13,8 @@ export class AdaptPhaseSolver extends BaseSolver {
     netlist: InputNetlist
   }>
 
-  currentTemplateIndex = 0
+  adaptationSolvers: Array<AdaptTemplateToNetlistSolver> = []
+  currentAdaptationIndex = 0
 
   outputAdaptedTemplates: Array<{
     template: CircuitBuilder
@@ -29,31 +30,55 @@ export class AdaptPhaseSolver extends BaseSolver {
   }) {
     super()
     this.matchedTemplates = opts.matchedTemplates
+
+    // Create adaptation solvers for each matched template
+    this.adaptationSolvers = this.matchedTemplates.map(
+      (match) =>
+        new AdaptTemplateToNetlistSolver({
+          inputTemplate: match.template,
+          targetNetlist: match.netlist,
+        }),
+    )
+  }
+
+  getConstructorParams() {
+    return {
+      matchedTemplates: this.matchedTemplates,
+    }
+  }
+
+  computeProgress() {
+    if (this.adaptationSolvers.length === 0) return 1
+    return this.currentAdaptationIndex / this.adaptationSolvers.length
   }
 
   _step() {
-    if (this.currentTemplateIndex >= this.matchedTemplates.length) {
-      this.solved = true
+    // If we haven't finished adapting all templates, continue adapting
+    if (this.currentAdaptationIndex < this.adaptationSolvers.length) {
+      const currentSolver = this.adaptationSolvers[this.currentAdaptationIndex]!
+
+      if (!currentSolver.solved && !currentSolver.failed) {
+        this.setActiveSubSolver(currentSolver)
+        currentSolver.step()
+        return
+      }
+
+      // Current solver is done, collect results and move to next
+      this.clearActiveSubSolver()
+      
+      if (currentSolver.solved && currentSolver.outputAdaptedTemplate) {
+        this.outputAdaptedTemplates.push({
+          template: currentSolver.outputAdaptedTemplate,
+          netlist: this.matchedTemplates[this.currentAdaptationIndex]!.netlist,
+          appliedOperations: currentSolver.outputAppliedOperations,
+        })
+      }
+
+      this.currentAdaptationIndex++
       return
     }
 
-    const currentMatch = this.matchedTemplates[this.currentTemplateIndex]!
-
-    // Clone the template to avoid mutating the original
-    const templateClone = currentMatch.template.clone()
-
-    // Adapt the template to match the target netlist
-    const { appliedOperations } = adaptTemplateToTarget({
-      template: templateClone,
-      target: currentMatch.netlist,
-    })
-
-    this.outputAdaptedTemplates.push({
-      template: templateClone,
-      netlist: currentMatch.netlist,
-      appliedOperations,
-    })
-
-    this.currentTemplateIndex++
+    // All adaptations are complete
+    this.solved = true
   }
 }

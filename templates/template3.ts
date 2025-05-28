@@ -81,7 +81,9 @@ import { circuit } from "lib/builder"
  * ```
  */
 export default () => {
-  const C = circuit()
+  const C = circuit({
+    name: "Template 3",
+  })
   const U1 = C.chip().rightpins(3)
 
   U1.pin(3).line(4, 0).mark("m0").line(3, 0).mark("m1").line(0, 1).label()

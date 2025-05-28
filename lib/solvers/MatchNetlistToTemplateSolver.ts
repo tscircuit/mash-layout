@@ -4,6 +4,7 @@ import type { CircuitBuilder } from "lib/builder"
 import { TEMPLATE_FNS } from "templates/index"
 import { ScoreNetlistTemplatePairSolver } from "./ScoreNetlistTemplatePairSolver"
 import type { MatchingIssue } from "lib/matching/types"
+import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
 
 /**
  * Find the best match template for a netlist by scoring all templates
@@ -100,5 +101,28 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
     }
 
     this.solved = true
+  }
+
+  visualize() {
+    return [
+      {
+        title: "inputNetlist",
+        ascii: getReadableNetlist(this.inputNetlist),
+      },
+      {
+        title: "bestMatchTemplate",
+        ascii: this.outputBestMatchTemplate?.toString() || "No suitable match found",
+      },
+      {
+        title: "templateScores",
+        table: this.templateMatchResults.map((result, index) => ({
+          template_index: index,
+          template_name: result.template.name || `Template ${index}`,
+          similarity_distance: result.similarityDistance,
+          issue_count: result.issues.length,
+          is_best_match: result.template === this.outputBestMatchTemplate,
+        })),
+      },
+    ]
   }
 }
