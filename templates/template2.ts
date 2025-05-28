@@ -4,72 +4,51 @@ import { circuit } from "lib/builder"
  * ```
  *
  *      0.0         5.0
- *  3.4         A
- *  3.2         │
- *  3.0         │
- *  2.8         │
- *  2.6         │
- *  2.4         │
- *  2.2         │ ┌───R2──B
- *  2.0         │ │
- *  1.8 U1      │ │
- *  1.6 ┌────┐  │ │
+ *  2.4         V
+ *  2.2         │
+ *  2.0         │
+ *  1.8 J1      │
+ *  1.6 ┌────┐  │ ┌───R9──D
  *  1.4 │   7├──┘ │
  *  1.2 │   6├────┘
- *  1.0 │   5├────────R3──C
- *  0.8 │   4├──────────┐
- *  0.6 │   3├────┐     │
- *  0.4 │   2├┐   │     │
- *  0.2 │   1├●   │     │
- *  0.0 └────┘│   │     │
- * -0.2       │   │     │
- * -0.4       │   │     │
- * -0.6       │   │     │
- * -0.8       │   │     │
- * -1.0       │   │     │
- * -1.2       │   │     │
- * -1.4       │   │     │
- * -1.6       │   │     │
- * -1.8       │   │     │
- * -2.0       │   │     │
- * -2.2       │   │     │
- * -2.4       │   ┴     │
- * -2.6       │         │
- * -2.8       │   R5    │
- * -3.0       │         │
- * -3.2       │         ┴
- * -3.4       │   ┬
- * -3.6       F   │     R4
- * -3.8           │
- * -4.0           │
- * -4.2           │     ┬
- * -4.4           │     │
- * -4.6           │     │
- * -4.8           │     │
- * -5.0           │     │
- * -5.2           │     │
- * -5.4           E     │
- * -5.6                 │
- * -5.8                 │
- * -6.0                 │
- * -6.2                 D
+ *  1.0 │   5├────────R1──D
+ *  0.8 │   4├────────┐
+ *  0.6 │   3├────┐   │
+ *  0.4 │   2├┐   │   │
+ *  0.2 │   1├●   ┴   ┴
+ *  0.0 └────┘│
+ * -0.2       │   R1  R2
+ * -0.4       │
+ * -0.6       │
+ * -0.8       │   ┬   ┬
+ * -1.0       │   │   │
+ * -1.2       │   │   │
+ * -1.4       │   │   │
+ * -1.6       │   │   │
+ * -1.8       G   G   G
  * ```
  */
 export default () => {
   const C = circuit({
     name: "Template 2",
   })
-  const U1 = C.chip().rightpins(7)
+  const J1 = C.chip("J1").rightpins(7)
 
-  U1.pin(7).line(2, 0).line(0, 2).label()
-  U1.pin(6).line(3, 0).line(0, 1).line(2, 0).passive().line(2, 0).label()
-  U1.pin(5).line(5, 0).passive().line(2, 0).label()
-  U1.pin(4).line(6, 0).line(0, -4).passive().line(0, -2).label()
-  U1.pin(3).line(3, 0).line(0, -3).passive().line(0, -2).label()
-  U1.pin(2).line(1, 0).line(0, -4).label() // Default label "L"
+  J1.pin(7).line(2, 0).line(0, 1).label("VUSB")
+  J1.pin(6)
+    .line(3, 0)
+    .line(0, 0.4)
+    .line(2, 0)
+    .passive("R9")
+    .line(2, 0)
+    .label("DP")
+  J1.pin(5).line(5, 0).passive("R10").line(2, 0).label("DM")
+  J1.pin(4).line(5, 0).line(0, -0.6).passive("R2").line(0, -1).label("GND")
+  J1.pin(3).line(3, 0).line(0, -0.4).passive("R1").line(0, -1).label("GND")
+  J1.pin(2).line(1, 0).line(0, -2.2).label("GND") // Default label "L"
 
   // Pin 7 connects to the horizontal segment of Pin 6's trace
-  U1.pin(1).line(1, 0).intersect()
+  J1.pin(1).line(1, 0).intersect()
 
   return C
 }

@@ -8,7 +8,7 @@ export default () => (
       import { sel } from "tscircuit"
 
 export default () => (
-  <board>
+  <board routingDisabled>
     <chip
       footprint="pinrow7"
       name="J1"
