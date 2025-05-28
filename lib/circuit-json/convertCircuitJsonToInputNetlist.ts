@@ -1,7 +1,7 @@
 import type { CircuitJson } from "circuit-json"
 import type { InputNetlist, Box, Connection, Net, Side } from "lib/input-types"
 import { getFullConnectivityMapFromCircuitJson } from "circuit-json-to-connectivity-map"
-import { cju } from "@tscircuit/circuit-json-util"
+import { cju, getElementById } from "@tscircuit/circuit-json-util"
 
 const directionToSide = (direction: "left" | "right" | "up" | "down"): Side => {
   switch (direction) {
@@ -61,7 +61,7 @@ export const convertCircuitJsonToInputNetlist = (
     }))
 
   const boxes: Box[] = []
-  const connections: Array<Connection & { _netId: string }> = []
+  const connections: Array<Connection & { _connectivityNetId: string }> = []
 
   for (const {
     source_component,
@@ -80,12 +80,16 @@ export const convertCircuitJsonToInputNetlist = (
       const side = directionToSide(schematic_port.facing_direction!)
       box[`${side}PinCount`]++
 
-      const netId = connMap.getNetConnectedToId(source_port.source_port_id)!
-      let connection = connections.find((c) => c._netId === netId)
+      const connectivityNetId = connMap.getNetConnectedToId(
+        source_port.source_port_id,
+      )!
+      let connection = connections.find(
+        (c) => c._connectivityNetId === connectivityNetId,
+      )
 
       if (!connection) {
         connection = {
-          _netId: netId,
+          _connectivityNetId: connectivityNetId,
           connectedPorts: [],
         }
         connections.push(connection)
@@ -99,11 +103,39 @@ export const convertCircuitJsonToInputNetlist = (
     boxes.push(box)
   }
 
-  console.log({ boxes, connections })
+  const nets: Net[] = []
+
+  // For each connection, find the best name for the net and make it the
+  // netId, then append it to the connection
+  for (const connection of connections) {
+    if (connection.connectedPorts.length < 2) continue
+    // The initial netId is just the connectivity_net_id, which is mostly
+    // useless, we want to rename it to something the user specified in a
+    // source_net or schematic_net_label
+    let netId: string = connection._connectivityNetId
+
+    const elementsConnectedToNet = connMap
+      .getIdsConnectedToNet(netId)
+      .map((id) => getElementById(circuitJson, id))
+
+    for (const element of elementsConnectedToNet) {
+      if (element?.type === "source_net") {
+        netId = element.name
+        break
+      }
+    }
+
+    connection.connectedPorts.push({
+      netId,
+    })
+    nets.push({
+      netId,
+    })
+  }
 
   return {
     boxes,
     connections,
-    nets: [],
+    nets,
   }
 }

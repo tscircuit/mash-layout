@@ -1,10 +1,11 @@
-import type { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipelineSolver"
+import { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipelineSolver"
 import type { BaseSolver } from "lib/solvers/BaseSolver"
 import { PipelineDebuggerSidebar } from "./PipelineDebuggerSidebar"
 import { PipelineDebuggerSolverVisualizations } from "./PipelineDebuggerSolverVisualizations"
 import { useState, useEffect } from "react"
 import { testTscircuitCodeForLayout } from "tests/tscircuit/testTscircuitCodeForLayout"
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
+import { convertCircuitJsonToInputNetlist } from "lib/circuit-json/convertCircuitJsonToInputNetlist"
 
 /**
  * This component debugs the Schematic Layout Pipeline.
@@ -33,15 +34,6 @@ export const PipelineDebugger = (props: {
 
       try {
         const results = await testTscircuitCodeForLayout(props.tscircuitCode)
-
-        // Extract the solver from the execution
-        // We need to re-run the solver to get the full pipeline state
-        const { SchematicLayoutPipelineSolver } = await import(
-          "lib/solvers/SchematicLayoutPipelineSolver"
-        )
-        const { convertCircuitJsonToInputNetlist } = await import(
-          "lib/circuit-json/convertCircuitJsonToInputNetlist"
-        )
 
         setOriginalSvgString(
           convertCircuitJsonToSchematicSvg(results.originalCircuitJson, {
