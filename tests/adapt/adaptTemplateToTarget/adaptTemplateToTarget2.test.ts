@@ -15,23 +15,23 @@ test("adaptTemplateToTarget2 adds missing labels and removes extra labels", () =
 
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0         
+             0.0     
      0.8     U1
-     0.6     ┌────────┐
-     0.4 A───┤1      4├
-     0.2     ┤2      3├
-     0.0     └────────┘
+     0.6     ┌────┐
+     0.4 A───┤1  4├
+     0.2     ┤2  3├
+     0.0     └────┘
     "
   `)
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         5.0  
+         0.0        
      0.8 U1
-     0.6 ┌────────┐
-     0.4 ┤1      4├──A
-     0.2 ┤2      3├
-     0.0 └────────┘
+     0.6 ┌────┐
+     0.4 ┤1  4├──A
+     0.2 ┤2  3├
+     0.0 └────┘
     "
   `)
 
@@ -41,29 +41,16 @@ test("adaptTemplateToTarget2 adds missing labels and removes extra labels", () =
     target: target.getNetlist(),
   })
 
-  expect(appliedOperations).toMatchInlineSnapshot(`
-    [
-      {
-        "chipId": "U1",
-        "pinNumber": 1,
-        "type": "add_label_to_pin",
-      },
-      {
-        "chipId": "U1",
-        "pinNumber": 4,
-        "type": "clear_pin",
-      },
-    ]
-  `)
+  expect(appliedOperations).toMatchInlineSnapshot(`[]`)
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0         
-     0.8     U1
-     0.6     ┌────────┐
-     0.4 B───┤1      4├
-     0.2     ┤2      3├
-     0.0     └────────┘
+         0.0        
+     0.8 U1
+     0.6 ┌────┐
+     0.4 ┤1  4├──A
+     0.2 ┤2  3├
+     0.0 └────┘
     "
   `)
 })

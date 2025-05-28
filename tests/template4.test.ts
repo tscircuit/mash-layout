@@ -74,6 +74,14 @@ test("template4", () => {
             },
             {
               "boxId": "R2",
+              "pinNumber": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxId": "R2",
               "pinNumber": 1,
             },
             {

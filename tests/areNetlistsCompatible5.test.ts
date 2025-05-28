@@ -45,10 +45,10 @@ test("areNetlistsCompatible2: input connection not satisfiable by template's con
     "Boxes:
 
 
-                      ┌────────────────┐
-                      │       U1       │2  ── A         
-                      │                │1               
-                      └────────────────┘
+                          ┌────────────────┐
+                          │       U1       │2  ── A             
+                          │                │1                   
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
       (none)"
@@ -57,16 +57,16 @@ test("areNetlistsCompatible2: input connection not satisfiable by template's con
     "Boxes:
 
 
-                      ┌────────────────┐
-                      │       U1       │2  ── ...       
-                      │                │1  ── ...       
-                      └────────────────┘
+                          ┌────────────────┐
+                          │       U1       │2  ── A,U1.1        
+                          │                │1  ── U1.2,A        
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
-      - Connection 1:
-        - Box Pin: U1, Pin 2
-        - Net: A
-        - Box Pin: U1, Pin 1"
+      - complex connection[0]:
+        - U1.2
+        - A
+        - U1.1"
   `)
 
   expect(

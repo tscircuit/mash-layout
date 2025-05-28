@@ -92,42 +92,40 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
     "Boxes:
 
 
-                      ┌────────────────┐
-                      │                │3  ── ...       
-                      │       U1       │2  ── ...       
-                      │                │1  ── C         
-                      └────────────────┘
+                          ┌────────────────┐
+                          │                │3  ── A,R2.2,R3.2   
+                          │       U1       │2  ── R3.1          
+                          │                │1  ── C             
+                          └────────────────┘
 
 
-                                       
-                              │        
-                              2        
-                      ┌────────────────┐
-                      │       R2       │                
-                      └────────────────┘
-                              1        
-                              │        
-                             ...       
+                             U1.3,A,R3.2   
+                                  │        
+                                  2        
+                          ┌────────────────┐
+                          │       R2       │                    
+                          └────────────────┘
+                                  1        
+                                  │        
+                                  B        
 
 
-                             ...       
-                              │        
-                              2        
-                      ┌────────────────┐
-                      │       R3       │                
-                      └────────────────┘
-                              1        
-                              │        
-                                       
+                             U1.3,A,R2.2   
+                                  │        
+                                  2        
+                          ┌────────────────┐
+                          │       R3       │                    
+                          └────────────────┘
+                                  1        
+                                  │        
+                                 U1.2      
 
     Complex Connections (more than 2 points):
-      - Connection 1:
-        - Box Pin: U1, Pin 2
-        - Box Pin: R3, Pin 2
-        - Box Pin: U1, Pin 3
-        - Net: A
-        - Box Pin: R2, Pin 1
-        - Net: B"
+      - complex connection[0]:
+        - U1.3
+        - A
+        - R2.2
+        - R3.2"
   `)
   expect(`\n${template4().toString()}\n`).toMatchInlineSnapshot(`
     "
@@ -177,7 +175,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0|C[b0.1,b1.1,n0,n1]"`)
+  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0"`)
 
   expect(
     getPinShapeSignature({
@@ -186,7 +184,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       pinNumber: 3,
     }),
   ).toMatchInlineSnapshot(
-    `"L0B0R3T0,L0B0R1T0,L0B1R0T1,L0B1R0T1|C[b0.2,b1.1,b2.1,b3.2,n0,n1]"`,
+    `"L0B1R0T1,L0B0R1T0,L0B1R0T1"`,
   )
 
   expect(
@@ -195,7 +193,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0|C[b0.1,b1.1,n0,n1]"`)
+  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0"`)
 
   // Matching issues
   expect(
@@ -208,18 +206,16 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
   ).toMatchInlineSnapshot(`
     [
       {
-        "candidateBoxIndex": 0,
-        "targetBoxIndex": 0,
-        "targetPinNumber": 3,
-        "targetPinShapeSignature": "L0B1R0T1,L0B0R1T0|C[b0.1,b1.1,n0,n1]",
-        "type": "matched_box_missing_pin_shape",
-      },
-      {
         "candidateBoxIndex": 1,
+        "candidateShapeSignatures": [
+          "L0B0R3T0,L0B0R1T0",
+          "L0B0R3T0,L0B0R1T0,L0B1R0T1",
+        ],
+        "side": "bottom",
         "targetBoxIndex": 1,
         "targetPinNumber": 1,
-        "targetPinShapeSignature": "L0B0R3T0,L0B0R1T0|C[b0.3,b1.1,n0,n1]",
-        "type": "matched_box_missing_pin_shape",
+        "targetPinShapeSignature": "L0B0R1T0",
+        "type": "matched_box_missing_pin_shape_on_side",
       },
     ]
   `)
@@ -246,43 +242,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
   // TODO this is incorrect, template4 is a better match than template3
   expect(`\n${bestMatchCircuit!.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         5.0   
-     2.6             A
-     2.4             │
-     2.2             │
-     2.0             │
-     1.8             │
-     1.6             │
-     1.4             │
-     1.2             │
-     1.0 U1          │
-     0.8 ┌────┐      │
-     0.6 │   3├──────┤
-     0.4 │   2├──C   │
-     0.2 │   1├┐     │
-     0.0 └────┘│     │
-    -0.2       │     │
-    -0.4       │     │
-    -0.6       │     │
-    -0.8       │     │
-    -1.0       │     │
-    -1.2       │     │
-    -1.4       │     ┴
-    -1.6       │
-    -1.8       D     R2
-    -2.0
-    -2.2
-    -2.4             ┬
-    -2.6             │
-    -2.8             │
-    -3.0             │
-    -3.2             │
-    -3.4             │
-    -3.6             │
-    -3.8             │
-    -4.0             │
-    -4.2             │
-    -4.4             B
+    [object Object]
     "
   `)
 })

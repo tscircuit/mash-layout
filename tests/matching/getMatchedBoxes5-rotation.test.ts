@@ -18,9 +18,9 @@ test("getMatchedBoxes5 - correctly handles passive rotation", () => {
     "Boxes:
 
 
-                      ┌────────────────┐
-                     1│       R1       │2               
-                      └────────────────┘
+                          ┌────────────────┐
+                         1│       R1       │2                   
+                          └────────────────┘
 
     Complex Connections (more than 2 points):
       (none)"
@@ -29,15 +29,15 @@ test("getMatchedBoxes5 - correctly handles passive rotation", () => {
     "Boxes:
 
 
-                                       
-                              │        
-                              2        
-                      ┌────────────────┐
-                      │       C1       │                
-                      └────────────────┘
-                              1        
-                              │        
-                                       
+                                           
+                                  │        
+                                  2        
+                          ┌────────────────┐
+                          │       C1       │                    
+                          └────────────────┘
+                                  1        
+                                  │        
+                                           
 
     Complex Connections (more than 2 points):
       (none)"
@@ -62,15 +62,15 @@ test("getMatchedBoxes5 - correctly handles passive rotation", () => {
     "Boxes:
 
 
-                                       
-                              │        
-                              2        
-                      ┌────────────────┐
-                      │       R1       │                
-                      └────────────────┘
-                              1        
-                              │        
-                                       
+                                           
+                                  │        
+                                  2        
+                          ┌────────────────┐
+                          │       R1       │                    
+                          └────────────────┘
+                                  1        
+                                  │        
+                                           
 
     Complex Connections (more than 2 points):
       (none)"

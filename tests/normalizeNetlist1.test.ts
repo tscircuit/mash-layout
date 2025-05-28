@@ -54,9 +54,17 @@ test("normalizeNetlist should correctly normalize a simple netlist", () => {
         "chipA": 0,
         "res1": 1,
       },
+      "boxIndexToBoxId": {
+        "0": "chipA",
+        "1": "res1",
+      },
       "netIdToNetIndex": {
         "N1": 0,
         "N2": 1,
+      },
+      "netIndexToNetId": {
+        "0": "N1",
+        "1": "N2",
       },
     }
   `)

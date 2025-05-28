@@ -14,6 +14,7 @@ export function fixMatchedBoxPinCounts(params: {
 } {
   const { template, target, matchedBoxes } = params
   const appliedOperations: EditOperation[] = []
+  
   const targetBoxes = target.boxes
   // Make every box have the right number of pins per side
   for (const { candidateChipId, targetChipId } of matchedBoxes) {
@@ -83,5 +84,6 @@ export function fixMatchedBoxPinCounts(params: {
       }
     }
   }
+  
   return { appliedOperations }
 }

@@ -21,27 +21,27 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
 
   expect(`\n${target.toString()}\n`).toMatchInlineSnapshot(`
     "
-           -5.0         0.0         5.0    
+           -5.0         0.0         5.0
      0.8             U1
-     0.6             ┌────────┐
-     0.4 A─R2────────┤1      4├────D
-     0.2         B───┤2      3├────C
-     0.0             └────────┘
+     0.6             ┌────┐
+     0.4 A─R2────────┤1  4├────D
+     0.2         B───┤2  3├────C
+     0.0             └────┘
     "
   `)
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         5.0         10.0         
+         0.0         5.0         10.0     
      1.6                     U2
-     1.4                     ┌────────┐
-     1.2               ──────┤1      2├
-     1.0                     └────────┘
+     1.4                     ┌────┐
+     1.2               ──────┤1  2├
+     1.0                     └────┘
      0.8 U1
-     0.6 ┌────────┐
-     0.4 ┤1      4├─────
-     0.2 ┤2      3├
-     0.0 └────────┘
+     0.6 ┌────┐
+     0.4 ┤1  4├─────
+     0.2 ┤2  3├
+     0.0 └────┘
     "
   `)
 
@@ -57,11 +57,6 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
         "chipId": "U1",
         "pinNumber": 1,
         "type": "add_passive_to_pin",
-      },
-      {
-        "chipId": "U1",
-        "pinNumber": 1,
-        "type": "add_label_to_pin",
       },
       {
         "chipId": "U1",
@@ -88,12 +83,12 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
   /* verify adaptation result ----------------------------------------- */
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
-                 0.0         5.0        
-     0.8         U1
-     0.6         ┌────────┐
-     0.4 A─R3────┤1      4├────────D
-     0.2     B───┤2      3├──C
-     0.0         └────────┘
+               0.0         5.0    
+     0.8       U1
+     0.6       ┌────┐
+     0.4 R3────┤1  4├────────C
+     0.2   A───┤2  3├──B
+     0.0       └────┘
     "
   `)
 

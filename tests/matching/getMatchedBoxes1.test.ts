@@ -23,7 +23,7 @@ test("getMatchedBoxes should correctly match boxes between two netlists", () => 
 
   expect(`\n${targetCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         
+         0.0     
      5.6 U2
      5.4 ┌────┐
      5.2 ┤1   │
@@ -49,20 +49,20 @@ test("getMatchedBoxes should correctly match boxes between two netlists", () => 
      1.2
      1.0
      0.8 U1
-     0.6 ┌────────┐
-     0.4 ┤1      3├
-     0.2 ┤2       │
-     0.0 └────────┘
+     0.6 ┌────┐
+     0.4 ┤1  3├
+     0.2 ┤2   │
+     0.0 └────┘
     "
   `)
   expect(`\n${candidateCircuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         
+         0.0     
      5.8 U2
-     5.6 ┌────────┐
-     5.4 ┤1      3├
-     5.2 ┤2       │
-     5.0 └────────┘
+     5.6 ┌────┐
+     5.4 ┤1  3├
+     5.2 ┤2   │
+     5.0 └────┘
      4.8
      4.6
      4.4
