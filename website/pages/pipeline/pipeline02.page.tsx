@@ -5,7 +5,7 @@ import { PipelineDebugger } from "website/components/PipelineDebugger"
 export default () => (
   <PipelineDebugger
     tscircuitCode={`
-      import { sel } from "tscircuit"
+import { sel } from "tscircuit"
 
 export default () => (
   <board routingDisabled>
@@ -30,13 +30,13 @@ export default () => (
       connections={{
         GND: sel.net.GND,
         SHLD: sel.net.SHLD,
-        VBUS: sel.net.V_USB
+        VBUS: sel.net.VUSB
       }}
     />
     <resistor
       resistance="22"
       name="R9"
-      schX={3}
+      schX={3.4}
       schY={1}
       connections={{
         pin1: sel.J1.DP,
@@ -46,7 +46,7 @@ export default () => (
     <resistor
       resistance="22"
       name="R10"
-      schX={3}
+      schX={3.4}
       schY={0.2}
       connections={{
         pin1: sel.J1.DM,
@@ -59,7 +59,7 @@ export default () => (
       schX={2}
       schY={-2}
       schRotation="270deg"
-      connections={{ pin2: sel.net.DM, pin1: sel.J1.CC1 }}
+      connections={{ pin2: sel.net.DM, pin1: sel.J1.CC2 }}
     />
     <resistor
       resistance="5.1k"
@@ -69,12 +69,13 @@ export default () => (
       schY={-2}
       schRotation="270deg"
       connections={{
-        pin1: sel.J1.CC2,
+        pin1: sel.J1.CC1,
         pin2: sel.net.GND,
       }}
     />
   </board>
 )
+
 
       `}
   />

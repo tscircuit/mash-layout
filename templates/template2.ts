@@ -8,10 +8,10 @@ import { circuit } from "lib/builder"
  *  2.2         │
  *  2.0         │
  *  1.8 J1      │
- *  1.6 ┌────┐  │ ┌───R9──D
+ *  1.6 ┌────┐  │ ┌───R9P
  *  1.4 │   7├──┘ │
  *  1.2 │   6├────┘
- *  1.0 │   5├────────R1──D
+ *  1.0 │   5├────────R0M
  *  0.8 │   4├────────┐
  *  0.6 │   3├────┐   │
  *  0.4 │   2├┐   │   │
@@ -40,9 +40,9 @@ export default () => {
     .line(0, 0.4)
     .line(2, 0)
     .passive("R9")
-    .line(2, 0)
-    .label("DP")
-  J1.pin(5).line(5, 0).passive("R10").line(2, 0).label("DM")
+    .line(1, 0)
+    .label("P")
+  J1.pin(5).line(5, 0).passive("R0").line(1, 0).label("M")
   J1.pin(4).line(5, 0).line(0, -0.6).passive("R2").line(0, -1).label("GND")
   J1.pin(3).line(3, 0).line(0, -0.4).passive("R1").line(0, -1).label("GND")
   J1.pin(2).line(1, 0).line(0, -2.2).label("GND") // Default label "L"
