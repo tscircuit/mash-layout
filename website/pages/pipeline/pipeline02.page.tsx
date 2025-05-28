@@ -29,7 +29,7 @@ export default () => (
       }}
       connections={{
         GND: sel.net.GND,
-        SHLD: sel.net.SHLD,
+        SHLD: sel.net.GND,
         VBUS: sel.net.VUSB
       }}
     />
@@ -50,7 +50,7 @@ export default () => (
       schY={0.2}
       connections={{
         pin1: sel.J1.DM,
-        pin2: sel.net.GND
+        pin2: sel.net.DM
       }}
     />
     <resistor
@@ -59,7 +59,7 @@ export default () => (
       schX={2}
       schY={-2}
       schRotation="270deg"
-      connections={{ pin2: sel.net.DM, pin1: sel.J1.CC2 }}
+      connections={{ pin2: sel.net.GND, pin1: sel.J1.CC2 }}
     />
     <resistor
       resistance="5.1k"
@@ -75,7 +75,6 @@ export default () => (
     />
   </board>
 )
-
 
       `}
   />

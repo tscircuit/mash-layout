@@ -111,7 +111,8 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
       },
       {
         title: "bestMatchTemplate",
-        ascii: this.outputBestMatchTemplate?.toString() || "No suitable match found",
+        ascii:
+          this.outputBestMatchTemplate?.toString() || "No suitable match found",
       },
       {
         title: "templateScores",

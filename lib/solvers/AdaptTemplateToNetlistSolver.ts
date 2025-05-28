@@ -86,7 +86,9 @@ export class AdaptTemplateToNetlistSolver extends BaseSolver {
       },
       {
         title: "adaptedTemplateReadableNetlist",
-        ascii: this.outputAdaptedTemplate?.getReadableNetlist() || "No adapted template",
+        ascii:
+          this.outputAdaptedTemplate?.getReadableNetlist() ||
+          "No adapted template",
       },
     ]
   }

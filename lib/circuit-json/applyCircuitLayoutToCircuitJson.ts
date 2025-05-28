@@ -79,10 +79,19 @@ export const applyCircuitLayoutToCircuitJson = (
       const { pin_number } = schematicPort
       // Use getPinLocation to get the static position of the pin,
       // as layoutChip.pin(pin_number!).x/y might have been modified by fluent calls.
-      const { x: layoutX, y: layoutY } = layoutChip.getPinLocation(pin_number!)
-      schematicPort.center = {
-        x: layoutX,
-        y: layoutY,
+      try {
+        const { x: layoutX, y: layoutY } = layoutChip.getPinLocation(
+          pin_number!,
+        )
+        schematicPort.center = {
+          x: layoutX,
+          y: layoutY,
+        }
+      } catch (e) {
+        console.error(
+          `Error getting pin location for ${sourceComponent.name} pin ${pin_number}:`,
+          e,
+        )
       }
     }
 

@@ -238,6 +238,8 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
             true,
           ),
           rotation: match.targetBoxRotationCcw,
+          issueCount: match.issues.length,
+          details: match,
         })),
       },
       {
