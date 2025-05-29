@@ -77,7 +77,7 @@ export const applyCircuitLayoutToCircuitJson = (
 
     for (const schematicPort of schematicPorts) {
       const { true_ccw_index, pin_number } = schematicPort
-      const pn = true_ccw_index ?? pin_number
+      const pn = true_ccw_index !== undefined ? true_ccw_index + 1 : pin_number
 
       // Use getPinLocation to get the static position of the pin,
       // as layoutChip.pin(pin_number!).x/y might have been modified by fluent calls.

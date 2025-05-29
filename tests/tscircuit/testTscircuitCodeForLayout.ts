@@ -78,5 +78,6 @@ export const testTscircuitCodeForLayout = async (
     adaptedTemplate,
     originalSchematicSvg,
     laidOutSchematicSvg,
+    solver,
   }
 }
