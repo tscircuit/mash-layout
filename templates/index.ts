@@ -21,5 +21,7 @@ export const TEMPLATE_FN_MAP = {
   template9,
 } satisfies Record<string, () => CircuitBuilder>
 
+export type CircuitTemplateFn = () => CircuitBuilder
+
 export const TEMPLATE_FNS: Array<() => CircuitBuilder> =
   Object.values(TEMPLATE_FN_MAP)

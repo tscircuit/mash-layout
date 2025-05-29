@@ -1,7 +1,7 @@
 import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
 import type { CircuitBuilder } from "lib/builder"
-import { TEMPLATE_FNS } from "templates/index"
+import { CircuitTemplateFn, TEMPLATE_FNS } from "templates/index"
 import { ScoreNetlistTemplatePairSolver } from "./ScoreNetlistTemplatePairSolver"
 import type { MatchingIssue } from "lib/matching/types"
 import { getReadableNetlist } from "lib/netlist/getReadableNetlist"
@@ -26,10 +26,12 @@ export class MatchNetlistToTemplateSolver extends BaseSolver {
 
   constructor(opts: {
     inputNetlist: InputNetlist
+    templateFns?: Array<CircuitTemplateFn>
   }) {
     super()
     this.inputNetlist = opts.inputNetlist
-    this.templates = TEMPLATE_FNS.map((fn) => fn())
+    this.templates =
+      opts.templateFns?.map((fn) => fn()) || TEMPLATE_FNS.map((fn) => fn())
 
     // Create scoring solvers for each template
     this.scoringSolvers = this.templates.map(

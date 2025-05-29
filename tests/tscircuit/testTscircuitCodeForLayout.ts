@@ -6,9 +6,13 @@ import { CircuitBuilder } from "lib/builder"
 import { applyCircuitLayoutToCircuitJson } from "lib/circuit-json/applyCircuitLayoutToCircuitJson"
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
 import { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipelineSolver"
+import { CircuitTemplateFn } from "templates/index"
 
 export const testTscircuitCodeForLayout = async (
   code: string,
+  opts: {
+    templateFns?: CircuitTemplateFn[]
+  } = {},
 ): Promise<{
   originalCircuitJson: any
   laidOutCircuitJson: any
@@ -17,6 +21,7 @@ export const testTscircuitCodeForLayout = async (
   adaptedTemplate: CircuitBuilder
   originalSchematicSvg: string
   laidOutSchematicSvg: string
+  solver: SchematicLayoutPipelineSolver
 }> => {
   const circuitJson: any[] = await runTscircuitCode(code)
 
@@ -32,6 +37,7 @@ export const testTscircuitCodeForLayout = async (
 
   const solver = new SchematicLayoutPipelineSolver({
     inputNetlist: inputNetlist,
+    templateFns: opts.templateFns,
   })
   await solver.solve()
 
