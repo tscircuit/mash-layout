@@ -175,7 +175,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0"`)
+  ).toMatchInlineSnapshot(`"B1T1,R1"`)
 
   expect(
     getPinShapeSignature({
@@ -183,7 +183,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0,L0B1R0T1"`)
+  ).toMatchInlineSnapshot(`"B1T1,R1,B1T1"`)
 
   expect(
     getPinShapeSignature({
@@ -191,7 +191,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0"`)
+  ).toMatchInlineSnapshot(`"B1T1,R1"`)
 
   // Matching issues
   expect(
@@ -206,13 +206,13 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       {
         "candidateBoxIndex": 1,
         "candidateShapeSignatures": [
-          "L0B0R3T0,L0B0R1T0",
-          "L0B0R3T0,L0B0R1T0,L0B1R0T1",
+          "R3,R1",
+          "R3,R1,B1T1",
         ],
         "side": "bottom",
         "targetBoxIndex": 1,
         "targetPinNumber": 1,
-        "targetPinShapeSignature": "L0B0R1T0",
+        "targetPinShapeSignature": "R1",
         "type": "matched_box_missing_pin_shape_on_side",
       },
     ]

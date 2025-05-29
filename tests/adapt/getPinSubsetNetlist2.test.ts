@@ -32,12 +32,12 @@ test("getPinSubsetNetlist should reflect connections made via .intersect()", () 
       chipId: "U1",
       pinNumber: 1,
     }),
-  ).toMatchInlineSnapshot(`"L0B0R1T0"`)
+  ).toMatchInlineSnapshot(`"R1"`)
   expect(
     getPinShapeSignature({
       netlist,
       chipId: "U1",
       pinNumber: 2,
     }),
-  ).toMatchInlineSnapshot(`"L1B0R1T0,L0B0R1T0"`)
+  ).toMatchInlineSnapshot(`"L1R1,R1"`)
 })
