@@ -75,7 +75,9 @@ export default () => (
     laidOutSchematicSvg,
   } = await testTscircuitCodeForLayout(tscircuitCode)
 
-  expect(`\nMatched Template:\n${matchedTemplate.toString()}\n`).toMatchInlineSnapshot(`
+  expect(
+    `\nMatched Template:\n${matchedTemplate.toString()}\n`,
+  ).toMatchInlineSnapshot(`
     "
     Matched Template:
          0.0         5.0      
@@ -104,7 +106,9 @@ export default () => (
     "
   `)
 
-  expect(`\nAdapted Template:\n${adaptedTemplate.toString()}\n`).toMatchInlineSnapshot(`
+  expect(
+    `\nAdapted Template:\n${adaptedTemplate.toString()}\n`,
+  ).toMatchInlineSnapshot(`
     "
     Adapted Template:
          0.0         5.0      
@@ -133,6 +137,12 @@ export default () => (
     "
   `)
 
-  expect(originalSchematicSvg).toMatchSvgSnapshot(import.meta.path, "tscircuit7-original")
-  expect(laidOutSchematicSvg).toMatchSvgSnapshot(import.meta.path, "tscircuit7-layout")
+  expect(originalSchematicSvg).toMatchSvgSnapshot(
+    import.meta.path,
+    "tscircuit7-original",
+  )
+  expect(laidOutSchematicSvg).toMatchSvgSnapshot(
+    import.meta.path,
+    "tscircuit7-layout",
+  )
 })

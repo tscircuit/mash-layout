@@ -2,9 +2,7 @@ import { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipeli
 import React from "react"
 import { PipelineDebugger } from "website/components/PipelineDebugger"
 
-export default () => (
-  <PipelineDebugger
-    tscircuitCode={`
+export const pipeline04Code = `
 import { sel } from "tscircuit"
 
 export default () => (
@@ -52,7 +50,7 @@ export default () => (
 
     {/* Status LED */}
     <diode
-      name="D1"
+      name="D4"
       footprint="0603"
       schX={-3}
       schY={-2}
@@ -105,9 +103,6 @@ export default () => (
     />
   </board>
 )
+`
 
-
-
-      `}
-  />
-)
+export default () => <PipelineDebugger tscircuitCode={pipeline04Code} />

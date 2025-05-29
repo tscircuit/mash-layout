@@ -2,6 +2,7 @@ import { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipeli
 import type { BaseSolver } from "lib/solvers/BaseSolver"
 import { PipelineDebuggerSidebar } from "./PipelineDebuggerSidebar"
 import { PipelineDebuggerSolverVisualizations } from "./PipelineDebuggerSolverVisualizations"
+import { ForceDirectedNetlistGraph } from "./ForceDirectedNetlistGraph"
 import { useState, useEffect } from "react"
 import { testTscircuitCodeForLayout } from "tests/tscircuit/testTscircuitCodeForLayout"
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
@@ -27,6 +28,8 @@ export const PipelineDebugger = (props: {
   )
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
   const [inputNetlist, setInputNetlist] = useState<any>(null)
+  const [matchedTemplateNetlist, setMatchedTemplateNetlist] =
+    useState<any>(null)
   const [originalCircuitJson, setOriginalCircuitJson] = useState<any>(null)
 
   useEffect(() => {
@@ -49,14 +52,21 @@ export const PipelineDebugger = (props: {
         const inputNetlist = convertCircuitJsonToInputNetlist(
           results.originalCircuitJson,
         )
-        
+
         // Store for download buttons
         setInputNetlist(inputNetlist)
         setOriginalCircuitJson(results.originalCircuitJson)
         const solver = new SchematicLayoutPipelineSolver({
           inputNetlist: inputNetlist,
         })
-        await solver.solve()
+        solver.solve()
+
+        // Get matched template netlist if available
+        if (solver.matchPhaseSolver?.outputMatchedTemplates[0]?.template) {
+          const matchedTemplateNetlist =
+            solver.matchPhaseSolver.outputMatchedTemplates[0].template.getNetlist()
+          setMatchedTemplateNetlist(matchedTemplateNetlist)
+        }
 
         // Generate the laid out SVG if we have an adapted template
         if (solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template) {
@@ -94,9 +104,9 @@ export const PipelineDebugger = (props: {
 
   const downloadJson = (data: any, filename: string) => {
     const json = JSON.stringify(data, null, 2)
-    const blob = new Blob([json], { type: 'application/json' })
+    const blob = new Blob([json], { type: "application/json" })
     const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
+    const a = document.createElement("a")
     a.href = url
     a.download = filename
     document.body.appendChild(a)
@@ -212,14 +222,18 @@ export const PipelineDebugger = (props: {
                   </div>
                 </div>
               )}
-            {selectedSolver.constructor.name === "SchematicLayoutPipelineSolver" && 
+            {selectedSolver.constructor.name ===
+              "SchematicLayoutPipelineSolver" &&
               (inputNetlist || originalCircuitJson) && (
                 <div className="bg-gray-50 p-4 rounded mb-5">
                   <h3 className="text-lg font-semibold mb-3">Downloads</h3>
                   <div className="space-x-2">
                     {inputNetlist && (
                       <button
-                        onClick={() => downloadJson(inputNetlist, 'input-netlist.json')}
+                        type="button"
+                        onClick={() =>
+                          downloadJson(inputNetlist, "input-netlist.json")
+                        }
                         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                       >
                         Download Input Netlist
@@ -227,7 +241,13 @@ export const PipelineDebugger = (props: {
                     )}
                     {originalCircuitJson && (
                       <button
-                        onClick={() => downloadJson(originalCircuitJson, 'original-circuit.json')}
+                        type="button"
+                        onClick={() =>
+                          downloadJson(
+                            originalCircuitJson,
+                            "original-circuit.json",
+                          )
+                        }
                         className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
                       >
                         Download Original Circuit JSON
@@ -238,12 +258,39 @@ export const PipelineDebugger = (props: {
               )}
             {selectedSolver.constructor.name ===
               "SchematicLayoutPipelineSolver" &&
-              (originalSvgString || laidOutSvgString) && (
+              (originalSvgString ||
+                laidOutSvgString ||
+                inputNetlist ||
+                matchedTemplateNetlist) && (
                 <div className="mb-5">
                   <h3 className="text-lg font-semibold mb-3">
                     Circuit Visualization
                   </h3>
                   <div className="space-y-4">
+                    {inputNetlist && (
+                      <div>
+                        <h4 className="text-md font-medium mb-2">
+                          Input Netlist Graph
+                        </h4>
+                        <ForceDirectedNetlistGraph
+                          netlist={inputNetlist}
+                          width={800}
+                          height={400}
+                        />
+                      </div>
+                    )}
+                    {matchedTemplateNetlist && (
+                      <div>
+                        <h4 className="text-md font-medium mb-2">
+                          Matched Template Netlist Graph
+                        </h4>
+                        <ForceDirectedNetlistGraph
+                          netlist={matchedTemplateNetlist}
+                          width={800}
+                          height={400}
+                        />
+                      </div>
+                    )}
                     {originalSvgString && (
                       <div>
                         <h4 className="text-md font-medium mb-2">
@@ -277,6 +324,36 @@ export const PipelineDebugger = (props: {
                   </div>
                 </div>
               )}
+            {selectedSolver.constructor.name ===
+              "ScoreNetlistTemplatePairSolver" && (
+              <div className="mb-5">
+                <h3 className="text-lg font-semibold mb-3">
+                  Netlist Comparison
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-md font-medium mb-2">
+                      Input Netlist Graph
+                    </h4>
+                    <ForceDirectedNetlistGraph
+                      netlist={(selectedSolver as any).inputNetlist}
+                      width={800}
+                      height={400}
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-md font-medium mb-2">
+                      Template Netlist Graph
+                    </h4>
+                    <ForceDirectedNetlistGraph
+                      netlist={(selectedSolver as any).template.getNetlist()}
+                      width={800}
+                      height={400}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
             <PipelineDebuggerSolverVisualizations solver={selectedSolver} />
           </div>
         ) : currentSolver ? (

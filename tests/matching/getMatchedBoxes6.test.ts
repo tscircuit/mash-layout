@@ -2,214 +2,366 @@ import { test, expect } from "bun:test"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import template7 from "templates/template7"
+import { getNetlistFromTscircuitCode } from "tests/tscircuit/getNetlistFromTscircuitCode"
+import { pipeline04Code } from "website/pages/pipeline/pipeline04.page"
 
-const inputNetlist = {
-  boxes: [
-    {
-      boxId: "U1",
-      leftPinCount: 3,
-      rightPinCount: 3,
-      topPinCount: 0,
-      bottomPinCount: 0,
-    },
-    {
-      boxId: "C3",
-      leftPinCount: 0,
-      rightPinCount: 0,
-      topPinCount: 1,
-      bottomPinCount: 1,
-    },
-    {
-      boxId: "C4",
-      leftPinCount: 0,
-      rightPinCount: 0,
-      topPinCount: 1,
-      bottomPinCount: 1,
-    },
-    {
-      boxId: "D1",
-      leftPinCount: 0,
-      rightPinCount: 0,
-      topPinCount: 1,
-      bottomPinCount: 1,
-    },
-    {
-      boxId: "R5",
-      leftPinCount: 0,
-      rightPinCount: 0,
-      topPinCount: 1,
-      bottomPinCount: 1,
-    },
-    {
-      boxId: "R6",
-      leftPinCount: 0,
-      rightPinCount: 0,
-      topPinCount: 1,
-      bottomPinCount: 1,
-    },
-    {
-      boxId: "J2",
-      leftPinCount: 2,
-      rightPinCount: 0,
-      topPinCount: 0,
-      bottomPinCount: 0,
-    },
-  ],
-  connections: [
-    {
-      _connectivityNetId: "connectivity_net13",
-      connectedPorts: [
-        {
-          boxId: "U1",
-          pinNumber: 1,
-        },
-        {
-          boxId: "C3",
-          pinNumber: 1,
-        },
-        {
-          boxId: "D1",
-          pinNumber: 1,
-        },
-        {
-          netId: "connectivity_net13",
-        },
-      ],
-    },
-    {
-      _connectivityNetId: "connectivity_net18",
-      connectedPorts: [
-        {
-          boxId: "U1",
-          pinNumber: 3,
-        },
-        {
-          boxId: "R5",
-          pinNumber: 1,
-        },
-        {
-          netId: "connectivity_net18",
-        },
-      ],
-    },
-    {
-      _connectivityNetId: "connectivity_net28",
-      connectedPorts: [
-        {
-          boxId: "U1",
-          pinNumber: 4,
-        },
-        {
-          boxId: "C3",
-          pinNumber: 2,
-        },
-        {
-          boxId: "C4",
-          pinNumber: 2,
-        },
-        {
-          boxId: "R6",
-          pinNumber: 2,
-        },
-        {
-          boxId: "J2",
-          pinNumber: 2,
-        },
-        {
-          netId: "GND",
-        },
-      ],
-    },
-    {
-      _connectivityNetId: "connectivity_net21",
-      connectedPorts: [
-        {
-          boxId: "U1",
-          pinNumber: 5,
-        },
-        {
-          boxId: "R6",
-          pinNumber: 1,
-        },
-        {
-          netId: "connectivity_net21",
-        },
-      ],
-    },
-    {
-      _connectivityNetId: "connectivity_net26",
-      connectedPorts: [
-        {
-          boxId: "U1",
-          pinNumber: 6,
-        },
-        {
-          boxId: "C4",
-          pinNumber: 1,
-        },
-        {
-          boxId: "J2",
-          pinNumber: 1,
-        },
-        {
-          netId: "connectivity_net26",
-        },
-      ],
-    },
-    {
-      _connectivityNetId: "connectivity_net50",
-      connectedPorts: [
-        {
-          boxId: "U1",
-          pinNumber: 2,
-        },
-      ],
-    },
-    {
-      _connectivityNetId: "connectivity_net15",
-      connectedPorts: [
-        {
-          boxId: "D1",
-          pinNumber: 2,
-        },
-        {
-          boxId: "R5",
-          pinNumber: 2,
-        },
-        {
-          netId: "connectivity_net15",
-        },
-      ],
-    },
-  ],
-  nets: [
-    {
-      netId: "connectivity_net13",
-    },
-    {
-      netId: "connectivity_net18",
-    },
-    {
-      netId: "GND",
-    },
-    {
-      netId: "connectivity_net21",
-    },
-    {
-      netId: "connectivity_net26",
-    },
-    {
-      netId: "connectivity_net15",
-    },
-  ],
-}
-
-test("getMatchedBoxes6", () => {
-  const { normalizedNetlist: normalizedInputNetlist } =
-    normalizeNetlist(inputNetlist)
+test("getMatchedBoxes6", async () => {
+  const { normalizedNetlist: normalizedInputNetlist } = normalizeNetlist(
+    await getNetlistFromTscircuitCode(pipeline04Code),
+  )
   const { normalizedNetlist: normalizedTemplateNetlist } = normalizeNetlist(
     template7().getNetlist(),
   )
+
+  expect(normalizedInputNetlist).toMatchInlineSnapshot(`
+    {
+      "boxes": [
+        {
+          "bottomPinCount": 0,
+          "boxIndex": 0,
+          "leftPinCount": 3,
+          "rightPinCount": 3,
+          "topPinCount": 0,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 1,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 2,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 3,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 4,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 5,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 0,
+          "boxIndex": 6,
+          "leftPinCount": 2,
+          "rightPinCount": 0,
+          "topPinCount": 0,
+        },
+      ],
+      "connections": [
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 1,
+            },
+            {
+              "boxIndex": 1,
+              "pinNumber": 1,
+            },
+            {
+              "boxIndex": 2,
+              "pinNumber": 1,
+            },
+            {
+              "netIndex": 0,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 3,
+            },
+            {
+              "boxIndex": 3,
+              "pinNumber": 1,
+            },
+            {
+              "netIndex": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 4,
+            },
+            {
+              "boxIndex": 1,
+              "pinNumber": 2,
+            },
+            {
+              "boxIndex": 4,
+              "pinNumber": 2,
+            },
+            {
+              "boxIndex": 5,
+              "pinNumber": 2,
+            },
+            {
+              "boxIndex": 6,
+              "pinNumber": 2,
+            },
+            {
+              "netIndex": 3,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 5,
+            },
+            {
+              "boxIndex": 5,
+              "pinNumber": 1,
+            },
+            {
+              "netIndex": 5,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 6,
+            },
+            {
+              "boxIndex": 4,
+              "pinNumber": 1,
+            },
+            {
+              "boxIndex": 6,
+              "pinNumber": 1,
+            },
+            {
+              "netIndex": 4,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 2,
+              "pinNumber": 2,
+            },
+            {
+              "boxIndex": 3,
+              "pinNumber": 2,
+            },
+            {
+              "netIndex": 1,
+            },
+          ],
+        },
+      ],
+      "nets": [
+        {
+          "netIndex": 0,
+        },
+        {
+          "netIndex": 1,
+        },
+        {
+          "netIndex": 2,
+        },
+        {
+          "netIndex": 3,
+        },
+        {
+          "netIndex": 4,
+        },
+        {
+          "netIndex": 5,
+        },
+      ],
+    }
+  `)
+  expect(normalizedTemplateNetlist).toMatchInlineSnapshot(`
+    {
+      "boxes": [
+        {
+          "bottomPinCount": 0,
+          "boxIndex": 0,
+          "leftPinCount": 3,
+          "rightPinCount": 3,
+          "topPinCount": 0,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 1,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 2,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 3,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 1,
+          "boxIndex": 4,
+          "leftPinCount": 0,
+          "rightPinCount": 0,
+          "topPinCount": 1,
+        },
+        {
+          "bottomPinCount": 0,
+          "boxIndex": 5,
+          "leftPinCount": 2,
+          "rightPinCount": 0,
+          "topPinCount": 0,
+        },
+      ],
+      "connections": [
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 1,
+            },
+            {
+              "boxIndex": 1,
+              "pinNumber": 2,
+            },
+            {
+              "netIndex": 0,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 3,
+            },
+            {
+              "boxIndex": 2,
+              "pinNumber": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 4,
+            },
+            {
+              "boxIndex": 3,
+              "pinNumber": 1,
+            },
+            {
+              "boxIndex": 4,
+              "pinNumber": 1,
+            },
+            {
+              "boxIndex": 5,
+              "pinNumber": 2,
+            },
+            {
+              "netIndex": 1,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 5,
+            },
+            {
+              "boxIndex": 3,
+              "pinNumber": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 0,
+              "pinNumber": 6,
+            },
+            {
+              "boxIndex": 4,
+              "pinNumber": 2,
+            },
+            {
+              "boxIndex": 5,
+              "pinNumber": 1,
+            },
+            {
+              "netIndex": 2,
+            },
+          ],
+        },
+        {
+          "connectedPorts": [
+            {
+              "boxIndex": 1,
+              "pinNumber": 1,
+            },
+            {
+              "boxIndex": 2,
+              "pinNumber": 1,
+            },
+          ],
+        },
+      ],
+      "nets": [
+        {
+          "netIndex": 0,
+        },
+        {
+          "netIndex": 1,
+        },
+        {
+          "netIndex": 2,
+        },
+      ],
+    }
+  `)
 
   expect(
     getMatchedBoxes({
@@ -224,31 +376,31 @@ test("getMatchedBoxes6", () => {
           {
             "candidateBoxIndex": 0,
             "candidateShapeSignatures": [
-              "L0B1R0T1,L0B0R1T0,L0B1R0T1",
-              "L0B0R1T0",
-              "L0B1R0T1,L0B0R1T0,L0B1R0T1,L0B1R0T1,L2B0R0T0",
-              "L0B1R0T1,L0B0R1T0",
-              "L0B1R0T1,L0B0R1T0,L2B0R0T0",
+              "B1T1,R1,B1T1",
+              "R1",
+              "B1T1,R1,B1T1,B1T1,L2",
+              "B1T1,R1",
+              "B1T1,R1,L2",
             ],
             "side": "left",
             "targetBoxIndex": 0,
             "targetPinNumber": 3,
-            "targetPinShapeSignature": "L0B1R0T1,L0B0R1T0",
+            "targetPinShapeSignature": "B1T1,R1",
             "type": "matched_box_missing_pin_shape_on_side",
           },
           {
             "candidateBoxIndex": 0,
             "candidateShapeSignatures": [
-              "L0B1R0T1,L0B0R1T0,L0B1R0T1",
-              "L0B0R1T0",
-              "L0B1R0T1,L0B0R1T0,L0B1R0T1,L0B1R0T1,L2B0R0T0",
-              "L0B1R0T1,L0B0R1T0",
-              "L0B1R0T1,L0B0R1T0,L2B0R0T0",
+              "B1T1,R1,B1T1",
+              "R1",
+              "B1T1,R1,B1T1,B1T1,L2",
+              "B1T1,R1",
+              "B1T1,R1,L2",
             ],
             "side": "right",
             "targetBoxIndex": 0,
             "targetPinNumber": 4,
-            "targetPinShapeSignature": "L0B1R0T1,L0B0R1T0,L0B1R0T1,L2B0R0T0",
+            "targetPinShapeSignature": "B1T1,R1,B1T1,L2",
             "type": "matched_box_missing_pin_shape_on_side",
           },
         ],
@@ -269,12 +421,12 @@ test("getMatchedBoxes6", () => {
           {
             "candidateBoxIndex": 2,
             "candidateShapeSignatures": [
-              "L3B0R3T0,L0B0R1T0,L0B1R0T1",
+              "L3R3,R1,B1T1",
             ],
             "side": "top",
             "targetBoxIndex": 2,
             "targetPinNumber": 2,
-            "targetPinShapeSignature": "L3B0R3T0,L0B0R1T0",
+            "targetPinShapeSignature": "L3R3,R1",
             "type": "matched_box_missing_pin_shape_on_side",
           },
         ],
@@ -288,13 +440,13 @@ test("getMatchedBoxes6", () => {
           {
             "candidateBoxIndex": 5,
             "candidateShapeSignatures": [
-              "L3B0R3T0,L0B0R1T0",
-              "L3B0R3T0,L0B0R1T0,L0B1R0T1,L0B1R0T1,L2B0R0T0",
+              "L3R3,R1",
+              "L3R3,R1,B1T1,B1T1,L2",
             ],
             "side": "bottom",
             "targetBoxIndex": 3,
             "targetPinNumber": 1,
-            "targetPinShapeSignature": "L3B0R3T0,L0B0R1T0,L0B1R0T1,L2B0R0T0",
+            "targetPinShapeSignature": "L3R3,R1,B1T1,L2",
             "type": "matched_box_missing_pin_shape_on_side",
           },
         ],
@@ -308,13 +460,13 @@ test("getMatchedBoxes6", () => {
           {
             "candidateBoxIndex": 4,
             "candidateShapeSignatures": [
-              "L3B0R3T0,L0B0R1T0,L2B0R0T0",
-              "L3B0R3T0,L0B0R1T0,L0B1R0T1,L0B1R0T1,L2B0R0T0",
+              "L3R3,R1,L2",
+              "L3R3,R1,B1T1,B1T1,L2",
             ],
             "side": "bottom",
             "targetBoxIndex": 4,
             "targetPinNumber": 1,
-            "targetPinShapeSignature": "L3B0R3T0,L0B0R1T0,L0B1R0T1,L2B0R0T0",
+            "targetPinShapeSignature": "L3R3,R1,B1T1,L2",
             "type": "matched_box_missing_pin_shape_on_side",
           },
         ],
@@ -328,12 +480,12 @@ test("getMatchedBoxes6", () => {
           {
             "candidateBoxIndex": 6,
             "candidateShapeSignatures": [
-              "L3B0R3T0,L0B0R1T0,L0B1R0T1,L0B1R0T1,L0B1R0T1",
+              "L3R3,R1,B1T1,B1T1,B1T1",
             ],
             "side": "left",
             "targetBoxIndex": 5,
             "targetPinNumber": 2,
-            "targetPinShapeSignature": "L3B0R3T0,L0B0R1T0,L0B1R0T1,L0B1R0T1",
+            "targetPinShapeSignature": "L3R3,R1,B1T1,B1T1",
             "type": "matched_box_missing_pin_shape_on_side",
           },
         ],

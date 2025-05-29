@@ -183,9 +183,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
       chipId: "U1",
       pinNumber: 3,
     }),
-  ).toMatchInlineSnapshot(
-    `"L0B1R0T1,L0B0R1T0,L0B1R0T1"`,
-  )
+  ).toMatchInlineSnapshot(`"L0B1R0T1,L0B0R1T0,L0B1R0T1"`)
 
   expect(
     getPinShapeSignature({

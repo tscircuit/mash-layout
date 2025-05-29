@@ -34,6 +34,8 @@ export default () => {
     .line(0, 0.2)
     .label("VUSB")
 
+  U1.fromMark("VUSB2").line(0, -0.4).passive("C3").line(0, -0.2).label("GND")
+
   U1.fromMark("VUSB1").line(0, -0.2).passive("D4").line(0, -0.2).mark("belowD4")
 
   U1.pin(3)
