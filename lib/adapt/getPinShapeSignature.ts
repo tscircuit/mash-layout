@@ -28,9 +28,12 @@ export const getPinShapeSignature = (
   const normNetlist = normalizeNetlist(pinShapeNetlist)
 
   return `${normNetlist.normalizedNetlist.boxes
-    .map(
-      (b) =>
-        `L${b.leftPinCount}B${b.bottomPinCount}R${b.rightPinCount}T${b.topPinCount}`,
+    .map((b) =>
+      `L${b.leftPinCount}B${b.bottomPinCount}R${b.rightPinCount}T${b.topPinCount}`
+        .replace("L0", "")
+        .replace("B0", "")
+        .replace("T0", "")
+        .replace("R0", ""),
     )
     .join(",")}`
   // TODO for some reason, the pin numbers become messed up

@@ -1002,17 +1002,21 @@ export default () => (
   const solver = new SchematicLayoutPipelineSolver({
     inputNetlist,
   })
-  
+
   console.log("Running pipeline solver...")
   solver.solve()
 
   console.log("Solver completed. Checking results...")
   console.log("Match phase solver results:")
-  expect(solver.matchPhaseSolver?.outputMatchedTemplates?.length).toMatchInlineSnapshot(`1`)
-  
+  expect(
+    solver.matchPhaseSolver?.outputMatchedTemplates?.length,
+  ).toMatchInlineSnapshot(`1`)
+
   if (solver.matchPhaseSolver?.outputMatchedTemplates?.[0]) {
     console.log("Best matched template:")
-    expect(solver.matchPhaseSolver.outputMatchedTemplates[0].template.toString()).toMatchInlineSnapshot(`
+    expect(
+      solver.matchPhaseSolver.outputMatchedTemplates[0].template.toString(),
+    ).toMatchInlineSnapshot(`
       "     0.0         5.0      
        2.4         V
        2.2         │
@@ -1040,11 +1044,15 @@ export default () => (
   }
 
   console.log("Adapt phase solver results:")
-  expect(solver.adaptPhaseSolver?.outputAdaptedTemplates?.length).toMatchInlineSnapshot(`1`)
-  
+  expect(
+    solver.adaptPhaseSolver?.outputAdaptedTemplates?.length,
+  ).toMatchInlineSnapshot(`1`)
+
   if (solver.adaptPhaseSolver?.outputAdaptedTemplates?.[0]) {
     console.log("Adapted template:")
-    expect(solver.adaptPhaseSolver.outputAdaptedTemplates[0].template.toString()).toMatchInlineSnapshot(`
+    expect(
+      solver.adaptPhaseSolver.outputAdaptedTemplates[0].template.toString(),
+    ).toMatchInlineSnapshot(`
       "     0.0         5.0      
        2.4         V
        2.2         │
@@ -1069,12 +1077,15 @@ export default () => (
       -1.6       │   │   │
       -1.8       G   G   G"
     `)
-    
+
     console.log("Applied operations during adaptation:")
-    expect(solver.adaptPhaseSolver.outputAdaptedTemplates[0].appliedOperations).toMatchInlineSnapshot(`[]`)
+    expect(
+      solver.adaptPhaseSolver.outputAdaptedTemplates[0].appliedOperations,
+    ).toMatchInlineSnapshot(`[]`)
 
     // Test the layout application
-    const adaptedTemplate = solver.adaptPhaseSolver.outputAdaptedTemplates[0].template
+    const adaptedTemplate =
+      solver.adaptPhaseSolver.outputAdaptedTemplates[0].template
     const newCircuitJson = applyCircuitLayoutToCircuitJson(
       circuitJson,
       inputNetlist,
@@ -1082,7 +1093,9 @@ export default () => (
     )
 
     console.log("New circuit components after layout:")
-    expect(cju(newCircuitJson).schematic_component.list()).toMatchInlineSnapshot(`
+    expect(
+      cju(newCircuitJson).schematic_component.list(),
+    ).toMatchInlineSnapshot(`
       [
         {
           "center": {
@@ -1198,7 +1211,7 @@ export default () => (
     //     },
     //   }),
     // ).toMatchSvgSnapshot(import.meta.path, "tscircuit6-original")
-    
+
     // expect(
     //   convertCircuitJsonToSchematicSvg(newCircuitJson, {
     //     grid: {

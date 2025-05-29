@@ -14,12 +14,13 @@ export function fixMatchedBoxPinShapes(params: {
 } {
   const { template, target, matchedBoxes } = params
   const appliedOperations: EditOperation[] = []
-  
+
   // Check if we have a perfect match (all boxes matched with score 0 and no issues)
   const isPerfectMatch = matchedBoxes.every(
-    (match) => match.score === 0 && (!match.issues || match.issues.length === 0)
+    (match) =>
+      match.score === 0 && (!match.issues || match.issues.length === 0),
   )
-  
+
   if (isPerfectMatch) {
     // Skip pin shape fixes when we have a perfect structural match
     return { appliedOperations }
