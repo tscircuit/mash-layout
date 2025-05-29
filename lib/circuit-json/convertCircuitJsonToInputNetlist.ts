@@ -49,12 +49,17 @@ export const convertCircuitJsonToInputNetlist = (
           const connectivity_net_id = connMap.getNetConnectedToId(
             source_port.source_port_id,
           )!
+          const schematic_port = cju(circuitJson).schematic_port.getWhere({
+            source_port_id: source_port.source_port_id,
+          })
+          const pin_number =
+            schematic_port?.true_ccw_index ?? source_port.pin_number
           return {
             source_port,
             schematic_port: cju(circuitJson).schematic_port.getWhere({
               source_port_id: source_port.source_port_id,
             })!,
-            pin_number: source_port.pin_number!,
+            pin_number,
             connectivity_net_id,
           }
         })
@@ -97,7 +102,7 @@ export const convertCircuitJsonToInputNetlist = (
       }
       connection.connectedPorts.push({
         boxId: source_component.name,
-        pinNumber: pin_number,
+        pinNumber: schematic_port?.true_ccw_index ?? pin_number!,
       })
     }
 
