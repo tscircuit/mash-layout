@@ -23,10 +23,6 @@ export function findAllMatchedBoxMissingPinShapeOnSide(params: {
     signature: string
     side: Side
   }[] = []
-  const targetPinShapes: {
-    signature: string
-    side: Side
-  }[] = []
 
   const candidateBox = candidateInputNetlist.boxes[params.candidateBoxIndex]!
   const targetBox = targetInputNetlist.boxes[params.targetBoxIndex]!
@@ -84,7 +80,7 @@ export function findAllMatchedBoxMissingPinShapeOnSide(params: {
       pinNumber: targetPinNumber,
     })
 
-    // Skip pins that are simple not connected (it's not a major issue)
+    // Skip pins that are simply not connected (it's not a major issue)
     if (targetPinShapeNetlist.connections.length === 0) {
       continue
     }

@@ -10,7 +10,7 @@ import { circuit } from "lib/builder"
  *  2.0         R1│
  *  1.8           │
  *  1.6   U3      │
- *  1.4   ┌────┐┬ │
+ *  1.4 V ┌────┐┬ │
  *  1.2 ┴─┤1 12├┴─┼─D
  *  1.0   ┤2 11├──┼─C
  *  0.8   ┤3 10├──┼─B
@@ -29,12 +29,15 @@ export default () => {
 
   U3.pin(1)
     .line(-1, 0)
+    .mark("aboveC2")
     .line(0, -0.001)
     .passive("C20")
     .line(0, -0.001)
     .mark("GND1")
     .line(0, -0.2)
     .label("GND")
+
+  U3.fromMark("aboveC2").line(0, 0.2).label("V3_3")
 
   U3.pin(6).intersectAtMark("GND1")
 

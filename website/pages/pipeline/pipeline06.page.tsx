@@ -32,6 +32,8 @@ export default () => (
         pin4: { marginTop: 0.65 },
       }}
       connections={{
+        VDD: sel.net.V3_3,
+        GND: sel.net.GND,
         pin7: sel.net.V3_3,
         pin3: sel.net.V3_3,
         pin2: sel.net.FLASH_SDO,
@@ -64,6 +66,7 @@ export default () => (
     />
   </board>
 )
+
 `
 
 export default () => <PipelineDebugger tscircuitCode={pipeline06Code} />
