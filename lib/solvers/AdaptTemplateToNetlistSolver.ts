@@ -78,7 +78,7 @@ export class AdaptTemplateToNetlistSolver extends BaseSolver {
         this.phase = "remove-unmatched-chips-1"
         break
 
-      case "remove-unmatched-chips-1":
+      case "remove-unmatched-chips-1": {
         const removal1Result = removeUnmatchedChips({
           template: this.outputAdaptedTemplate,
           target: this.transformedTarget!,
@@ -94,8 +94,9 @@ export class AdaptTemplateToNetlistSolver extends BaseSolver {
           this.phase = "fix-matched-box-pin-counts"
         }
         break
+      }
 
-      case "fix-matched-box-pin-counts":
+      case "fix-matched-box-pin-counts": {
         // Recalculate matched boxes to account for template changes
         const pinCountsRemovalResult = removeUnmatchedChips({
           template: this.outputAdaptedTemplate,
@@ -118,8 +119,9 @@ export class AdaptTemplateToNetlistSolver extends BaseSolver {
           this.phase = "fix-matched-box-pin-shapes"
         }
         break
+      }
 
-      case "fix-matched-box-pin-shapes":
+      case "fix-matched-box-pin-shapes": {
         // Recalculate matched boxes to account for template changes
         const currentRemovalResult = removeUnmatchedChips({
           template: this.outputAdaptedTemplate,
@@ -142,8 +144,9 @@ export class AdaptTemplateToNetlistSolver extends BaseSolver {
           this.phase = "remove-unmatched-chips-2"
         }
         break
+      }
 
-      case "remove-unmatched-chips-2":
+      case "remove-unmatched-chips-2": {
         // Recalculate operations each time to account for changes
         const removal2Result = removeUnmatchedChips({
           template: this.outputAdaptedTemplate,
@@ -159,6 +162,7 @@ export class AdaptTemplateToNetlistSolver extends BaseSolver {
           this.phase = "complete"
         }
         break
+      }
 
       case "complete":
         // Store stats
