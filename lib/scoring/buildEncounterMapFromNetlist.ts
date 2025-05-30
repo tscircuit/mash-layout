@@ -110,9 +110,38 @@ export const buildEncounterMapFromNetlist = (
           : Math.min(smallestPin[nbrId], nbrPin)
     }
 
-    for (const [nbrId] of Object.entries(smallestPin).sort(
-      (a, b) => a[1] - b[1],
-    )) {
+    for (const [nbrId] of Object.entries(smallestPin).sort((a, b) => {
+      // Primary sort: by smallest pin number
+      if (a[1] !== b[1]) return a[1] - b[1]
+
+      // Secondary sort: by highest pin number this component connects to
+      const getHighestConnectedPin = (boxId: string): number => {
+        let maxPin = 0
+        for (const conn of netlist.connections) {
+          const thisBoxPort = conn.connectedPorts.find(
+            (port) => "boxId" in port && port.boxId === boxId,
+          )
+          if (thisBoxPort && "pinNumber" in thisBoxPort) {
+            // Find what this component connects to
+            for (const otherPort of conn.connectedPorts) {
+              if (
+                otherPort !== thisBoxPort &&
+                "boxId" in otherPort &&
+                "pinNumber" in otherPort
+              ) {
+                maxPin = Math.max(maxPin, otherPort.pinNumber)
+              }
+            }
+          }
+        }
+        return maxPin
+      }
+
+      const maxPinA = getHighestConnectedPin(a[0])
+      const maxPinB = getHighestConnectedPin(b[0])
+
+      return maxPinA - maxPinB
+    })) {
       if (!visitedBoxes.has(nbrId)) {
         searchIter[nbrId] = iter++
         visitedBoxes.add(nbrId)
