@@ -63,7 +63,6 @@ test("adaptTemplateToTarget adds missing pins on a side", () => {
 
   /* assertions ------------------------------------------------------- */
   expect(template.chips[0]!.leftPinCount).toBe(2) // pin was added
-  expect(appliedOperations.length).toBe(2)
 
   expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
     "
@@ -75,4 +74,5 @@ test("adaptTemplateToTarget adds missing pins on a side", () => {
      0.0 └────┘
     "
   `)
+  expect(appliedOperations.length).toBe(2)
 })
