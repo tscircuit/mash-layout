@@ -27,6 +27,7 @@ export const PipelineDebugger = (props: {
   const [originalSvgString, setOriginalSvgString] = useState<string | null>(
     null,
   )
+  const [ccwReorderedSvgString, setCcwReorderedSvgString] = useState<string | null>(null)
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
   const [inputNetlist, setInputNetlist] = useState<any>(null)
   const [matchedTemplate, setMatchedTemplate] = useState<any>(null)
@@ -53,6 +54,16 @@ export const PipelineDebugger = (props: {
         const ccwOrderedCircuitJson = reorderChipPinsToCcw(
           results.originalCircuitJson,
         )
+
+        setCcwReorderedSvgString(
+          convertCircuitJsonToSchematicSvg(ccwOrderedCircuitJson, {
+            grid: {
+              cellSize: 1,
+              labelCells: true,
+            },
+          }),
+        )
+
         const inputNetlist = convertCircuitJsonToInputNetlist(
           results.originalCircuitJson,
         )
@@ -258,6 +269,7 @@ export const PipelineDebugger = (props: {
             {selectedSolver.constructor.name ===
               "SchematicLayoutPipelineSolver" &&
               (originalSvgString ||
+                ccwReorderedSvgString ||
                 laidOutSvgString ||
                 inputNetlist ||
                 matchedTemplate) && (
@@ -288,6 +300,21 @@ export const PipelineDebugger = (props: {
                             // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                             dangerouslySetInnerHTML={{
                               __html: originalSvgString,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {ccwReorderedSvgString && (
+                      <div>
+                        <h4 className="text-md font-medium mb-2">
+                          Pins Reordered to CCW
+                        </h4>
+                        <div className="border border-gray-300 rounded p-2 bg-white">
+                          <div
+                            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                            dangerouslySetInnerHTML={{
+                              __html: ccwReorderedSvgString,
                             }}
                           />
                         </div>
