@@ -1,9 +1,10 @@
 import type { InputNetlist } from "lib/input-types"
 import type { MatchedBoxWithChipIds } from "./removeUnmatchedChips"
-import type { CircuitBuilder } from "lib/builder"
+import type { CircuitBuilder, SIDE } from "lib/builder"
 import type { EditOperation } from "../EditOperation"
-import { computeEditOperationsToFixPinSubsetNetlist } from "../computeEditOperationsToFixPinSubsetNetlist"
 import { applyEditOperation } from "../applyEditOperation"
+import { computeSimilarityDistanceFromIssues } from "lib/matching/computeSimilarityDistanceFromIssues"
+import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 
 export function fixMatchedBoxPinShapes(params: {
   template: CircuitBuilder
@@ -15,40 +16,73 @@ export function fixMatchedBoxPinShapes(params: {
   const { template, target, matchedBoxes } = params
   const appliedOperations: EditOperation[] = []
 
-  // Check if we have a perfect match (all boxes matched with score 0 and no issues)
-  const isPerfectMatch = matchedBoxes.every(
-    (match) =>
-      match.score === 0 && (!match.issues || match.issues.length === 0),
-  )
-
-  if (isPerfectMatch) {
-    // Skip pin shape fixes when we have a perfect structural match
-    return { appliedOperations }
-  }
-
-  // Go through each pin and make sure it has the right shape by
-  // comparing the target pin subset to the current pin subset.
-  // Only process chips that exist in the target (skip chips that will be removed)
+  // For each matched box, check if pin counts match and remove excess pins if needed
   for (const { candidateChipId, targetChipId } of matchedBoxes) {
     const chip = template.chips.find((c) => c.chipId === candidateChipId)
     const targetBox = target.boxes.find((b) => b.boxId === targetChipId)
-    if (!targetBox || !chip) continue // Skip chips that don't exist in target
+    if (!targetBox || !chip) continue
 
-    for (let pinNumber = 1; pinNumber <= chip.totalPinCount; pinNumber++) {
-      const currentNetlistForPin = template.getNetlist()
-      const operationsForPin = computeEditOperationsToFixPinSubsetNetlist({
-        currentNetlist: currentNetlistForPin,
-        targetNetlist: target,
-        chipId: chip.chipId,
-        pinNumber: pinNumber,
-      })
+    // Check each side for pin count mismatches
+    const sides: SIDE[] = ["left", "right", "top", "bottom"]
+    for (const side of sides) {
+      const templatePinCount = chip[`${side}PinCount`] as number
+      const targetPinCount = (targetBox as any)[`${side}PinCount`] || 0
 
-      for (const op of operationsForPin) {
-        applyEditOperation(template, op)
-        appliedOperations.push(op)
+      // If template has more pins than target, we need to remove excess pins
+      if (templatePinCount > targetPinCount) {
+        const excessPins = templatePinCount - targetPinCount
+
+        // Try removing different combinations of pins and pick the best option
+        const bestRemovalOps = findBestPinRemovalStrategy({
+          template,
+          target,
+          chipId: candidateChipId,
+          side,
+          pinsToRemove: excessPins,
+        })
+
+        for (const op of bestRemovalOps) {
+          applyEditOperation(template, op)
+          appliedOperations.push(op)
+        }
       }
     }
   }
 
   return { appliedOperations }
+}
+
+function findBestPinRemovalStrategy(params: {
+  template: CircuitBuilder
+  target: InputNetlist
+  chipId: string
+  side: SIDE
+  pinsToRemove: number
+}): EditOperation[] {
+  const { template, target, chipId, side, pinsToRemove } = params
+
+  const chip = template.chips.find((c) => c.chipId === chipId)
+  if (!chip) return []
+
+  const sidePins = chip[`${side}Pins`] as any[]
+  if (sidePins.length <= pinsToRemove) {
+    // Remove all pins from this side
+    return sidePins.map((pin) => ({
+      type: "remove_pin_from_side" as const,
+      chipId,
+      side,
+      pinNumber: pin.pinNumber,
+    }))
+  }
+
+  // For now, remove pins from the end (simple strategy)
+  // TODO: Implement optimal pin removal based on similarity distance
+  const pinsToRemoveList = sidePins.slice(-pinsToRemove)
+
+  return pinsToRemoveList.map((pin) => ({
+    type: "remove_pin_from_side" as const,
+    chipId,
+    side,
+    pinNumber: pin.pinNumber,
+  }))
 }

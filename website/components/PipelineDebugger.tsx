@@ -29,8 +29,7 @@ export const PipelineDebugger = (props: {
   )
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
   const [inputNetlist, setInputNetlist] = useState<any>(null)
-  const [matchedTemplate, setMatchedTemplate] =
-    useState<any>(null)
+  const [matchedTemplate, setMatchedTemplate] = useState<any>(null)
   const [originalCircuitJson, setOriginalCircuitJson] = useState<any>(null)
 
   useEffect(() => {
@@ -67,7 +66,8 @@ export const PipelineDebugger = (props: {
 
         // Get matched template if available
         if (solver.matchPhaseSolver?.outputMatchedTemplates[0]?.template) {
-          const matchedTemplate = solver.matchPhaseSolver.outputMatchedTemplates[0].template
+          const matchedTemplate =
+            solver.matchPhaseSolver.outputMatchedTemplates[0].template
           setMatchedTemplate(matchedTemplate)
         }
 
