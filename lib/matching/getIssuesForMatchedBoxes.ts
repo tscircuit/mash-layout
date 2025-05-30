@@ -4,10 +4,12 @@ import { findAllSideHasWrongPinCount } from "lib/matching/matched-box-issue-find
 import { findAllMatchedBoxPinShapeInWrongPosition } from "lib/matching/matched-box-issue-finders/findAllMatchedBoxPinShapeInWrongPosition"
 import { findAllMatchedBoxMissingPinShapeOnSide } from "./matched-box-issue-finders/findAllMatchedBoxMissingPinShapeOnSide"
 import { findAllMissingConnectionBetweenBoxes } from "./matched-box-issue-finders/findAllMissingConnectionBetweenBoxes"
+import { findAllMatchedBoxMissingPinShapeBoxCountOnSide } from "./matched-box-issue-finders/findAllMatchedBoxMissingPinShapeBoxCountOnSide"
 
 const MATCHED_BOX_ISSUE_FINDERS = [
   findAllSideHasWrongPinCount,
   findAllMatchedBoxMissingPinShapeOnSide,
+  findAllMatchedBoxMissingPinShapeBoxCountOnSide,
   // findAllMissingConnectionBetweenBoxes,
   // findAllMatchedBoxPinShapeInWrongPosition,
 ] as const

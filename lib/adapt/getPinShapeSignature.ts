@@ -8,11 +8,42 @@ export const getBoxShapeSignature = (params: {
   rightPinCount: number
   topPinCount: number
 }): string => {
-  return `${params.leftPinCount}B${params.bottomPinCount}R${params.rightPinCount}T${params.topPinCount}`
-    .replace("L0", "")
-    .replace("B0", "")
-    .replace("T0", "")
-    .replace("R0", "")
+  return [
+    params.leftPinCount > 0 ? `L${params.leftPinCount}` : "",
+    params.bottomPinCount > 0 ? `B${params.bottomPinCount}` : "",
+    params.rightPinCount > 0 ? `R${params.rightPinCount}` : "",
+    params.topPinCount > 0 ? `T${params.topPinCount}` : "",
+  ].join("")
+}
+
+export const getBoxCountPinSignature = (params: {
+  netlist: InputNetlist
+  chipId: string
+  pinNumber: number
+}): string => {
+  const { netlist, chipId, pinNumber } = params
+
+  // Count unique boxes connected to this pin
+  const connectedBoxes = new Set<string>()
+
+  for (const connection of netlist.connections) {
+    const hasThisPin = connection.connectedPorts.some(
+      (port) =>
+        "boxId" in port &&
+        port.boxId === chipId &&
+        port.pinNumber === pinNumber,
+    )
+
+    if (hasThisPin) {
+      for (const port of connection.connectedPorts) {
+        if ("boxId" in port && port.boxId !== chipId) {
+          connectedBoxes.add(port.boxId)
+        }
+      }
+    }
+  }
+
+  return `box_count_${connectedBoxes.size}`
 }
 
 export const getPinShapeSignature = (
