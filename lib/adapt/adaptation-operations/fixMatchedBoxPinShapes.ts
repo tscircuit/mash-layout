@@ -3,6 +3,7 @@ import type { MatchedBoxWithChipIds } from "./removeUnmatchedChips"
 import type { CircuitBuilder, SIDE } from "lib/builder"
 import type { EditOperation } from "../EditOperation"
 import { applyEditOperation } from "../applyEditOperation"
+import type { PinBuilder } from "lib/builder"
 
 export function fixMatchedBoxPinShapes(params: {
   template: CircuitBuilder
@@ -33,7 +34,6 @@ export function fixMatchedBoxPinShapes(params: {
         // Try removing different combinations of pins and pick the best option
         const bestRemovalOps = findBestPinRemovalStrategy({
           template,
-          target,
           chipId: candidateChipId,
           side,
           pinsToRemove: excessPins,
@@ -55,17 +55,16 @@ export function fixMatchedBoxPinShapes(params: {
 
 function findBestPinRemovalStrategy(params: {
   template: CircuitBuilder
-  target: InputNetlist
   chipId: string
   side: SIDE
   pinsToRemove: number
 }): EditOperation[] {
-  const { template, target, chipId, side, pinsToRemove } = params
+  const { template, chipId, side, pinsToRemove } = params
 
   const chip = template.chips.find((c) => c.chipId === chipId)
   if (!chip) return []
 
-  const sidePinsMap = {
+  const sidePinsMap: Record<SIDE, PinBuilder[]> = {
     left: chip.leftPins,
     right: chip.rightPins,
     top: chip.topPins,
@@ -75,7 +74,7 @@ function findBestPinRemovalStrategy(params: {
   const sidePins = sidePinsMap[side]
   if (sidePins.length <= pinsToRemove) {
     // Remove all pins from this side
-    return sidePins.map((pin) => ({
+    return sidePins.map((pin: PinBuilder) => ({
       type: "remove_pin_from_side" as const,
       chipId,
       side,
