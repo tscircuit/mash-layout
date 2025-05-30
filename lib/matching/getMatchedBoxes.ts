@@ -71,6 +71,7 @@ export function getMatchedBoxes(params: {
           targetNetlist: variationNetlist,
           candidateBoxIndex,
           targetBoxIndex,
+          alreadyMatchedBoxes: matchedBoxes,
         })
 
         const score = computeSimilarityDistanceFromIssues(issues)
