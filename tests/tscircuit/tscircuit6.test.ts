@@ -594,7 +594,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "J1",
-              "pinNumber": 7,
+              "pinNumber": 6,
             },
           ],
         },
@@ -603,7 +603,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "J1",
-              "pinNumber": 6,
+              "pinNumber": 5,
             },
             {
               "boxId": "R9",
@@ -619,7 +619,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "J1",
-              "pinNumber": 5,
+              "pinNumber": 4,
             },
             {
               "boxId": "R10",
@@ -635,7 +635,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "J1",
-              "pinNumber": 4,
+              "pinNumber": 3,
             },
             {
               "boxId": "R2",
@@ -651,7 +651,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "J1",
-              "pinNumber": 3,
+              "pinNumber": 2,
             },
             {
               "boxId": "R1",
@@ -667,11 +667,11 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "J1",
-              "pinNumber": 2,
+              "pinNumber": 1,
             },
             {
               "boxId": "J1",
-              "pinNumber": 1,
+              "pinNumber": 0,
             },
             {
               "boxId": "R1",
@@ -732,26 +732,26 @@ export default () => (
 
                           ┌────────────────┐
                           │                │7                   
-                          │                │6  ── R9.1,connecti…
-                          │                │5  ── R10.1,connect…
-                          │       J1       │4  ── R2.1,connecti…
-                          │                │3  ── R1.1,connecti…
-                          │                │2  ── J1.1,R1.2,R2.…
-                          │                │1  ── J1.2,R1.2,R2.…
+                          │                │6                   
+                          │                │5  ── R9.1,connecti…
+                          │       J1       │4  ── R10.1,connect…
+                          │                │3  ── R2.1,connecti…
+                          │                │2  ── R1.1,connecti…
+                          │                │1  ── J1.0,R1.2,R2.…
                           └────────────────┘
 
 
                           ┌────────────────┐
-      J1.6,connecti… ──  1│       R9       │2                   
+      J1.5,connecti… ──  1│       R9       │2                   
                           └────────────────┘
 
 
                           ┌────────────────┐
-      J1.5,connecti… ──  1│      R10       │2                   
+      J1.4,connecti… ──  1│      R10       │2                   
                           └────────────────┘
 
 
-                            J1.2,J1.1,R2.… 
+                            J1.1,J1.0,R2.… 
                                   │        
                                   2        
                           ┌────────────────┐
@@ -759,10 +759,10 @@ export default () => (
                           └────────────────┘
                                   1        
                                   │        
-                            J1.3,connecti… 
+                            J1.2,connecti… 
 
 
-                            J1.2,J1.1,R1.… 
+                            J1.1,J1.0,R1.… 
                                   │        
                                   2        
                           ┌────────────────┐
@@ -770,28 +770,28 @@ export default () => (
                           └────────────────┘
                                   1        
                                   │        
-                            J1.4,connecti… 
+                            J1.3,connecti… 
 
     Complex Connections (more than 2 points):
       - complex connection[0]:
-        - J1.6
+        - J1.5
         - R9.1
         - connectivity_net8
       - complex connection[1]:
-        - J1.5
+        - J1.4
         - R10.1
         - connectivity_net14
       - complex connection[2]:
-        - J1.4
+        - J1.3
         - R2.1
         - connectivity_net25
       - complex connection[3]:
-        - J1.3
+        - J1.2
         - R1.1
         - connectivity_net22
       - complex connection[4]:
-        - J1.2
         - J1.1
+        - J1.0
         - R1.2
         - R2.2
         - GND"
@@ -843,11 +843,11 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 1,
+                "pinNumber": 0,
               },
               {
                 "boxIndex": 0,
-                "pinNumber": 2,
+                "pinNumber": 1,
               },
               {
                 "boxIndex": 1,
@@ -866,7 +866,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 3,
+                "pinNumber": 2,
               },
               {
                 "boxIndex": 1,
@@ -881,7 +881,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 4,
+                "pinNumber": 3,
               },
               {
                 "boxIndex": 2,
@@ -896,7 +896,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 5,
+                "pinNumber": 4,
               },
               {
                 "boxIndex": 3,
@@ -911,7 +911,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 6,
+                "pinNumber": 5,
               },
               {
                 "boxIndex": 4,
@@ -926,7 +926,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 7,
+                "pinNumber": 6,
               },
             ],
           },
@@ -1171,7 +1171,7 @@ export default () => (
         },
         {
           "center": {
-            "x": 7,
+            "x": 5,
             "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_3",
@@ -1186,7 +1186,7 @@ export default () => (
         },
         {
           "center": {
-            "x": 5,
+            "x": 7,
             "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_4",

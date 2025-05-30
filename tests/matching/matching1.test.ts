@@ -215,6 +215,18 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
         "targetPinShapeSignature": "R1",
         "type": "matched_box_missing_pin_shape_on_side",
       },
+      {
+        "candidateBoxCountSignatures": [
+          "box_count_1",
+          "box_count_2",
+        ],
+        "candidateBoxIndex": 1,
+        "side": "left",
+        "targetBoxCountSignature": "box_count_1",
+        "targetBoxIndex": 1,
+        "targetPinNumber": -1,
+        "type": "matched_box_missing_pin_shape_box_count_on_side",
+      },
     ]
   `)
   expect(
