@@ -137,19 +137,20 @@ export function applyRemovePinFromSide(
       bottomPinCount: chip.bottomPinCount + (side === "bottom" ? 1 : 0),
     })
 
-  // Update pin margins with new pin numbers and adjust for removed pin
+  // Calculate required margins to preserve absolute positions
   const newPinMargins: Record<
     number,
     { marginTop: number; marginLeft: number }
   > = {}
 
+  // First, copy existing margins for pins that aren't affected
   for (const [oldPn, newPn] of renumberMap.entries()) {
     if (chip.pinMargins[oldPn]) {
       newPinMargins[newPn] = { ...chip.pinMargins[oldPn] }
     }
   }
 
-  // Find all pins that move up/left due to the removal and adjust their margins
+  // For pins that were affected by the removal, calculate the margin needed to preserve their absolute position
   for (const [oldPn, newPn] of renumberMap.entries()) {
     const oldSideInfo = getPinSideIndex(oldPn, {
       leftPinCount: chip.leftPinCount + (side === "left" ? 1 : 0),
@@ -158,25 +159,32 @@ export function applyRemovePinFromSide(
       bottomPinCount: chip.bottomPinCount + (side === "bottom" ? 1 : 0),
     })
 
-    // If this pin was on the same side as the removed pin and was after it
+    // Only adjust pins that were on the same side as the removed pin and after it
     if (
       oldSideInfo.side === removedPinSide &&
       oldSideInfo.indexOnSide > removedIndexOnSide
     ) {
-      const existingMargin = newPinMargins[newPn] || {
-        marginTop: 0.2,
-        marginLeft: 0.2,
-      }
+      const newSideInfo = getPinSideIndex(newPn, chip)
 
-      if (side === "left" || side === "right") {
-        newPinMargins[newPn] = {
-          ...existingMargin,
-          marginTop: existingMargin.marginTop + 0.2,
+      // Calculate how many positions this pin moved up/left
+      const positionsMoved = oldSideInfo.indexOnSide - newSideInfo.indexOnSide
+
+      if (positionsMoved > 0) {
+        const existingMargin = newPinMargins[newPn] || {
+          marginTop: 0.2,
+          marginLeft: 0.2,
         }
-      } else {
-        newPinMargins[newPn] = {
-          ...existingMargin,
-          marginLeft: existingMargin.marginLeft + 0.2,
+
+        if (side === "left" || side === "right") {
+          newPinMargins[newPn] = {
+            ...existingMargin,
+            marginTop: existingMargin.marginTop + positionsMoved * 0.2,
+          }
+        } else {
+          newPinMargins[newPn] = {
+            ...existingMargin,
+            marginLeft: existingMargin.marginLeft + positionsMoved * 0.2,
+          }
         }
       }
     }
