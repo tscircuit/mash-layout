@@ -2,6 +2,19 @@ import type { InputNetlist } from "lib/input-types"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import { getPinSubsetNetlist } from "./getPinSubsetNetlist"
 
+export const getBoxShapeSignature = (params: {
+  leftPinCount: number
+  bottomPinCount: number
+  rightPinCount: number
+  topPinCount: number
+}): string => {
+  return `${params.leftPinCount}B${params.bottomPinCount}R${params.rightPinCount}T${params.topPinCount}`
+    .replace("L0", "")
+    .replace("B0", "")
+    .replace("T0", "")
+    .replace("R0", "")
+}
+
 export const getPinShapeSignature = (
   params:
     | {
@@ -28,13 +41,7 @@ export const getPinShapeSignature = (
   const normNetlist = normalizeNetlist(pinShapeNetlist)
 
   return `${normNetlist.normalizedNetlist.boxes
-    .map((b) =>
-      `L${b.leftPinCount}B${b.bottomPinCount}R${b.rightPinCount}T${b.topPinCount}`
-        .replace("L0", "")
-        .replace("B0", "")
-        .replace("T0", "")
-        .replace("R0", ""),
-    )
+    .map((b) => getBoxShapeSignature(b))
     .join(",")}`
   // TODO for some reason, the pin numbers become messed up
   // +
