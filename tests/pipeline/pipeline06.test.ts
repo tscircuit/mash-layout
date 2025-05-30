@@ -2,7 +2,6 @@ import { test, expect } from "bun:test"
 import { MatchNetlistToTemplateSolver } from "lib/solvers/MatchNetlistToTemplateSolver"
 import { ScoreNetlistTemplatePairSolver } from "lib/solvers/ScoreNetlistTemplatePairSolver"
 import template9 from "templates/template9"
-import { getMatchedBoxString } from "tests/matching/getMatchedBoxString"
 import { testTscircuitCodeForLayout } from "tests/tscircuit/testTscircuitCodeForLayout"
 import { pipeline06Code } from "website/pages/pipeline/pipeline06.page"
 
@@ -21,9 +20,6 @@ test("pipeline06", async () => {
     .usedSubSolvers[0] as any
 
   const matchingIssues = matchSolver?.templateMatchResults?.[0]?.issues || []
-  const pinShapeIssues = matchingIssues.filter(
-    (issue: any) => issue.type === "matched_box_missing_pin_shape_on_side",
-  )
 
   expect(netlistScorer.matchedBoxes).toMatchInlineSnapshot(`
     [
@@ -161,6 +157,39 @@ test("pipeline06", async () => {
   }).toMatchInlineSnapshot(`
     {
       "totalIssues": 8,
+    }
+  `)
+
+  // Test pin margin functionality - check that pin 2 has appropriate margins
+  const adaptedTemplate =
+    solver.adaptPhaseSolver!.outputAdaptedTemplates[0]!.template
+  const adaptedChip = adaptedTemplate.chips.find((c) => c.chipId === "U3")
+
+  expect({
+    adaptedPinCounts: adaptedChip
+      ? {
+          left: adaptedChip.leftPinCount,
+          right: adaptedChip.rightPinCount,
+          total: adaptedChip.totalPinCount,
+        }
+      : null,
+    pin2Margin: adaptedChip?.pinMargins[2],
+    pin2Position: adaptedChip ? adaptedChip.getPinLocation(2) : null,
+  }).toMatchInlineSnapshot(`
+    {
+      "adaptedPinCounts": {
+        "left": 2,
+        "right": 6,
+        "total": 8,
+      },
+      "pin2Margin": {
+        "marginLeft": 0.2,
+        "marginTop": 1,
+      },
+      "pin2Position": {
+        "x": 0,
+        "y": 0.20000000000000007,
+      },
     }
   `)
 })

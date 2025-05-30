@@ -27,7 +27,9 @@ export const PipelineDebugger = (props: {
   const [originalSvgString, setOriginalSvgString] = useState<string | null>(
     null,
   )
-  const [ccwReorderedSvgString, setCcwReorderedSvgString] = useState<string | null>(null)
+  const [ccwReorderedSvgString, setCcwReorderedSvgString] = useState<
+    string | null
+  >(null)
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
   const [inputNetlist, setInputNetlist] = useState<any>(null)
   const [matchedTemplate, setMatchedTemplate] = useState<any>(null)

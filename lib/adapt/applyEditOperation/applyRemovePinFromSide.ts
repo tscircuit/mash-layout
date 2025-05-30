@@ -1,6 +1,7 @@
 import type { CircuitBuilder } from "lib/builder"
 import type { PinBuilder } from "lib/builder"
 import type { RemovePinFromSideOp } from "../EditOperation"
+import { getPinSideIndex } from "../../builder/getPinSideIndex"
 
 // Local utility, similar to the one in applyAddPinToSide.ts
 const patchRefs = (
@@ -127,7 +128,63 @@ export function applyRemovePinFromSide(
     }
   }
 
-  // 6. Update circuit references
+  // 6. Update pin margins - adjust for the removed pin
+  const { side: removedPinSide, indexOnSide: removedIndexOnSide } =
+    getPinSideIndex(pinNumberToRemove, {
+      leftPinCount: chip.leftPinCount + (side === "left" ? 1 : 0),
+      rightPinCount: chip.rightPinCount + (side === "right" ? 1 : 0),
+      topPinCount: chip.topPinCount + (side === "top" ? 1 : 0),
+      bottomPinCount: chip.bottomPinCount + (side === "bottom" ? 1 : 0),
+    })
+
+  // Update pin margins with new pin numbers and adjust for removed pin
+  const newPinMargins: Record<
+    number,
+    { marginTop: number; marginLeft: number }
+  > = {}
+
+  for (const [oldPn, newPn] of renumberMap.entries()) {
+    if (chip.pinMargins[oldPn]) {
+      newPinMargins[newPn] = { ...chip.pinMargins[oldPn] }
+    }
+  }
+
+  // Find all pins that move up/left due to the removal and adjust their margins
+  for (const [oldPn, newPn] of renumberMap.entries()) {
+    const oldSideInfo = getPinSideIndex(oldPn, {
+      leftPinCount: chip.leftPinCount + (side === "left" ? 1 : 0),
+      rightPinCount: chip.rightPinCount + (side === "right" ? 1 : 0),
+      topPinCount: chip.topPinCount + (side === "top" ? 1 : 0),
+      bottomPinCount: chip.bottomPinCount + (side === "bottom" ? 1 : 0),
+    })
+
+    // If this pin was on the same side as the removed pin and was after it
+    if (
+      oldSideInfo.side === removedPinSide &&
+      oldSideInfo.indexOnSide > removedIndexOnSide
+    ) {
+      const existingMargin = newPinMargins[newPn] || {
+        marginTop: 0.2,
+        marginLeft: 0.2,
+      }
+
+      if (side === "left" || side === "right") {
+        newPinMargins[newPn] = {
+          ...existingMargin,
+          marginTop: existingMargin.marginTop + 0.2,
+        }
+      } else {
+        newPinMargins[newPn] = {
+          ...existingMargin,
+          marginLeft: existingMargin.marginLeft + 0.2,
+        }
+      }
+    }
+  }
+
+  chip.pinMargins = newPinMargins
+
+  // 7. Update circuit references
   // Create a map for patchRefs containing only pins whose numbers actually changed
   const finalEffectiveRenumberMap = new Map<number, number>()
   for (const [oldPn, newPn] of renumberMap.entries()) {
@@ -139,11 +196,11 @@ export function applyRemovePinFromSide(
     patchRefs(C, chip.chipId, finalEffectiveRenumberMap)
   }
 
-  // 7. Recalculate all pin positions
+  // 8. Recalculate all pin positions
   chip.pinPositionsAreSet = false
   chip.setPinPositions() // Uses new counts and assigns new x/y to PinBuilders based on their new pin numbers
 
-  // 8. Calculate deltas for moved pins and shift artifacts
+  // 9. Calculate deltas for moved pins and shift artifacts
   const deltaByNewPin = new Map<number, { dx: number; dy: number }>()
   for (let oldPn = 1; oldPn <= totalOldPins; ++oldPn) {
     if (oldPn === pinNumberToRemove) continue
