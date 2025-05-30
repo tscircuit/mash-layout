@@ -114,9 +114,9 @@ export const buildEncounterMapFromNetlist = (
       // Primary sort: by smallest pin number
       if (a[1] !== b[1]) return a[1] - b[1]
 
-      // Secondary sort: by highest pin number this component connects to
-      const getHighestConnectedPin = (boxId: string): number => {
-        let maxPin = 0
+      // Secondary sort: by sorted string of all pin numbers this component connects to
+      const getConnectedPinsString = (boxId: string): string => {
+        const connectedPins = new Set<number>()
         for (const conn of netlist.connections) {
           const thisBoxPort = conn.connectedPorts.find(
             (port) => "boxId" in port && port.boxId === boxId,
@@ -129,18 +129,21 @@ export const buildEncounterMapFromNetlist = (
                 "boxId" in otherPort &&
                 "pinNumber" in otherPort
               ) {
-                maxPin = Math.max(maxPin, otherPort.pinNumber)
+                connectedPins.add(otherPort.pinNumber)
               }
             }
           }
         }
-        return maxPin
+        // Sort pins and join into a string for lexicographic comparison
+        return Array.from(connectedPins)
+          .sort((a, b) => a - b)
+          .join(",")
       }
 
-      const maxPinA = getHighestConnectedPin(a[0])
-      const maxPinB = getHighestConnectedPin(b[0])
+      const pinsStringA = getConnectedPinsString(a[0])
+      const pinsStringB = getConnectedPinsString(b[0])
 
-      return maxPinA - maxPinB
+      return pinsStringA.localeCompare(pinsStringB)
     })) {
       if (!visitedBoxes.has(nbrId)) {
         searchIter[nbrId] = iter++
