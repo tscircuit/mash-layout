@@ -1,9 +1,9 @@
 import { SIDES_CCW, type CircuitBuilder } from "lib/builder"
 import type { MatchedBoxWithChipIds } from "./removeUnmatchedChips"
-import { applyEditOperation } from "../applyEditOperation"
 import type { AddPinToSideOp } from "../EditOperation"
 import type { EditOperation } from "../EditOperation"
 import type { InputNetlist } from "lib/input-types"
+import { applyEditOperation } from "../applyEditOperation"
 
 export function fixMatchedBoxPinCounts(params: {
   template: CircuitBuilder
@@ -16,7 +16,7 @@ export function fixMatchedBoxPinCounts(params: {
   const appliedOperations: EditOperation[] = []
 
   const targetBoxes = target.boxes
-  // Make every box have the right number of pins per side
+  // Make every box have the right number of pins per side (one operation at a time)
   for (const { candidateChipId, targetChipId } of matchedBoxes) {
     const chip = template.chips.find((c) => c.chipId === candidateChipId)
     const targetBox = targetBoxes.find((b) => b.boxId === targetChipId)
@@ -30,7 +30,8 @@ export function fixMatchedBoxPinCounts(params: {
         `${side}PinCount` as keyof typeof targetBox
       ] as number
 
-      while (
+      // Add pins if needed (one at a time)
+      if (
         (chip[`${side}PinCount` as keyof typeof chip] as number) <
         targetSideCount
       ) {
@@ -59,10 +60,11 @@ export function fixMatchedBoxPinCounts(params: {
         }
         applyEditOperation(template, op)
         appliedOperations.push(op)
+        return { appliedOperations } // Return after first operation
       }
 
-      // Remove excess pins
-      while (
+      // Remove excess pins (one at a time)
+      if (
         (chip[`${side}PinCount` as keyof typeof chip] as number) >
         targetSideCount
       ) {
@@ -81,6 +83,7 @@ export function fixMatchedBoxPinCounts(params: {
         }
         applyEditOperation(template, op)
         appliedOperations.push(op)
+        return { appliedOperations } // Return after first operation
       }
     }
   }

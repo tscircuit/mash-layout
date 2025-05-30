@@ -3,8 +3,6 @@ import type { MatchedBoxWithChipIds } from "./removeUnmatchedChips"
 import type { CircuitBuilder, SIDE } from "lib/builder"
 import type { EditOperation } from "../EditOperation"
 import { applyEditOperation } from "../applyEditOperation"
-import { computeSimilarityDistanceFromIssues } from "lib/matching/computeSimilarityDistanceFromIssues"
-import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 
 export function fixMatchedBoxPinShapes(params: {
   template: CircuitBuilder
@@ -41,9 +39,12 @@ export function fixMatchedBoxPinShapes(params: {
           pinsToRemove: excessPins,
         })
 
-        for (const op of bestRemovalOps) {
+        // Apply just the first operation
+        if (bestRemovalOps.length > 0) {
+          const op = bestRemovalOps[0]!
           applyEditOperation(template, op)
           appliedOperations.push(op)
+          return { appliedOperations } // Return after first operation
         }
       }
     }
@@ -64,7 +65,14 @@ function findBestPinRemovalStrategy(params: {
   const chip = template.chips.find((c) => c.chipId === chipId)
   if (!chip) return []
 
-  const sidePins = chip[`${side}Pins`] as any[]
+  const sidePinsMap = {
+    left: chip.leftPins,
+    right: chip.rightPins,
+    top: chip.topPins,
+    bottom: chip.bottomPins,
+  }
+
+  const sidePins = sidePinsMap[side]
   if (sidePins.length <= pinsToRemove) {
     // Remove all pins from this side
     return sidePins.map((pin) => ({
@@ -75,14 +83,16 @@ function findBestPinRemovalStrategy(params: {
     }))
   }
 
-  // For now, remove pins from the end (simple strategy)
-  // TODO: Implement optimal pin removal based on similarity distance
-  const pinsToRemoveList = sidePins.slice(-pinsToRemove)
+  // Only remove one pin at a time - the highest numbered pin
+  // This ensures we can recalculate after each removal
+  const highestPin = sidePins[sidePins.length - 1]
 
-  return pinsToRemoveList.map((pin) => ({
-    type: "remove_pin_from_side" as const,
-    chipId,
-    side,
-    pinNumber: pin.pinNumber,
-  }))
+  return [
+    {
+      type: "remove_pin_from_side" as const,
+      chipId,
+      side,
+      pinNumber: highestPin.pinNumber,
+    },
+  ]
 }
