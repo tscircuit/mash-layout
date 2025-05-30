@@ -29,7 +29,7 @@ export const PipelineDebugger = (props: {
   )
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
   const [inputNetlist, setInputNetlist] = useState<any>(null)
-  const [matchedTemplateNetlist, setMatchedTemplateNetlist] =
+  const [matchedTemplate, setMatchedTemplate] =
     useState<any>(null)
   const [originalCircuitJson, setOriginalCircuitJson] = useState<any>(null)
 
@@ -65,11 +65,10 @@ export const PipelineDebugger = (props: {
         })
         solver.solve()
 
-        // Get matched template netlist if available
+        // Get matched template if available
         if (solver.matchPhaseSolver?.outputMatchedTemplates[0]?.template) {
-          const matchedTemplateNetlist =
-            solver.matchPhaseSolver.outputMatchedTemplates[0].template.getNetlist()
-          setMatchedTemplateNetlist(matchedTemplateNetlist)
+          const matchedTemplate = solver.matchPhaseSolver.outputMatchedTemplates[0].template
+          setMatchedTemplate(matchedTemplate)
         }
 
         // Generate the laid out SVG if we have an adapted template
@@ -261,34 +260,22 @@ export const PipelineDebugger = (props: {
               (originalSvgString ||
                 laidOutSvgString ||
                 inputNetlist ||
-                matchedTemplateNetlist) && (
+                matchedTemplate) && (
                 <div className="mb-5">
                   <h3 className="text-lg font-semibold mb-3">
                     Circuit Visualization
                   </h3>
                   <div className="space-y-4">
-                    {inputNetlist && (
+                    {matchedTemplate && (
                       <div>
                         <h4 className="text-md font-medium mb-2">
-                          Input Netlist Graph
+                          Matched Template
                         </h4>
-                        <ForceDirectedNetlistGraph
-                          netlist={inputNetlist}
-                          width={800}
-                          height={400}
-                        />
-                      </div>
-                    )}
-                    {matchedTemplateNetlist && (
-                      <div>
-                        <h4 className="text-md font-medium mb-2">
-                          Matched Template Netlist Graph
-                        </h4>
-                        <ForceDirectedNetlistGraph
-                          netlist={matchedTemplateNetlist}
-                          width={800}
-                          height={400}
-                        />
+                        <div className="border border-gray-300 rounded p-4 bg-gray-50">
+                          <pre className="text-sm font-mono whitespace-pre overflow-x-auto">
+                            {matchedTemplate.toString()}
+                          </pre>
+                        </div>
                       </div>
                     )}
                     {originalSvgString && (
