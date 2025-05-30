@@ -14,10 +14,10 @@ export function findAllNoBoxMatchingPinCounts(params: {
   for (let i = 0; i < candidateNetlist.boxes.length; i++) {
     const box = candidateNetlist.boxes[i]
     const shape = getBoxShapeSignature({
-      leftPinCount: box.leftPinCount,
-      bottomPinCount: box.bottomPinCount,
-      rightPinCount: box.rightPinCount,
-      topPinCount: box.topPinCount,
+      leftPinCount: box!.leftPinCount,
+      bottomPinCount: box!.bottomPinCount,
+      rightPinCount: box!.rightPinCount,
+      topPinCount: box!.topPinCount,
     })
     if (!candidateShapeCounts.has(shape)) {
       candidateShapeCounts.set(shape, [])
@@ -26,17 +26,21 @@ export function findAllNoBoxMatchingPinCounts(params: {
   }
 
   // Check each box in the target netlist for a matching shape
-  for (let targetBoxIndex = 0; targetBoxIndex < targetNetlist.boxes.length; targetBoxIndex++) {
+  for (
+    let targetBoxIndex = 0;
+    targetBoxIndex < targetNetlist.boxes.length;
+    targetBoxIndex++
+  ) {
     const targetBox = targetNetlist.boxes[targetBoxIndex]
     const targetShape = getBoxShapeSignature({
-      leftPinCount: targetBox.leftPinCount,
-      bottomPinCount: targetBox.bottomPinCount,
-      rightPinCount: targetBox.rightPinCount,
-      topPinCount: targetBox.topPinCount,
+      leftPinCount: targetBox!.leftPinCount,
+      bottomPinCount: targetBox!.bottomPinCount,
+      rightPinCount: targetBox!.rightPinCount,
+      topPinCount: targetBox!.topPinCount,
     })
 
     const candidateBoxesWithShape = candidateShapeCounts.get(targetShape) || []
-    
+
     if (candidateBoxesWithShape.length === 0) {
       // No box in candidate netlist matches this target box's shape
       issues.push({
