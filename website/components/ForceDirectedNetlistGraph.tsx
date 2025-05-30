@@ -171,36 +171,54 @@ export const ForceDirectedNetlistGraph: React.FC<
       ctx.font = "10px monospace"
       ctx.fillStyle = "#666"
 
+      // Calculate max pin count for better distribution
+      const maxPinCount = Math.max(
+        ...netlist.boxes.map((box) =>
+          Math.max(
+            box.leftPinCount,
+            box.rightPinCount,
+            box.topPinCount,
+            box.bottomPinCount,
+          ),
+        ),
+        8, // minimum for decent spacing
+      )
+
       edges.forEach((edge) => {
         const source = nodes.find((n) => n.id === edge.source)
         const target = nodes.find((n) => n.id === edge.target)
         if (!source || !target) return
 
+        const nodeRadius = 20
+        const pinRadius = 28
+
+        // Calculate pin positions around circumference
+        const sourceAngle = (edge.sourcePin * 2 * Math.PI) / maxPinCount
+        const sourcePinX = source.x + Math.cos(sourceAngle) * nodeRadius
+        const sourcePinY = source.y + Math.sin(sourceAngle) * nodeRadius
+
+        const targetAngle = (edge.targetPin * 2 * Math.PI) / maxPinCount
+        const targetPinX = target.x + Math.cos(targetAngle) * nodeRadius
+        const targetPinY = target.y + Math.sin(targetAngle) * nodeRadius
+
+        // Draw edge from pin to pin
         ctx.beginPath()
-        ctx.moveTo(source.x, source.y)
-        ctx.lineTo(target.x, target.y)
+        ctx.moveTo(sourcePinX, sourcePinY)
+        ctx.lineTo(targetPinX, targetPinY)
         ctx.stroke()
 
-        // Draw pin numbers at edge endpoints
-        const dx = target.x - source.x
-        const dy = target.y - source.y
-        const length = Math.sqrt(dx * dx + dy * dy)
-        const unitX = dx / length
-        const unitY = dy / length
+        // Draw pin labels at extended radius
+        const sourceLabelX = source.x + Math.cos(sourceAngle) * pinRadius
+        const sourceLabelY = source.y + Math.sin(sourceAngle) * pinRadius
+        ctx.fillText(`${edge.sourcePin}`, sourceLabelX - 5, sourceLabelY + 3)
 
-        // Source pin label
-        const sourceX = source.x + unitX * 25
-        const sourceY = source.y + unitY * 25
-        ctx.fillText(`${edge.sourcePin}`, sourceX, sourceY)
-
-        // Target pin label
-        const targetX = target.x - unitX * 25
-        const targetY = target.y - unitY * 25
-        ctx.fillText(`${edge.targetPin}`, targetX, targetY)
+        const targetLabelX = target.x + Math.cos(targetAngle) * pinRadius
+        const targetLabelY = target.y + Math.sin(targetAngle) * pinRadius
+        ctx.fillText(`${edge.targetPin}`, targetLabelX - 5, targetLabelY + 3)
       })
 
       // Draw nodes
-      ctx.fillStyle = "#4CAF50"
+      ctx.fillStyle = "rgba(0,0,0,0.1)"
       ctx.strokeStyle = "#333"
       ctx.lineWidth = 2
       ctx.font = "12px monospace"
