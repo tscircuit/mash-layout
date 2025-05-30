@@ -7,7 +7,8 @@ import { useState, useEffect } from "react"
 import { testTscircuitCodeForLayout } from "tests/tscircuit/testTscircuitCodeForLayout"
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
 import { convertCircuitJsonToInputNetlist } from "lib/circuit-json/convertCircuitJsonToInputNetlist"
-
+import { applyCircuitLayoutToCircuitJson } from "lib/circuit-json/applyCircuitLayoutToCircuitJson"
+import { reorderChipPinsToCcw } from "lib/circuit-json/reorderChipPinsToCcw"
 /**
  * This component debugs the Schematic Layout Pipeline.
  *
@@ -49,13 +50,16 @@ export const PipelineDebugger = (props: {
           }),
         )
 
+        setOriginalCircuitJson(results.originalCircuitJson)
+        const ccwOrderedCircuitJson = reorderChipPinsToCcw(
+          results.originalCircuitJson,
+        )
         const inputNetlist = convertCircuitJsonToInputNetlist(
           results.originalCircuitJson,
         )
 
         // Store for download buttons
         setInputNetlist(inputNetlist)
-        setOriginalCircuitJson(results.originalCircuitJson)
         const solver = new SchematicLayoutPipelineSolver({
           inputNetlist: inputNetlist,
         })
@@ -70,12 +74,8 @@ export const PipelineDebugger = (props: {
 
         // Generate the laid out SVG if we have an adapted template
         if (solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template) {
-          const { applyCircuitLayoutToCircuitJson } = await import(
-            "lib/circuit-json/applyCircuitLayoutToCircuitJson"
-          )
-
           const laidOutCircuitJson = applyCircuitLayoutToCircuitJson(
-            results.originalCircuitJson,
+            ccwOrderedCircuitJson,
             inputNetlist,
             solver.adaptPhaseSolver.outputAdaptedTemplates[0].template,
           )

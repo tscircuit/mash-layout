@@ -11,11 +11,14 @@ export function findAllMatchedBoxMissingPinShapeBoxCountOnSide(params: {
   candidateBoxIndex: number
   targetBoxIndex: number
 }): MatchedBoxMissingPinShapeBoxCountOnSide[] {
-  const { candidateNetlist, targetNetlist, candidateBoxIndex, targetBoxIndex } = params
+  const { candidateNetlist, targetNetlist, candidateBoxIndex, targetBoxIndex } =
+    params
   const issues: MatchedBoxMissingPinShapeBoxCountOnSide[] = []
 
-  const candidateInputNetlist = convertNormalizedNetlistToInputNetlist(candidateNetlist)
-  const targetInputNetlist = convertNormalizedNetlistToInputNetlist(targetNetlist)
+  const candidateInputNetlist =
+    convertNormalizedNetlistToInputNetlist(candidateNetlist)
+  const targetInputNetlist =
+    convertNormalizedNetlistToInputNetlist(targetNetlist)
 
   const candidateBox = candidateInputNetlist.boxes[candidateBoxIndex]
   const targetBox = targetInputNetlist.boxes[targetBoxIndex]
@@ -24,9 +27,11 @@ export function findAllMatchedBoxMissingPinShapeBoxCountOnSide(params: {
 
   // Collect box count signatures for candidate pins by side
   const candidateBoxCountShapes: { signature: string; side: Side }[] = []
-  const candidatePinCount = 
-    candidateBox.leftPinCount + candidateBox.rightPinCount + 
-    candidateBox.topPinCount + candidateBox.bottomPinCount
+  const candidatePinCount =
+    candidateBox.leftPinCount +
+    candidateBox.rightPinCount +
+    candidateBox.topPinCount +
+    candidateBox.bottomPinCount
 
   for (let i = 0; i < candidatePinCount; i++) {
     const pinNumber = i + 1
@@ -43,53 +48,116 @@ export function findAllMatchedBoxMissingPinShapeBoxCountOnSide(params: {
 
   const unusedCandidateBoxCountShapes = [...candidateBoxCountShapes]
 
-  // Check target pins
-  const targetPinCount = 
-    targetBox.leftPinCount + targetBox.rightPinCount + 
-    targetBox.topPinCount + targetBox.bottomPinCount
+  // Check if this is a symmetric component (2-pin passive)
+  const totalTargetPinCount =
+    targetBox.leftPinCount +
+    targetBox.rightPinCount +
+    targetBox.topPinCount +
+    targetBox.bottomPinCount
 
-  for (let i = 0; i < targetPinCount; i++) {
-    const targetPinNumber = i + 1
-    const targetBoxCountSignature = getBoxCountPinSignature({
-      netlist: targetInputNetlist,
-      chipId: targetBox.boxId,
-      pinNumber: targetPinNumber,
-    })
+  const isSymmetricComponent =
+    candidatePinCount === 2 &&
+    totalTargetPinCount === 2 &&
+    Math.max(
+      candidateBox.leftPinCount,
+      candidateBox.rightPinCount,
+      candidateBox.topPinCount,
+      candidateBox.bottomPinCount,
+    ) === 1 &&
+    Math.max(
+      targetBox.leftPinCount,
+      targetBox.rightPinCount,
+      targetBox.topPinCount,
+      targetBox.bottomPinCount,
+    ) === 1
 
-    // Skip pins that are not connected
-    if (targetBoxCountSignature === "box_count_0") {
-      continue
-    }
+  if (isSymmetricComponent) {
+    // For symmetric components, check if the overall set of connectivity patterns match
+    // regardless of pin assignments or sides
+    const candidateSignatures = candidateBoxCountShapes
+      .map((shape) => shape.signature)
+      .filter((sig) => sig !== "box_count_0")
+      .sort()
 
-    const targetPin = {
-      signature: targetBoxCountSignature,
-      side: getPinSideIndex(targetPinNumber, targetBox).side,
-    }
+    const targetSignatures: string[] = []
 
-    const matchingUnusedCandidateIndex = unusedCandidateBoxCountShapes.findIndex(
-      (candidatePin) =>
-        candidatePin.signature === targetPin.signature &&
-        candidatePin.side === targetPin.side
-    )
-
-    if (matchingUnusedCandidateIndex === -1) {
-      // No matching box count signature found on the same side
-      const candidateBoxCountSignatures = candidateBoxCountShapes
-        .filter(shape => shape.side === targetPin.side)
-        .map(shape => shape.signature)
-
-      issues.push({
-        type: "matched_box_missing_pin_shape_box_count_on_side",
-        candidateBoxIndex,
-        targetBoxIndex,
-        side: targetPin.side,
-        targetPinNumber,
-        targetBoxCountSignature,
-        candidateBoxCountSignatures,
+    // Collect all target signatures
+    for (let i = 0; i < totalTargetPinCount; i++) {
+      const targetPinNumber = i + 1
+      const targetBoxCountSignature = getBoxCountPinSignature({
+        netlist: targetInputNetlist,
+        chipId: targetBox.boxId,
+        pinNumber: targetPinNumber,
       })
-    } else {
-      // Remove the used candidate signature
-      unusedCandidateBoxCountShapes.splice(matchingUnusedCandidateIndex, 1)
+
+      if (targetBoxCountSignature !== "box_count_0") {
+        targetSignatures.push(targetBoxCountSignature)
+      }
+    }
+
+    targetSignatures.sort()
+
+    // For symmetric components, just check if the sorted signature arrays match
+    if (candidateSignatures.length > 0 && targetSignatures.length > 0) {
+      if (candidateSignatures.join(",") !== targetSignatures.join(",")) {
+        // Only report this as an issue if the sorted signatures don't match
+        issues.push({
+          type: "matched_box_missing_pin_shape_box_count_on_side",
+          candidateBoxIndex,
+          targetBoxIndex,
+          side: "left", // Arbitrary side for symmetric components
+          targetPinNumber: -1, // Not applicable for symmetric matching
+          targetBoxCountSignature: targetSignatures.join(","),
+          candidateBoxCountSignatures: candidateSignatures,
+        })
+      }
+    }
+  } else {
+    // For non-symmetric components, use the original strict pin-by-pin matching
+    for (let i = 0; i < totalTargetPinCount; i++) {
+      const targetPinNumber = i + 1
+      const targetBoxCountSignature = getBoxCountPinSignature({
+        netlist: targetInputNetlist,
+        chipId: targetBox.boxId,
+        pinNumber: targetPinNumber,
+      })
+
+      // Skip pins that are not connected
+      if (targetBoxCountSignature === "box_count_0") {
+        continue
+      }
+
+      const targetPin = {
+        signature: targetBoxCountSignature,
+        side: getPinSideIndex(targetPinNumber, targetBox).side,
+      }
+
+      const matchingUnusedCandidateIndex =
+        unusedCandidateBoxCountShapes.findIndex(
+          (candidatePin) =>
+            candidatePin.signature === targetPin.signature &&
+            candidatePin.side === targetPin.side,
+        )
+
+      if (matchingUnusedCandidateIndex === -1) {
+        // No matching box count signature found on the same side
+        const candidateBoxCountSignatures = candidateBoxCountShapes
+          .filter((shape) => shape.side === targetPin.side)
+          .map((shape) => shape.signature)
+
+        issues.push({
+          type: "matched_box_missing_pin_shape_box_count_on_side",
+          candidateBoxIndex,
+          targetBoxIndex,
+          side: targetPin.side,
+          targetPinNumber,
+          targetBoxCountSignature,
+          candidateBoxCountSignatures,
+        })
+      } else {
+        // Remove the used candidate signature
+        unusedCandidateBoxCountShapes.splice(matchingUnusedCandidateIndex, 1)
+      }
     }
   }
 

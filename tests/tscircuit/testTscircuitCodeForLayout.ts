@@ -7,6 +7,7 @@ import { applyCircuitLayoutToCircuitJson } from "lib/circuit-json/applyCircuitLa
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
 import { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipelineSolver"
 import { CircuitTemplateFn } from "templates/index"
+import { reorderChipPinsToCcw } from "lib/circuit-json/reorderChipPinsToCcw"
 
 export const testTscircuitCodeForLayout = async (
   code: string,
@@ -15,6 +16,7 @@ export const testTscircuitCodeForLayout = async (
   } = {},
 ): Promise<{
   originalCircuitJson: any
+  ccwOrderedCircuitJson: any
   laidOutCircuitJson: any
   readableNetlist: string
   matchedTemplate: CircuitBuilder
@@ -32,6 +34,8 @@ export const testTscircuitCodeForLayout = async (
     schLabel.schematic_net_label_id ??= `schematic_net_label_${schLabelIdCounter++}`
   }
 
+  const ccwOrderedCircuitJson = reorderChipPinsToCcw(circuitJson)
+
   const inputNetlist = convertCircuitJsonToInputNetlist(circuitJson)
   const readableNetlist = getReadableNetlist(inputNetlist)
 
@@ -48,8 +52,8 @@ export const testTscircuitCodeForLayout = async (
     solver.adaptPhaseSolver!.outputAdaptedTemplates[0]!.template
 
   const laidOutCircuitJson = applyCircuitLayoutToCircuitJson(
-    circuitJson,
-    convertCircuitJsonToInputNetlist(circuitJson),
+    ccwOrderedCircuitJson,
+    convertCircuitJsonToInputNetlist(ccwOrderedCircuitJson),
     adaptedTemplate,
   )
 
@@ -72,6 +76,7 @@ export const testTscircuitCodeForLayout = async (
 
   return {
     originalCircuitJson: circuitJson,
+    ccwOrderedCircuitJson,
     laidOutCircuitJson,
     readableNetlist,
     matchedTemplate,
