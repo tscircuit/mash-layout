@@ -234,7 +234,7 @@ export const ForceDirectedNetlistGraph: React.FC<
         ctx.fillStyle = "#000"
         const textWidth = ctx.measureText(node.boxId).width
         ctx.fillText(node.boxId, node.x - textWidth / 2, node.y + 4)
-        ctx.fillStyle = "#4CAF50"
+        ctx.fillStyle = "rgba(0,0,0,0.1)"
       })
 
       animationRef.current = requestAnimationFrame(simulate)
