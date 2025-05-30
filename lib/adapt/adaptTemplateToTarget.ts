@@ -29,6 +29,7 @@ export function adaptTemplateToTarget(params: {
   target: InputNetlist
 }): {
   appliedOperations: EditOperation[]
+  outputTemplate: CircuitBuilder
 } {
   const solver = new AdaptTemplateToNetlistSolver({
     inputTemplate: params.template,
@@ -37,5 +38,6 @@ export function adaptTemplateToTarget(params: {
   solver.solve()
   return {
     appliedOperations: solver.outputAppliedOperations,
+    outputTemplate: solver.outputAdaptedTemplate!,
   }
 }
