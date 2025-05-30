@@ -137,7 +137,7 @@ export function applyRemovePinFromSide(
       bottomPinCount: chip.bottomPinCount + (side === "bottom" ? 1 : 0),
     })
 
-  // Calculate required margins to preserve absolute positions
+  // Calculate exact margins needed to preserve absolute positions
   const newPinMargins: Record<
     number,
     { marginTop: number; marginLeft: number }
@@ -150,7 +150,8 @@ export function applyRemovePinFromSide(
     }
   }
 
-  // For pins that were affected by the removal, calculate the margin needed to preserve their absolute position
+  // Add margins to all pins that come after the removed pin on the same side
+  // to preserve their original positions
   for (const [oldPn, newPn] of renumberMap.entries()) {
     const oldSideInfo = getPinSideIndex(oldPn, {
       leftPinCount: chip.leftPinCount + (side === "left" ? 1 : 0),
@@ -159,37 +160,28 @@ export function applyRemovePinFromSide(
       bottomPinCount: chip.bottomPinCount + (side === "bottom" ? 1 : 0),
     })
 
-    // Only adjust pins that were on the same side as the removed pin and after it
-    if (
-      oldSideInfo.side === removedPinSide &&
-      oldSideInfo.indexOnSide > removedIndexOnSide
-    ) {
-      const newSideInfo = getPinSideIndex(newPn, chip)
+    // Adjust all pins that come after the removed pin on the same side
+    if (oldSideInfo.side === removedPinSide && oldSideInfo.indexOnSide > removedIndexOnSide) {
+      const existingMargin = newPinMargins[newPn] || {
+        marginTop: 0.2,
+        marginLeft: 0.2,
+      }
 
-      // Calculate how many positions this pin moved up/left
-      const positionsMoved = oldSideInfo.indexOnSide - newSideInfo.indexOnSide
-
-      if (positionsMoved > 0) {
-        const existingMargin = newPinMargins[newPn] || {
-          marginTop: 0.2,
-          marginLeft: 0.2,
+      if (side === "left" || side === "right") {
+        newPinMargins[newPn] = {
+          ...existingMargin,
+          marginTop: existingMargin.marginTop + 0.2,
         }
-
-        if (side === "left" || side === "right") {
-          newPinMargins[newPn] = {
-            ...existingMargin,
-            marginTop: existingMargin.marginTop + positionsMoved * 0.2,
-          }
-        } else {
-          newPinMargins[newPn] = {
-            ...existingMargin,
-            marginLeft: existingMargin.marginLeft + positionsMoved * 0.2,
-          }
+      } else {
+        newPinMargins[newPn] = {
+          ...existingMargin,
+          marginLeft: existingMargin.marginLeft + 0.2,
         }
       }
     }
   }
 
+  // Set the new calculated margins
   chip.pinMargins = newPinMargins
 
   // 7. Update circuit references
