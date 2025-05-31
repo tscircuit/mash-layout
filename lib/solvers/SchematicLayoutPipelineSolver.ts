@@ -116,4 +116,8 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
     this.timeSpentOnPhase[pipelineStepDef.solverName] = 0
     this.startTimeOfPhase[pipelineStepDef.solverName] = performance.now()
   }
+
+  getLayout(): CircuitLayoutJson {
+    return this.circuitBuilder.getLayoutJson()
+  }
 }

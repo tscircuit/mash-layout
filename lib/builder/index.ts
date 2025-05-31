@@ -1,4 +1,4 @@
-export * from "./CircuitBuilder"
+export * from "./CircuitBuilder/CircuitBuilder"
 export * from "./ChipBuilder"
 export * from "./PinBuilder"
 export * from "./circuit"

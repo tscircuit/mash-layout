@@ -1,4 +1,4 @@
-import type { CircuitBuilder } from "../builder/CircuitBuilder"
+import type { CircuitBuilder } from "../builder/CircuitBuilder/CircuitBuilder"
 
 export interface Point {
   x: number
