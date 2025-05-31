@@ -37,7 +37,7 @@ test("ScoreNetlistTemplatePairSolver correctly handles passive rotation", () => 
 
   // Check that the matched boxes include rotation metadata
   expect(solver.matchedBoxes).toHaveLength(1)
-  const matchedBox = solver.matchedBoxes[0]
+  const matchedBox = solver.matchedBoxes[0]!
 
   // The target box should have a rotation applied (likely 180 degrees for passive flip)
   expect(matchedBox.targetBoxRotationCcw).toBeOneOf([0, 90, 180, 270])

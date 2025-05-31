@@ -14,8 +14,8 @@ test("getCircuitLayoutJson should handle circuit with only chips", () => {
   expect(layoutJson.junctions).toHaveLength(0)
 
   // Verify chip properties are transferred correctly
-  const u1 = layoutJson.boxes.find(box => box.boxId === "U1")
-  const u2 = layoutJson.boxes.find(box => box.boxId === "U2")
+  const u1 = layoutJson.boxes.find((box) => box.boxId === "U1")
+  const u2 = layoutJson.boxes.find((box) => box.boxId === "U2")
 
   expect(u1).toBeDefined()
   if (u1) {

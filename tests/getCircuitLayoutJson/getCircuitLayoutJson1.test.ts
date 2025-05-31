@@ -10,7 +10,7 @@ test("getCircuitLayoutJson should convert CircuitBuilder to layout format", () =
 
   // Add connections with passives and labels using conventional patterns
   U1.pin(1).line(2, 0).line(0, 1).passive("R1").line(0, 1).label("VCC")
-  U1.pin(2).line(-2, 0).label("GND") 
+  U1.pin(2).line(-2, 0).label("GND")
   U1.pin(3).line(3, 0).intersect().line(1, 0).label("OUT")
   U1.pin(4).line(2, 0).mark("junction")
 
@@ -37,7 +37,9 @@ test("getCircuitLayoutJson should convert CircuitBuilder to layout format", () =
   }
 
   // Verify passive components were created
-  const passiveBoxes = layoutJson.boxes.filter((box) => box.boxId.startsWith("R"))
+  const passiveBoxes = layoutJson.boxes.filter((box) =>
+    box.boxId.startsWith("R"),
+  )
   expect(passiveBoxes.length).toBeGreaterThan(0) // Should have at least R1
 
   // Verify pin coordinates are set and have proper structure
