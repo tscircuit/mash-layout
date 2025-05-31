@@ -63,9 +63,9 @@ export default () => {
 
 
                           ┌────────────────┐
-                          │                │12                  
-                          │                │11 ── USBC.10,SW1.3…
-                          │                │10 ── USBC.11,SW1.3…
+                          │                │12 ── USBC.11,SW1.3…
+                          │                │11 ── USBC.12,SW1.3…
+                          │                │10                  
                           │                │9                   
                           │      USBC      │8                   
                           │                │7                   
@@ -76,17 +76,17 @@ export default () => {
                           └────────────────┘
                               1       2    
                               │       │    
-                           USBC.0,L        
+                           USBC.2,LUSBC.1,L
 
 
                           ┌────────────────┐
-      R1.2,connecti… ──  1│      LED       │2  ── USBC.0,USBC.1…
+      R1.2,connecti… ──  1│      LED       │2  ── USBC.1,USBC.2…
                           └────────────────┘
 
 
                           ┌────────────────┐
                          1│      SW1       │4                   
-      R1.1,connecti… ──  2│                │3  ── USBC.11,USBC.…
+      R1.1,connecti… ──  2│                │3  ── USBC.12,USBC.…
                           └────────────────┘
 
 
@@ -96,13 +96,13 @@ export default () => {
 
     Complex Connections (more than 2 points):
       - complex connection[0]:
-        - USBC.0
         - USBC.1
+        - USBC.2
         - LED.2
         - GND
       - complex connection[1]:
+        - USBC.12
         - USBC.11
-        - USBC.10
         - SW1.3
         - VBUS
       - complex connection[2]:
