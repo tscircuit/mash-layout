@@ -161,7 +161,10 @@ export function applyRemovePinFromSide(
     })
 
     // Adjust all pins that come after the removed pin on the same side
-    if (oldSideInfo.side === removedPinSide && oldSideInfo.indexOnSide > removedIndexOnSide) {
+    if (
+      oldSideInfo.side === removedPinSide &&
+      oldSideInfo.indexOnSide > removedIndexOnSide
+    ) {
       const existingMargin = newPinMargins[newPn] || {
         marginTop: 0.2,
         marginLeft: 0.2,

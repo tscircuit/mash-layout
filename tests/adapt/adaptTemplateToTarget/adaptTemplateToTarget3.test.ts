@@ -2,7 +2,7 @@ import { test, expect } from "bun:test"
 import { CircuitBuilder } from "lib/builder"
 import { adaptTemplateToTarget } from "lib/adapt/adaptTemplateToTarget"
 
-test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", () => {
+test("adaptTemplateToTarget3 connects two chips with a line", () => {
   /* target circuit (single chip) ------------------------------------- */
   const target = new CircuitBuilder()
   const tU1 = target.chip().leftpins(2).rightpins(2)
@@ -51,7 +51,17 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
     target: target.getNetlist(),
   })
 
-  expect(appliedOperations).toMatchInlineSnapshot(`[]`)
+  expect(appliedOperations).toMatchInlineSnapshot(`
+    [
+      {
+        "fromChipId": "U1",
+        "fromPinNumber": 1,
+        "toChipId": "U2",
+        "toPinNumber": 2,
+        "type": "draw_line_between_pins",
+      },
+    ]
+  `)
 
   /* verify adaptation result ----------------------------------------- */
   expect(`\n${outputTemplate.toString()}\n`).toMatchInlineSnapshot(`
@@ -61,13 +71,11 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
      1.4                     ┌────┐
      1.2               ──────┤1  2├
      1.0                     └────┘
-     0.8 U1
-     0.6 ┌────┐
-     0.4 ┤1  4├─────
+     0.8 U1                      │
+     0.6 ┌────┐                  │
+     0.4 ┤1  4├──────────────────┘
      0.2 ┤2  3├
      0.0 └────┘
     "
   `)
-
-  expect(appliedOperations.some((op) => op.type === "remove_chip")).toBe(true) // remove_chip operation was applied
 })

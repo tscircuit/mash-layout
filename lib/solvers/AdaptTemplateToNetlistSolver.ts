@@ -7,6 +7,7 @@ import { transformTargetForPassiveCompatibility } from "lib/adapt/transformTarge
 import { removeUnmatchedChips } from "lib/adapt/adaptation-operations/removeUnmatchedChips"
 import { fixMatchedBoxPinCounts } from "lib/adapt/adaptation-operations/fixMatchedBoxPinCounts"
 import { fixMatchedBoxPinShapes } from "lib/adapt/adaptation-operations/fixMatchedBoxPinShapes"
+import { drawMissingConnections } from "lib/adapt/adaptation-operations/drawMissingConnections"
 import { applyEditOperation } from "lib/adapt/applyEditOperation"
 import type { MatchedBoxWithChipIds } from "lib/adapt/adaptation-operations/removeUnmatchedChips"
 
@@ -16,6 +17,7 @@ type AdaptationPhase =
   | "fix-matched-box-pin-counts"
   | "fix-matched-box-pin-shapes"
   | "remove-unmatched-chips-2"
+  | "draw-missing-connections"
   | "complete"
 
 /**
@@ -156,6 +158,31 @@ export class AdaptTemplateToNetlistSolver extends BaseSolver {
         if (removal2Result.appliedOperations.length > 0) {
           // Operation was already applied by the function, just track it
           const operation = removal2Result.appliedOperations[0]!
+          this.outputAppliedOperations.push(operation)
+        } else {
+          // No more operations needed, move to next phase
+          this.phase = "draw-missing-connections"
+        }
+        break
+      }
+
+      case "draw-missing-connections": {
+        // Recalculate matched boxes to account for template changes
+        const currentRemovalResult = removeUnmatchedChips({
+          template: this.outputAdaptedTemplate,
+          target: this.transformedTarget!,
+        })
+
+        // Draw missing connections between matched chips
+        const drawConnectionsResult = drawMissingConnections({
+          template: this.outputAdaptedTemplate,
+          target: this.transformedTarget!,
+          matchedBoxes: currentRemovalResult.matchedBoxes,
+        })
+
+        if (drawConnectionsResult.appliedOperations.length > 0) {
+          // Operation was already applied by the function, just track it
+          const operation = drawConnectionsResult.appliedOperations[0]!
           this.outputAppliedOperations.push(operation)
         } else {
           // No more operations needed, move to complete

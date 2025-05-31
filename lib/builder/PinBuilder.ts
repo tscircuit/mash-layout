@@ -2,6 +2,7 @@ import type { PortReference, Side } from "../input-types"
 import type { Line } from "./circuit-types"
 import type { CircuitBuilder } from "./CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
+import { isPathClear, findClearWaypoint } from "../utils/pathfindingHelpers"
 
 export interface PinConnectionState {
   x: number
@@ -84,6 +85,35 @@ export class PinBuilder {
     } else {
       return this.line(0, deltaY).line(deltaX, 0)
     }
+  }
+
+  pathTo(targetX: number, targetY: number): this {
+    // Smart routing that tries to avoid obstacles using simple heuristics
+
+    const currentPos = { x: this.x, y: this.y }
+    const targetPos = { x: targetX, y: targetY }
+
+    // If already at target, do nothing
+    if (currentPos.x === targetPos.x && currentPos.y === targetPos.y) {
+      return this
+    }
+
+    // Check if direct path is clear
+    if (isPathClear(currentPos, targetPos, this.circuit, this.chip.chipId)) {
+      return this.lineAt(targetX, targetY)
+    }
+
+    // Find a clear waypoint to route around obstacles
+    const waypoint = findClearWaypoint(
+      this.x,
+      this.y,
+      targetX,
+      targetY,
+      this.circuit,
+      this.chip.chipId,
+    )
+
+    return this.lineAt(waypoint.x, waypoint.y).lineAt(targetX, targetY)
   }
 
   private getPinDirection(): "horizontal" | "vertical" {

@@ -223,7 +223,6 @@ export class ChipBuilder {
     return this._getPin(pinNumber)
   }
 
-
   public getPinLocation(pinNumber: number): { x: number; y: number } {
     const { side, indexFromTop, indexFromLeft } = getPinSideIndex(
       pinNumber,

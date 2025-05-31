@@ -52,6 +52,15 @@ export interface ChangePassiveOrientationOp {
   toOrientation: "horizontal" | "vertical"
 }
 
+export interface DrawLineBetweenPinsOp {
+  type: "draw_line_between_pins"
+  fromChipId: string
+  fromPinNumber: number
+  toChipId: string
+  toPinNumber: number
+  netName?: string
+}
+
 export type EditOperation =
   | AddLabelToPinOp
   | AddPassiveToPinOp
@@ -61,3 +70,4 @@ export type EditOperation =
   | AddPinToSideOp
   | RemovePinFromSideOp
   | ChangePassiveOrientationOp
+  | DrawLineBetweenPinsOp
