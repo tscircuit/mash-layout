@@ -41,6 +41,7 @@ test("pipeline06", async () => {
               "R1",
               "R1",
               "R1",
+              "B1T1,R1",
               "L6R6,R1,B1T1,B1T1",
               "L6R6,R1,B1T1,B1T1",
               "R1",
@@ -50,7 +51,7 @@ test("pipeline06", async () => {
             ],
             "side": "left",
             "targetBoxIndex": 0,
-            "targetPinNumber": 2,
+            "targetPinNumber": 1,
             "targetPinShapeSignature": "L2R6,R1,B1T1,B1T1",
             "type": "matched_box_missing_pin_shape_on_side",
           },
@@ -75,8 +76,29 @@ test("pipeline06", async () => {
             "targetPinShapeSignature": "L2R6,R1,B1T1,B1T1",
             "type": "matched_box_missing_pin_shape_on_side",
           },
+          {
+            "candidateBoxIndex": 0,
+            "candidateShapeSignatures": [
+              "L6R6,R1,B1T1,B1T1",
+              "R1",
+              "R1",
+              "R1",
+              "R1",
+              "L6R6,R1,B1T1,B1T1",
+              "L6R6,R1,B1T1,B1T1",
+              "R1",
+              "R1",
+              "R1",
+              "B1T1,R1",
+            ],
+            "side": "right",
+            "targetBoxIndex": 0,
+            "targetPinNumber": 4,
+            "targetPinShapeSignature": "L2R6,R1,B1T1,B1T1",
+            "type": "matched_box_missing_pin_shape_on_side",
+          },
         ],
-        "score": 3,
+        "score": 4,
         "targetBoxIndex": 0,
         "targetBoxRotationCcw": 0,
       },
@@ -156,7 +178,7 @@ test("pipeline06", async () => {
     totalIssues: matchingIssues.length,
   }).toMatchInlineSnapshot(`
     {
-      "totalIssues": 8,
+      "totalIssues": 9,
     }
   `)
 
