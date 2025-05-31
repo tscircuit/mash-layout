@@ -2,6 +2,8 @@ import type { InputNetlist } from "lib/input-types"
 import { BaseSolver } from "./BaseSolver"
 import { AdaptPhaseSolver } from "./AdaptPhaseSolver"
 import { MatchPhaseSolver } from "./MatchPhaseSolver"
+import { CircuitBuilder } from "lib/builder"
+import { CircuitTemplateFn } from "templates/index"
 
 type PipelineStep<T extends new (...args: any[]) => BaseSolver> = {
   solverName: string
@@ -36,6 +38,8 @@ function definePipelineStep<
 export class SchematicLayoutPipelineSolver extends BaseSolver {
   inputNetlist: InputNetlist
 
+  templateFnsOverride?: CircuitTemplateFn[]
+
   matchPhaseSolver?: MatchPhaseSolver
   adaptPhaseSolver?: AdaptPhaseSolver
 
@@ -45,10 +49,10 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
 
   pipelineDef = [
     // TODO partition
-    // TODO match
     definePipelineStep("matchPhaseSolver", MatchPhaseSolver, () => [
       {
         inputNetlists: [this.inputNetlist] as InputNetlist[],
+        templateFns: this.templateFnsOverride,
       },
     ]),
     definePipelineStep("adaptPhaseSolver", AdaptPhaseSolver, () => [
@@ -56,16 +60,17 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
         matchedTemplates: this.matchPhaseSolver?.outputMatchedTemplates!,
       },
     ]),
-    // TODO adapt
     // TODO refine
     // TODO stitch
   ]
 
   constructor(opts: {
     inputNetlist: InputNetlist
+    templateFns?: CircuitTemplateFn[]
   }) {
     super()
     this.inputNetlist = opts.inputNetlist
+    this.templateFnsOverride = opts.templateFns
   }
 
   currentPipelineStepIndex = 0

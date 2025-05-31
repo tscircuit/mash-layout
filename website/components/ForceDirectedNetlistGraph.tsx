@@ -37,12 +37,12 @@ export const ForceDirectedNetlistGraph: React.FC<
 
   useEffect(() => {
     // Convert netlist to graph data
-    const graphNodes: GraphNode[] = netlist.boxes.map((box) => ({
+    const graphNodes: GraphNode[] = netlist.boxes.map((box, boxIndex) => ({
       id: box.boxId,
       boxId: box.boxId,
       x: width / 2 + box.leftPinCount,
       y: height / 2 - box.topPinCount,
-      vx: 0,
+      vx: boxIndex,
       vy: 0,
     }))
 
@@ -89,7 +89,7 @@ export const ForceDirectedNetlistGraph: React.FC<
     let currentAlpha = alpha
 
     const simulate = () => {
-      if (currentAlpha < 0.01) return
+      const simulationActive = currentAlpha >= 0.01
 
       // Apply forces
       nodes.forEach((node) => {
@@ -103,62 +103,64 @@ export const ForceDirectedNetlistGraph: React.FC<
         }
       })
 
-      // Link force
-      edges.forEach((edge) => {
-        const source = nodes.find((n) => n.id === edge.source)
-        const target = nodes.find((n) => n.id === edge.target)
-        if (!source || !target) return
+      if (simulationActive) {
+        // Link force
+        edges.forEach((edge) => {
+          const source = nodes.find((n) => n.id === edge.source)
+          const target = nodes.find((n) => n.id === edge.target)
+          if (!source || !target) return
 
-        const dx = target.x - source.x
-        const dy = target.y - source.y
-        const distance = Math.sqrt(dx * dx + dy * dy) || 1
-        const force = (distance - linkDistance) * linkStrength * currentAlpha
-
-        const fx = (dx / distance) * force
-        const fy = (dy / distance) * force
-
-        source.vx += fx
-        source.vy += fy
-        target.vx -= fx
-        target.vy -= fy
-      })
-
-      // Node repulsion force
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const nodeA = nodes[i]
-          const nodeB = nodes[j]
-
-          const dx = nodeB.x - nodeA.x
-          const dy = nodeB.y - nodeA.y
+          const dx = target.x - source.x
+          const dy = target.y - source.y
           const distance = Math.sqrt(dx * dx + dy * dy) || 1
+          const force = (distance - linkDistance) * linkStrength * currentAlpha
 
-          const force = (nodeStrength * currentAlpha) / (distance * distance)
           const fx = (dx / distance) * force
           const fy = (dy / distance) * force
 
-          nodeA.vx -= fx
-          nodeA.vy -= fy
-          nodeB.vx += fx
-          nodeB.vy += fy
+          source.vx += fx
+          source.vy += fy
+          target.vx -= fx
+          target.vy -= fy
+        })
+
+        // Node repulsion force
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const nodeA = nodes[i]
+            const nodeB = nodes[j]
+
+            const dx = nodeB.x - nodeA.x
+            const dy = nodeB.y - nodeA.y
+            const distance = Math.sqrt(dx * dx + dy * dy) || 1
+
+            const force = (nodeStrength * currentAlpha) / (distance * distance)
+            const fx = (dx / distance) * force
+            const fy = (dy / distance) * force
+
+            nodeA.vx -= fx
+            nodeA.vy -= fy
+            nodeB.vx += fx
+            nodeB.vy += fy
+          }
         }
+
+        // Update positions
+        nodes.forEach((node) => {
+          if (node.fx === undefined) {
+            node.vx *= velocityDecay
+            node.x += node.vx
+            node.x = Math.max(30, Math.min(width - 30, node.x))
+          }
+          if (node.fy === undefined) {
+            node.vy *= velocityDecay
+            node.y += node.vy
+            node.y = Math.max(30, Math.min(height - 30, node.y))
+          }
+        })
+
+        currentAlpha -= alphaDecay
       }
-
-      // Update positions
-      nodes.forEach((node) => {
-        if (node.fx === undefined) {
-          node.vx *= velocityDecay
-          node.x += node.vx
-          node.x = Math.max(30, Math.min(width - 30, node.x))
-        }
-        if (node.fy === undefined) {
-          node.vy *= velocityDecay
-          node.y += node.vy
-          node.y = Math.max(30, Math.min(height - 30, node.y))
-        }
-      })
-
-      currentAlpha -= alphaDecay
 
       // Render
       ctx.clearRect(0, 0, width, height)
@@ -169,36 +171,54 @@ export const ForceDirectedNetlistGraph: React.FC<
       ctx.font = "10px monospace"
       ctx.fillStyle = "#666"
 
+      // Calculate max pin count for better distribution
+      const maxPinCount = Math.max(
+        ...netlist.boxes.map((box) =>
+          Math.max(
+            box.leftPinCount,
+            box.rightPinCount,
+            box.topPinCount,
+            box.bottomPinCount,
+          ),
+        ),
+        8, // minimum for decent spacing
+      )
+
       edges.forEach((edge) => {
         const source = nodes.find((n) => n.id === edge.source)
         const target = nodes.find((n) => n.id === edge.target)
         if (!source || !target) return
 
+        const nodeRadius = 20
+        const pinRadius = 28
+
+        // Calculate pin positions around circumference
+        const sourceAngle = (edge.sourcePin * 2 * Math.PI) / maxPinCount
+        const sourcePinX = source.x + Math.cos(sourceAngle) * nodeRadius
+        const sourcePinY = source.y + Math.sin(sourceAngle) * nodeRadius
+
+        const targetAngle = (edge.targetPin * 2 * Math.PI) / maxPinCount
+        const targetPinX = target.x + Math.cos(targetAngle) * nodeRadius
+        const targetPinY = target.y + Math.sin(targetAngle) * nodeRadius
+
+        // Draw edge from pin to pin
         ctx.beginPath()
-        ctx.moveTo(source.x, source.y)
-        ctx.lineTo(target.x, target.y)
+        ctx.moveTo(sourcePinX, sourcePinY)
+        ctx.lineTo(targetPinX, targetPinY)
         ctx.stroke()
 
-        // Draw pin numbers at edge endpoints
-        const dx = target.x - source.x
-        const dy = target.y - source.y
-        const length = Math.sqrt(dx * dx + dy * dy)
-        const unitX = dx / length
-        const unitY = dy / length
+        // Draw pin labels at extended radius
+        const sourceLabelX = source.x + Math.cos(sourceAngle) * pinRadius
+        const sourceLabelY = source.y + Math.sin(sourceAngle) * pinRadius
+        ctx.fillText(`${edge.sourcePin}`, sourceLabelX - 5, sourceLabelY + 3)
 
-        // Source pin label
-        const sourceX = source.x + unitX * 25
-        const sourceY = source.y + unitY * 25
-        ctx.fillText(`${edge.sourcePin}`, sourceX, sourceY)
-
-        // Target pin label
-        const targetX = target.x - unitX * 25
-        const targetY = target.y - unitY * 25
-        ctx.fillText(`${edge.targetPin}`, targetX, targetY)
+        const targetLabelX = target.x + Math.cos(targetAngle) * pinRadius
+        const targetLabelY = target.y + Math.sin(targetAngle) * pinRadius
+        ctx.fillText(`${edge.targetPin}`, targetLabelX - 5, targetLabelY + 3)
       })
 
       // Draw nodes
-      ctx.fillStyle = "#4CAF50"
+      ctx.fillStyle = "rgba(0,0,0,0.1)"
       ctx.strokeStyle = "#333"
       ctx.lineWidth = 2
       ctx.font = "12px monospace"
@@ -214,7 +234,7 @@ export const ForceDirectedNetlistGraph: React.FC<
         ctx.fillStyle = "#000"
         const textWidth = ctx.measureText(node.boxId).width
         ctx.fillText(node.boxId, node.x - textWidth / 2, node.y + 4)
-        ctx.fillStyle = "#4CAF50"
+        ctx.fillStyle = "rgba(0,0,0,0.1)"
       })
 
       animationRef.current = requestAnimationFrame(simulate)
@@ -243,6 +263,9 @@ export const ForceDirectedNetlistGraph: React.FC<
         clickedNode.fx = clickedNode.x
         clickedNode.fy = clickedNode.y
         currentAlpha = 0.3 // Restart simulation
+        if (!animationRef.current) {
+          animationRef.current = requestAnimationFrame(simulate)
+        }
       }
     }
 
@@ -252,6 +275,9 @@ export const ForceDirectedNetlistGraph: React.FC<
         dragNode.current.fx = mousePos.x
         dragNode.current.fy = mousePos.y
         currentAlpha = 0.3 // Keep simulation active during drag
+        if (!animationRef.current) {
+          animationRef.current = requestAnimationFrame(simulate)
+        }
       }
     }
 

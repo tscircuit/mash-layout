@@ -233,7 +233,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "U1",
-              "pinNumber": 1,
+              "pinNumber": 0,
             },
             {
               "boxId": "R1",
@@ -249,7 +249,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "U1",
-              "pinNumber": 2,
+              "pinNumber": 1,
             },
           ],
         },
@@ -258,7 +258,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "U1",
-              "pinNumber": 3,
+              "pinNumber": 2,
             },
           ],
         },
@@ -267,7 +267,7 @@ export default () => (
           "connectedPorts": [
             {
               "boxId": "U1",
-              "pinNumber": 4,
+              "pinNumber": 3,
             },
           ],
         },
@@ -296,18 +296,18 @@ export default () => (
 
 
                           ┌────────────────┐
-      R1.1,connecti… ──  1│       U1       │4                   
+                         1│       U1       │4                   
                          2│                │3                   
                           └────────────────┘
 
 
                           ┌────────────────┐
-      U1.1,connecti… ──  1│       R1       │2                   
+      U1.0,connecti… ──  1│       R1       │2                   
                           └────────────────┘
 
     Complex Connections (more than 2 points):
       - complex connection[0]:
-        - U1.1
+        - U1.0
         - R1.1
         - connectivity_net0"
   `)
@@ -365,7 +365,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 1,
+                "pinNumber": 0,
               },
               {
                 "boxIndex": 1,
@@ -373,6 +373,14 @@ export default () => (
               },
               {
                 "netIndex": 0,
+              },
+            ],
+          },
+          {
+            "connectedPorts": [
+              {
+                "boxIndex": 0,
+                "pinNumber": 1,
               },
             ],
           },
@@ -389,14 +397,6 @@ export default () => (
               {
                 "boxIndex": 0,
                 "pinNumber": 3,
-              },
-            ],
-          },
-          {
-            "connectedPorts": [
-              {
-                "boxIndex": 0,
-                "pinNumber": 4,
               },
             ],
           },

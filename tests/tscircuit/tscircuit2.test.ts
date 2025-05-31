@@ -77,19 +77,19 @@ export default () => (
 
 
                           ┌────────────────┐
-      R1.1,connecti… ──  1│                │8  ── R2.2,R3.2,VCC 
-      R2.1,connecti… ──  2│       U1       │7  ── R3.1,D1       
-                         3│                │6                   
-                         4│                │5  ── R1.2,GND      
+      R2.1,connecti… ──  1│                │8                   
+                         2│       U1       │7  ── R2.2,R3.2,VCC 
+                         3│                │6  ── R3.1,D1       
+            R1.2,GND ──  4│                │5                   
                           └────────────────┘
 
 
                           ┌────────────────┐
-      U1.1,connecti… ──  1│       R1       │2  ── U1.5,GND      
+      U1.0,connecti… ──  1│       R1       │2  ── U1.4,GND      
                           └────────────────┘
 
 
-                            U1.8,R3.2,VCC  
+                            U1.7,R3.2,VCC  
                                   │        
                                   2        
                           ┌────────────────┐
@@ -97,10 +97,10 @@ export default () => (
                           └────────────────┘
                                   1        
                                   │        
-                            U1.2,connecti… 
+                            U1.1,connecti… 
 
 
-                            U1.8,R2.2,VCC  
+                            U1.7,R2.2,VCC  
                                   │        
                                   2        
                           ┌────────────────┐
@@ -108,27 +108,27 @@ export default () => (
                           └────────────────┘
                                   1        
                                   │        
-                               U1.7,D1     
+                               U1.6,D1     
 
     Complex Connections (more than 2 points):
       - complex connection[0]:
-        - U1.1
+        - U1.0
         - R1.1
         - connectivity_net0
       - complex connection[1]:
-        - U1.2
+        - U1.1
         - R2.1
         - connectivity_net19
       - complex connection[2]:
-        - U1.5
+        - U1.4
         - R1.2
         - GND
       - complex connection[3]:
-        - U1.7
+        - U1.6
         - R3.1
         - D1
       - complex connection[4]:
-        - U1.8
+        - U1.7
         - R2.2
         - R3.2
         - VCC"
@@ -421,7 +421,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 1,
+                "pinNumber": 0,
               },
               {
                 "boxIndex": 1,
@@ -436,7 +436,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 2,
+                "pinNumber": 1,
               },
               {
                 "boxIndex": 2,
@@ -444,6 +444,14 @@ export default () => (
               },
               {
                 "netIndex": 2,
+              },
+            ],
+          },
+          {
+            "connectedPorts": [
+              {
+                "boxIndex": 0,
+                "pinNumber": 2,
               },
             ],
           },
@@ -461,14 +469,6 @@ export default () => (
                 "boxIndex": 0,
                 "pinNumber": 4,
               },
-            ],
-          },
-          {
-            "connectedPorts": [
-              {
-                "boxIndex": 0,
-                "pinNumber": 5,
-              },
               {
                 "boxIndex": 1,
                 "pinNumber": 2,
@@ -482,7 +482,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 6,
+                "pinNumber": 5,
               },
             ],
           },
@@ -490,7 +490,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 7,
+                "pinNumber": 6,
               },
               {
                 "boxIndex": 3,
@@ -505,7 +505,7 @@ export default () => (
             "connectedPorts": [
               {
                 "boxIndex": 0,
-                "pinNumber": 8,
+                "pinNumber": 7,
               },
               {
                 "boxIndex": 2,

@@ -8,6 +8,8 @@ import { getNetlistVariationWithPassiveRotation } from "./getNetlistVariationWit
 export interface MatchedBox {
   targetBoxIndex: number
   candidateBoxIndex: number
+  _targetBoxId?: string
+  _candidateBoxId?: string
   issues: MatchingIssue[]
   targetBoxRotationCcw: 0 | 90 | 180 | 270
   score: number
@@ -69,6 +71,7 @@ export function getMatchedBoxes(params: {
           targetNetlist: variationNetlist,
           candidateBoxIndex,
           targetBoxIndex,
+          alreadyMatchedBoxes: matchedBoxes,
         })
 
         const score = computeSimilarityDistanceFromIssues(issues)

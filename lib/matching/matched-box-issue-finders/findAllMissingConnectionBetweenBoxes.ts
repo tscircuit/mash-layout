@@ -7,14 +7,14 @@ export function findAllMissingConnectionBetweenBoxes(params: {
   targetNetlist: NormalizedNetlist
   candidateBoxIndex: number
   targetBoxIndex: number
-  matchedBoxes: MatchedBox[]
+  alreadyMatchedBoxes: MatchedBox[]
 }): MissingConnectionBetweenBoxes[] {
   const {
     candidateNetlist,
     targetNetlist,
     candidateBoxIndex,
     targetBoxIndex,
-    matchedBoxes,
+    alreadyMatchedBoxes,
   } = params
   const issues: MissingConnectionBetweenBoxes[] = []
 
@@ -56,7 +56,7 @@ export function findAllMissingConnectionBetweenBoxes(params: {
           )
           if (otherTargetBoxIndex === -1) continue
 
-          const matchedBoxForOtherTarget = matchedBoxes.find(
+          const matchedBoxForOtherTarget = alreadyMatchedBoxes.find(
             (mb) => mb.targetBoxIndex === otherTargetBoxIndex,
           )
           if (!matchedBoxForOtherTarget) continue

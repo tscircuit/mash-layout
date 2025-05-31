@@ -7,6 +7,7 @@ import template5 from "./template5"
 import template6 from "./template6"
 import template7 from "./template7"
 import template8 from "./template8"
+import template9 from "./template9"
 
 export const TEMPLATE_FN_MAP = {
   template1,
@@ -17,7 +18,10 @@ export const TEMPLATE_FN_MAP = {
   template6,
   template7,
   template8,
+  template9,
 } satisfies Record<string, () => CircuitBuilder>
+
+export type CircuitTemplateFn = () => CircuitBuilder
 
 export const TEMPLATE_FNS: Array<() => CircuitBuilder> =
   Object.values(TEMPLATE_FN_MAP)

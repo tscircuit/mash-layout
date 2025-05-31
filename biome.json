@@ -36,6 +36,7 @@
         "useSingleVarDeclarator": "error",
         "noParameterAssign": "off",
         "noUselessElse": "off",
+        "useImportType": "off",
         "noNonNullAssertion": "off",
         "useNumberNamespace": "off",
         "noUnusedTemplateLiteral": "off",

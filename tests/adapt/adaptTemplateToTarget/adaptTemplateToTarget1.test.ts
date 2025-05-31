@@ -33,7 +33,7 @@ test("adaptTemplateToTarget adds missing pins on a side", () => {
   `)
 
   /* run adaptation --------------------------------------------------- */
-  const { appliedOperations } = adaptTemplateToTarget({
+  const { appliedOperations, outputTemplate } = adaptTemplateToTarget({
     template,
     target: target.getNetlist(),
   })
@@ -62,10 +62,9 @@ test("adaptTemplateToTarget adds missing pins on a side", () => {
   `)
 
   /* assertions ------------------------------------------------------- */
-  expect(template.chips[0]!.leftPinCount).toBe(2) // pin was added
-  expect(appliedOperations.length).toBe(2)
+  expect(outputTemplate.chips[0]!.leftPinCount).toBe(2) // pin was added
 
-  expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
+  expect(`\n${outputTemplate.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0     
      0.8 U1
@@ -75,4 +74,5 @@ test("adaptTemplateToTarget adds missing pins on a side", () => {
      0.0 └────┘
     "
   `)
+  expect(appliedOperations.length).toBe(2)
 })

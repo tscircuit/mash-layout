@@ -7,8 +7,6 @@ interface MakePinParams {
   side: Side
   indexOnSide: number
   ccwPinNumber: number
-  offsetX: number
-  offsetY: number
 }
 
 export class ChipBuilder {
@@ -24,6 +22,8 @@ export class ChipBuilder {
   public bottomPinCount = 0
   private pinMap: Record<string, PinBuilder> = {}
   public marks: Record<string, { pinBuilder: PinBuilder; state: any }> = {}
+  public pinMargins: Record<number, { marginTop: number; marginLeft: number }> =
+    {}
 
   constructor(
     public readonly circuit: CircuitBuilder,
@@ -41,8 +41,6 @@ export class ChipBuilder {
     side,
     indexOnSide,
     ccwPinNumber,
-    offsetX,
-    offsetY,
   }: MakePinParams): PinBuilder {
     const pb = new PinBuilder(this, ccwPinNumber)
     this.pinMap[`${side}${indexOnSide}`] = pb
@@ -63,13 +61,10 @@ export class ChipBuilder {
     for (let i = 0; i < count; ++i) {
       // i is the 0-indexed visual position from the top of the left side.
       const ccwPinNumber = i + 1
-      const offsetY = count - i // Higher 'y' for pins closer to the top.
       const pb = this.makePin({
         side: "left",
         indexOnSide: i,
         ccwPinNumber,
-        offsetX: 0,
-        offsetY,
       })
       this.leftPins.push(pb)
     }
@@ -90,8 +85,6 @@ export class ChipBuilder {
         side: "right",
         indexOnSide: i,
         ccwPinNumber,
-        offsetX: this.rightPinCount === 1 ? 1 : this.getWidth(),
-        offsetY: i + 1,
       })
       this.rightPins.push(pb)
     }
@@ -111,8 +104,6 @@ export class ChipBuilder {
         side: "top",
         indexOnSide: i,
         ccwPinNumber,
-        offsetX: i + 1,
-        offsetY: 0,
       })
       this.topPins.push(pb)
     }
@@ -131,8 +122,6 @@ export class ChipBuilder {
         side: "bottom",
         indexOnSide: i,
         ccwPinNumber,
-        offsetX: i,
-        offsetY: 0,
       })
       this.bottomPins.push(pb)
     }
@@ -253,17 +242,50 @@ export class ChipBuilder {
     let pinX: number
     let pinY: number
     const spacing = this.circuit.defaultPinSpacing
+    const defaultMargin = 0.2
 
     if (side === "left" || side === "right") {
       pinX = this.x + (side === "left" ? 0 : this.getWidth())
+
+      // Use original spacing calculation
+      let totalSpacing = indexFromTop! * spacing
+
+      // Add extra spacing from pin margins (including current pin's margin)
+      for (let i = 0; i <= indexFromTop!; i++) {
+        const currentPinNumber = this.getPinNumberFromSideIndex(side, i)
+        const currentMargin = this.pinMargins[currentPinNumber]
+        if (
+          currentMargin?.marginTop &&
+          currentMargin.marginTop > defaultMargin
+        ) {
+          // Margins represent actual spacing units, not multipliers
+          totalSpacing += currentMargin.marginTop - defaultMargin
+        }
+      }
+
       pinY =
         this.y +
         this.getHeight() -
-        indexFromTop! * spacing -
+        totalSpacing -
         this.circuit.defaultPinSpacing * 2
     } else {
       // top or bottom
-      pinX = this.x + indexFromLeft! * spacing
+      let totalSpacing = indexFromLeft! * spacing
+
+      // Add extra spacing from pin margins (including current pin's margin)
+      for (let i = 0; i <= indexFromLeft!; i++) {
+        const currentPinNumber = this.getPinNumberFromSideIndex(side, i)
+        const currentMargin = this.pinMargins[currentPinNumber]
+        if (
+          currentMargin?.marginLeft &&
+          currentMargin.marginLeft > defaultMargin
+        ) {
+          // Margins represent actual spacing units, not multipliers
+          totalSpacing += currentMargin.marginLeft - defaultMargin
+        }
+      }
+
+      pinX = this.x + totalSpacing
       pinY = this.y + (side === "bottom" ? 0 : this.getHeight())
     }
     return { x: pinX, y: pinY }
@@ -281,5 +303,25 @@ export class ChipBuilder {
 
     pinBuilder.applyMarkableState(state)
     return pinBuilder
+  }
+
+  public getPinNumberFromSideIndex(side: Side, indexOnSide: number): number {
+    let pinNumber = 1
+
+    // Add pins from previous sides in CCW order
+    if (side === "bottom" || side === "right" || side === "top") {
+      pinNumber += this.leftPinCount
+    }
+    if (side === "right" || side === "top") {
+      pinNumber += this.bottomPinCount
+    }
+    if (side === "top") {
+      pinNumber += this.rightPinCount
+    }
+
+    // Add the index on the current side
+    pinNumber += indexOnSide
+
+    return pinNumber
   }
 }

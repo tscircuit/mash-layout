@@ -2,7 +2,7 @@ import { test, expect } from "bun:test"
 import { CircuitBuilder } from "lib/builder"
 import { adaptTemplateToTarget } from "lib/adapt/adaptTemplateToTarget"
 
-test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", () => {
+test("adaptTemplateToTarget3 connects two chips with a line", () => {
   /* target circuit (single chip) ------------------------------------- */
   const target = new CircuitBuilder()
   const tU1 = target.chip().leftpins(2).rightpins(2)
@@ -46,7 +46,7 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
   `)
 
   /* run adaptation --------------------------------------------------- */
-  const { appliedOperations } = adaptTemplateToTarget({
+  const { appliedOperations, outputTemplate } = adaptTemplateToTarget({
     template,
     target: target.getNetlist(),
   })
@@ -54,43 +54,30 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
   expect(appliedOperations).toMatchInlineSnapshot(`
     [
       {
-        "chipId": "U1",
-        "pinNumber": 1,
-        "type": "add_passive_to_pin",
-      },
-      {
-        "chipId": "U1",
-        "pinNumber": 2,
-        "type": "add_label_to_pin",
-      },
-      {
-        "chipId": "U1",
-        "pinNumber": 3,
-        "type": "add_label_to_pin",
-      },
-      {
-        "chipId": "U1",
-        "pinNumber": 4,
-        "type": "add_label_to_pin",
-      },
-      {
-        "chipId": "U2",
-        "type": "remove_chip",
+        "fromChipId": "U1",
+        "fromPinNumber": 1,
+        "toChipId": "U2",
+        "toPinNumber": 2,
+        "type": "draw_line_between_pins",
       },
     ]
   `)
 
   /* verify adaptation result ----------------------------------------- */
-  expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
+  expect(`\n${outputTemplate.toString()}\n`).toMatchInlineSnapshot(`
     "
-               0.0         5.0    
-     0.8       U1
-     0.6       ┌────┐
-     0.4 R3────┤1  4├────────C
-     0.2   A───┤2  3├──B
-     0.0       └────┘
+         0.0         5.0         10.0     
+     2.0 ┌───────────────────────┐
+     1.8 │                       │
+     1.6 │                   U2  │
+     1.4 │                   ┌────┐
+     1.2 │             ──────┤1  2├
+     1.0 │                   └────┘
+     0.8 U1
+     0.6 ┌────┐
+     0.4 ┤1  4├─────
+     0.2 ┤2  3├
+     0.0 └────┘
     "
   `)
-
-  expect(appliedOperations.some((op) => op.type === "remove_chip")).toBe(true) // remove_chip operation was applied
 })

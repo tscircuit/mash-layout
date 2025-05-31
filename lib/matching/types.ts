@@ -41,6 +41,17 @@ export interface MatchedBoxMissingPinShapeOnSide {
   targetPinShapeSummary?: PinShapeSummary
 }
 
+export interface MatchedBoxMissingPinShapeBoxCountOnSide {
+  type: "matched_box_missing_pin_shape_box_count_on_side"
+  candidateBoxIndex: number
+  targetBoxIndex: number
+
+  side: Side
+  targetPinNumber: number
+  targetBoxCountSignature: string
+  candidateBoxCountSignatures: string[]
+}
+
 export interface MatchedBoxPinShapeInWrongPosition {
   type: "matched_box_pin_shape_in_wrong_position"
   candidateBoxIndex: number
@@ -66,6 +77,7 @@ export type MatchingIssue =
   | MatchedBoxSideHasWrongPinCount
   | MatchedBoxPinShapeInWrongPosition
   | MatchedBoxMissingPinShapeOnSide
+  | MatchedBoxMissingPinShapeBoxCountOnSide
   | MissingConnectionBetweenBoxes
 
 export type { MatchedBox } from "lib/matching/getMatchedBoxes"

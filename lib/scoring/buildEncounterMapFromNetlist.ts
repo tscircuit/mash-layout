@@ -110,9 +110,41 @@ export const buildEncounterMapFromNetlist = (
           : Math.min(smallestPin[nbrId], nbrPin)
     }
 
-    for (const [nbrId] of Object.entries(smallestPin).sort(
-      (a, b) => a[1] - b[1],
-    )) {
+    for (const [nbrId] of Object.entries(smallestPin).sort((a, b) => {
+      // Primary sort: by smallest pin number
+      if (a[1] !== b[1]) return a[1] - b[1]
+
+      // Secondary sort: by sorted string of all pin numbers this component connects to
+      const getConnectedPinsString = (boxId: string): string => {
+        const connectedPins = new Set<number>()
+        for (const conn of netlist.connections) {
+          const thisBoxPort = conn.connectedPorts.find(
+            (port) => "boxId" in port && port.boxId === boxId,
+          )
+          if (thisBoxPort && "pinNumber" in thisBoxPort) {
+            // Find what this component connects to
+            for (const otherPort of conn.connectedPorts) {
+              if (
+                otherPort !== thisBoxPort &&
+                "boxId" in otherPort &&
+                "pinNumber" in otherPort
+              ) {
+                connectedPins.add(otherPort.pinNumber)
+              }
+            }
+          }
+        }
+        // Sort pins and join into a string for lexicographic comparison
+        return Array.from(connectedPins)
+          .sort((a, b) => a - b)
+          .join(",")
+      }
+
+      const pinsStringA = getConnectedPinsString(a[0])
+      const pinsStringB = getConnectedPinsString(b[0])
+
+      return pinsStringA.localeCompare(pinsStringB)
+    })) {
       if (!visitedBoxes.has(nbrId)) {
         searchIter[nbrId] = iter++
         visitedBoxes.add(nbrId)

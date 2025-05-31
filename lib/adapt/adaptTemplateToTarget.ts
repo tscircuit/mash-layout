@@ -9,6 +9,7 @@ import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import { removeUnmatchedChips } from "./adaptation-operations/removeUnmatchedChips"
 import { fixMatchedBoxPinCounts } from "./adaptation-operations/fixMatchedBoxPinCounts"
 import { fixMatchedBoxPinShapes } from "./adaptation-operations/fixMatchedBoxPinShapes"
+import { AdaptTemplateToNetlistSolver } from "lib/solvers/AdaptTemplateToNetlistSolver"
 
 /**
  * Mutates template until it has the same normalized netlist as the target.
@@ -28,44 +29,15 @@ export function adaptTemplateToTarget(params: {
   target: InputNetlist
 }): {
   appliedOperations: EditOperation[]
+  outputTemplate: CircuitBuilder
 } {
-  const { template, target: originalTarget } = params
-  const appliedOperations: EditOperation[] = []
-
-  // Transform the target to be compatible with template passive structures
-  const target = transformTargetForPassiveCompatibility(
-    template,
-    originalTarget,
-  )
-  const targetBoxes = target.boxes
-
-  const removal1Result = removeUnmatchedChips({
-    template,
-    target,
+  const solver = new AdaptTemplateToNetlistSolver({
+    inputTemplate: params.template,
+    targetNetlist: params.target,
   })
-  appliedOperations.push(...removal1Result.appliedOperations)
-
-  const fixMatchedBoxPinCountsResult = fixMatchedBoxPinCounts({
-    template,
-    target,
-    matchedBoxes: removal1Result.matchedBoxes,
-  })
-  appliedOperations.push(...fixMatchedBoxPinCountsResult.appliedOperations)
-
-  const fixMatchedBoxPinShapesResult = fixMatchedBoxPinShapes({
-    template,
-    target,
-    matchedBoxes: removal1Result.matchedBoxes,
-  })
-  appliedOperations.push(...fixMatchedBoxPinShapesResult.appliedOperations)
-
-  const removal2Result = removeUnmatchedChips({
-    template,
-    target,
-  })
-  appliedOperations.push(...removal2Result.appliedOperations)
-
+  solver.solve()
   return {
-    appliedOperations,
+    appliedOperations: solver.outputAppliedOperations,
+    outputTemplate: solver.outputAdaptedTemplate!,
   }
 }

@@ -36,14 +36,14 @@ test("adaptTemplateToTarget2 adds missing labels and removes extra labels", () =
   `)
 
   /* run adaptation --------------------------------------------------- */
-  const { appliedOperations } = adaptTemplateToTarget({
+  const { appliedOperations, outputTemplate } = adaptTemplateToTarget({
     template,
     target: target.getNetlist(),
   })
 
   expect(appliedOperations).toMatchInlineSnapshot(`[]`)
 
-  expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
+  expect(`\n${outputTemplate.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0        
      0.8 U1

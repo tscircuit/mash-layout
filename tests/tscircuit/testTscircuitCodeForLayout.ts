@@ -6,17 +6,24 @@ import { CircuitBuilder } from "lib/builder"
 import { applyCircuitLayoutToCircuitJson } from "lib/circuit-json/applyCircuitLayoutToCircuitJson"
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
 import { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipelineSolver"
+import { CircuitTemplateFn } from "templates/index"
+import { reorderChipPinsToCcw } from "lib/circuit-json/reorderChipPinsToCcw"
 
 export const testTscircuitCodeForLayout = async (
   code: string,
+  opts: {
+    templateFns?: CircuitTemplateFn[]
+  } = {},
 ): Promise<{
   originalCircuitJson: any
+  ccwOrderedCircuitJson: any
   laidOutCircuitJson: any
   readableNetlist: string
   matchedTemplate: CircuitBuilder
   adaptedTemplate: CircuitBuilder
   originalSchematicSvg: string
   laidOutSchematicSvg: string
+  solver: SchematicLayoutPipelineSolver
 }> => {
   const circuitJson: any[] = await runTscircuitCode(code)
 
@@ -27,11 +34,14 @@ export const testTscircuitCodeForLayout = async (
     schLabel.schematic_net_label_id ??= `schematic_net_label_${schLabelIdCounter++}`
   }
 
+  const ccwOrderedCircuitJson = reorderChipPinsToCcw(circuitJson)
+
   const inputNetlist = convertCircuitJsonToInputNetlist(circuitJson)
   const readableNetlist = getReadableNetlist(inputNetlist)
 
   const solver = new SchematicLayoutPipelineSolver({
     inputNetlist: inputNetlist,
+    templateFns: opts.templateFns,
   })
   await solver.solve()
 
@@ -42,8 +52,8 @@ export const testTscircuitCodeForLayout = async (
     solver.adaptPhaseSolver!.outputAdaptedTemplates[0]!.template
 
   const laidOutCircuitJson = applyCircuitLayoutToCircuitJson(
-    circuitJson,
-    convertCircuitJsonToInputNetlist(circuitJson),
+    ccwOrderedCircuitJson,
+    convertCircuitJsonToInputNetlist(ccwOrderedCircuitJson),
     adaptedTemplate,
   )
 
@@ -66,11 +76,13 @@ export const testTscircuitCodeForLayout = async (
 
   return {
     originalCircuitJson: circuitJson,
+    ccwOrderedCircuitJson,
     laidOutCircuitJson,
     readableNetlist,
     matchedTemplate,
     adaptedTemplate,
     originalSchematicSvg,
     laidOutSchematicSvg,
+    solver,
   }
 }

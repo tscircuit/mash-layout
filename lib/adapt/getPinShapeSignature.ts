@@ -2,6 +2,50 @@ import type { InputNetlist } from "lib/input-types"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import { getPinSubsetNetlist } from "./getPinSubsetNetlist"
 
+export const getBoxShapeSignature = (params: {
+  leftPinCount: number
+  bottomPinCount: number
+  rightPinCount: number
+  topPinCount: number
+}): string => {
+  return [
+    params.leftPinCount > 0 ? `L${params.leftPinCount}` : "",
+    params.bottomPinCount > 0 ? `B${params.bottomPinCount}` : "",
+    params.rightPinCount > 0 ? `R${params.rightPinCount}` : "",
+    params.topPinCount > 0 ? `T${params.topPinCount}` : "",
+  ].join("")
+}
+
+export const getBoxCountPinSignature = (params: {
+  netlist: InputNetlist
+  chipId: string
+  pinNumber: number
+}): string => {
+  const { netlist, chipId, pinNumber } = params
+
+  // Count unique boxes connected to this pin
+  const connectedBoxes = new Set<string>()
+
+  for (const connection of netlist.connections) {
+    const hasThisPin = connection.connectedPorts.some(
+      (port) =>
+        "boxId" in port &&
+        port.boxId === chipId &&
+        port.pinNumber === pinNumber,
+    )
+
+    if (hasThisPin) {
+      for (const port of connection.connectedPorts) {
+        if ("boxId" in port && port.boxId !== chipId) {
+          connectedBoxes.add(port.boxId)
+        }
+      }
+    }
+  }
+
+  return `box_count_${connectedBoxes.size}`
+}
+
 export const getPinShapeSignature = (
   params:
     | {
@@ -28,13 +72,7 @@ export const getPinShapeSignature = (
   const normNetlist = normalizeNetlist(pinShapeNetlist)
 
   return `${normNetlist.normalizedNetlist.boxes
-    .map((b) =>
-      `L${b.leftPinCount}B${b.bottomPinCount}R${b.rightPinCount}T${b.topPinCount}`
-        .replace("L0", "")
-        .replace("B0", "")
-        .replace("T0", "")
-        .replace("R0", ""),
-    )
+    .map((b) => getBoxShapeSignature(b))
     .join(",")}`
   // TODO for some reason, the pin numbers become messed up
   // +

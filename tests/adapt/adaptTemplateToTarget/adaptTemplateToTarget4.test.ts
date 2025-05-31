@@ -53,30 +53,22 @@ test("adaptTemplateToTarget3 removes extra chip when target has fewer chips", ()
   `)
 
   /* run adaptation --------------------------------------------------- */
-  const { appliedOperations } = adaptTemplateToTarget({
+  const { appliedOperations, outputTemplate } = adaptTemplateToTarget({
     template,
     target: target.getNetlist(),
   })
 
-  expect(appliedOperations).toMatchInlineSnapshot(`
-    [
-      {
-        "chipId": "U1",
-        "pinNumber": 1,
-        "type": "add_passive_to_pin",
-      },
-    ]
-  `)
+  expect(appliedOperations).toMatchInlineSnapshot(`[]`)
 
   /* verify adaptation result ----------------------------------------- */
-  expect(`\n${template.toString()}\n`).toMatchInlineSnapshot(`
+  expect(`\n${outputTemplate.toString()}\n`).toMatchInlineSnapshot(`
     "
-               0.0     
-     0.8       U1
-     0.6       ┌────┐
-     0.4 R2────┤1  4├
-     0.2       ┤2  3├
-     0.0       └────┘
+         0.0     
+     0.8 U1
+     0.6 ┌────┐
+     0.4 ┤1  4├
+     0.2 ┤2  3├
+     0.0 └────┘
     "
   `)
 })

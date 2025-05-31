@@ -67,6 +67,12 @@ export class ScoreNetlistTemplatePairSolver extends BaseSolver {
       candidateNetlist,
       targetNetlist: initialTargetNetlist,
     })
+    for (const matchedBox of this.matchedBoxes) {
+      matchedBox._targetBoxId =
+        initialTargetResult.transform.boxIndexToBoxId[matchedBox.targetBoxIndex]
+      matchedBox._candidateBoxId =
+        candidateResult.transform.boxIndexToBoxId[matchedBox.candidateBoxIndex]
+    }
 
     // Note: We apply rotations directly to the input netlist instead of using the normalized version
 

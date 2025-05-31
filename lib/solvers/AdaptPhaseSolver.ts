@@ -39,6 +39,9 @@ export class AdaptPhaseSolver extends BaseSolver {
           targetNetlist: match.netlist,
         }),
     )
+    this.setActiveSubSolver(
+      this.adaptationSolvers[this.currentAdaptationIndex]!,
+    )
   }
 
   getConstructorParams() {
@@ -58,7 +61,6 @@ export class AdaptPhaseSolver extends BaseSolver {
       const currentSolver = this.adaptationSolvers[this.currentAdaptationIndex]!
 
       if (!currentSolver.solved && !currentSolver.failed) {
-        this.setActiveSubSolver(currentSolver)
         currentSolver.step()
         return
       }
@@ -75,6 +77,9 @@ export class AdaptPhaseSolver extends BaseSolver {
       }
 
       this.currentAdaptationIndex++
+      this.setActiveSubSolver(
+        this.adaptationSolvers[this.currentAdaptationIndex]!,
+      )
       return
     }
 

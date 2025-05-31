@@ -7,7 +7,8 @@ import { useState, useEffect } from "react"
 import { testTscircuitCodeForLayout } from "tests/tscircuit/testTscircuitCodeForLayout"
 import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
 import { convertCircuitJsonToInputNetlist } from "lib/circuit-json/convertCircuitJsonToInputNetlist"
-
+import { applyCircuitLayoutToCircuitJson } from "lib/circuit-json/applyCircuitLayoutToCircuitJson"
+import { reorderChipPinsToCcw } from "lib/circuit-json/reorderChipPinsToCcw"
 /**
  * This component debugs the Schematic Layout Pipeline.
  *
@@ -26,10 +27,12 @@ export const PipelineDebugger = (props: {
   const [originalSvgString, setOriginalSvgString] = useState<string | null>(
     null,
   )
+  const [ccwReorderedSvgString, setCcwReorderedSvgString] = useState<
+    string | null
+  >(null)
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
   const [inputNetlist, setInputNetlist] = useState<any>(null)
-  const [matchedTemplateNetlist, setMatchedTemplateNetlist] =
-    useState<any>(null)
+  const [matchedTemplate, setMatchedTemplate] = useState<any>(null)
   const [originalCircuitJson, setOriginalCircuitJson] = useState<any>(null)
 
   useEffect(() => {
@@ -49,33 +52,42 @@ export const PipelineDebugger = (props: {
           }),
         )
 
+        setOriginalCircuitJson(results.originalCircuitJson)
+        const ccwOrderedCircuitJson = reorderChipPinsToCcw(
+          results.originalCircuitJson,
+        )
+
+        setCcwReorderedSvgString(
+          convertCircuitJsonToSchematicSvg(ccwOrderedCircuitJson, {
+            grid: {
+              cellSize: 1,
+              labelCells: true,
+            },
+          }),
+        )
+
         const inputNetlist = convertCircuitJsonToInputNetlist(
           results.originalCircuitJson,
         )
 
         // Store for download buttons
         setInputNetlist(inputNetlist)
-        setOriginalCircuitJson(results.originalCircuitJson)
         const solver = new SchematicLayoutPipelineSolver({
           inputNetlist: inputNetlist,
         })
         solver.solve()
 
-        // Get matched template netlist if available
+        // Get matched template if available
         if (solver.matchPhaseSolver?.outputMatchedTemplates[0]?.template) {
-          const matchedTemplateNetlist =
-            solver.matchPhaseSolver.outputMatchedTemplates[0].template.getNetlist()
-          setMatchedTemplateNetlist(matchedTemplateNetlist)
+          const matchedTemplate =
+            solver.matchPhaseSolver.outputMatchedTemplates[0].template
+          setMatchedTemplate(matchedTemplate)
         }
 
         // Generate the laid out SVG if we have an adapted template
         if (solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template) {
-          const { applyCircuitLayoutToCircuitJson } = await import(
-            "lib/circuit-json/applyCircuitLayoutToCircuitJson"
-          )
-
           const laidOutCircuitJson = applyCircuitLayoutToCircuitJson(
-            results.originalCircuitJson,
+            ccwOrderedCircuitJson,
             inputNetlist,
             solver.adaptPhaseSolver.outputAdaptedTemplates[0].template,
           )
@@ -259,36 +271,25 @@ export const PipelineDebugger = (props: {
             {selectedSolver.constructor.name ===
               "SchematicLayoutPipelineSolver" &&
               (originalSvgString ||
+                ccwReorderedSvgString ||
                 laidOutSvgString ||
                 inputNetlist ||
-                matchedTemplateNetlist) && (
+                matchedTemplate) && (
                 <div className="mb-5">
                   <h3 className="text-lg font-semibold mb-3">
                     Circuit Visualization
                   </h3>
                   <div className="space-y-4">
-                    {inputNetlist && (
+                    {matchedTemplate && (
                       <div>
                         <h4 className="text-md font-medium mb-2">
-                          Input Netlist Graph
+                          Matched Template
                         </h4>
-                        <ForceDirectedNetlistGraph
-                          netlist={inputNetlist}
-                          width={800}
-                          height={400}
-                        />
-                      </div>
-                    )}
-                    {matchedTemplateNetlist && (
-                      <div>
-                        <h4 className="text-md font-medium mb-2">
-                          Matched Template Netlist Graph
-                        </h4>
-                        <ForceDirectedNetlistGraph
-                          netlist={matchedTemplateNetlist}
-                          width={800}
-                          height={400}
-                        />
+                        <div className="border border-gray-300 rounded p-4 bg-gray-50">
+                          <pre className="text-sm font-mono whitespace-pre overflow-x-auto">
+                            {matchedTemplate.toString()}
+                          </pre>
+                        </div>
                       </div>
                     )}
                     {originalSvgString && (
@@ -301,6 +302,21 @@ export const PipelineDebugger = (props: {
                             // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                             dangerouslySetInnerHTML={{
                               __html: originalSvgString,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {ccwReorderedSvgString && (
+                      <div>
+                        <h4 className="text-md font-medium mb-2">
+                          Pins Reordered to CCW
+                        </h4>
+                        <div className="border border-gray-300 rounded p-2 bg-white">
+                          <div
+                            // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                            dangerouslySetInnerHTML={{
+                              __html: ccwReorderedSvgString,
                             }}
                           />
                         </div>
