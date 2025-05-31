@@ -1,4 +1,5 @@
 import type { InputNetlist } from "lib/input-types"
+import type { CircuitLayoutJson } from "lib/output-types"
 import { BaseSolver } from "./BaseSolver"
 import { AdaptPhaseSolver } from "./AdaptPhaseSolver"
 import { MatchPhaseSolver } from "./MatchPhaseSolver"
@@ -115,5 +116,14 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
     ;(this as any)[pipelineStepDef.solverName] = this.activeSubSolver
     this.timeSpentOnPhase[pipelineStepDef.solverName] = 0
     this.startTimeOfPhase[pipelineStepDef.solverName] = performance.now()
+  }
+
+  getLayout(): CircuitLayoutJson {
+    if (!this.adaptPhaseSolver?.outputAdaptedTemplates?.[0]) {
+      throw new Error(
+        "No adapted template available. Make sure the pipeline has completed successfully.",
+      )
+    }
+    return this.adaptPhaseSolver.outputAdaptedTemplates[0].template.getLayoutJson()
   }
 }

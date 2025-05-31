@@ -1,4 +1,4 @@
-import { CircuitBuilder } from "./CircuitBuilder"
+import { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 
 export function circuit(
   opts: {

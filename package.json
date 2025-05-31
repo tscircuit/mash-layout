@@ -11,7 +11,7 @@
     "build": "rm -rf dist && tsup-node lib/index.ts --dts --format esm",
     "generate-comments": "bun run scripts/generate-template-comments.ts",
     "format": "biome format --write .",
-    "format:check": "biome format --check .",
+    "format:check": "biome format .",
     "vercel-build": "bun run website:build",
     "website:build": "cosmos-export",
     "website:serve": "cosmos",

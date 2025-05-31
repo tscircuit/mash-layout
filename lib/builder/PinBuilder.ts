@@ -1,6 +1,6 @@
 import type { PortReference, Side } from "../input-types"
 import type { Line } from "./circuit-types"
-import type { CircuitBuilder } from "./CircuitBuilder"
+import type { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
 import { SimplePathfinder, type Obstacle } from "../utils/SimplePathfinder"
 import { isPathClear, findClearWaypoint } from "../utils/pathfindingHelpers"

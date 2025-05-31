@@ -1,4 +1,4 @@
-import type { CircuitBuilder } from "./CircuitBuilder"
+import type { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 import { Grid } from "./Grid"
 
 export const getGridFromCircuit = (

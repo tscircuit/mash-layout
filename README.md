@@ -1,4 +1,4 @@
-# @tscircuit/pmars-layout
+# @tscircuit/schematic-match-adapt
 
 An automatic layout system for schematics that uses the **PMARS** pattern:
 

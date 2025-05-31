@@ -1,17 +1,19 @@
-import type { InputNetlist, Box, Net, Connection } from "../input-types"
-import { getReadableNetlist } from "../netlist/getReadableNetlist"
-import { ChipBuilder } from "./ChipBuilder"
-import { PinBuilder } from "./PinBuilder"
+import type { InputNetlist, Box, Net, Connection } from "../../input-types"
+import { getReadableNetlist } from "../../netlist/getReadableNetlist"
+import { ChipBuilder } from "../ChipBuilder"
+import { PinBuilder } from "../PinBuilder"
 import type {
   Line,
   NetLabel,
   ConnectionPoint,
   PortReference,
-} from "./circuit-types"
-import { flipXCircuit } from "./flipCircuit"
-import { getGridFromCircuit } from "./getGridFromCircuit"
-import { NetlistBuilder } from "../netlist/NetlistBuilder"
-import { isSamePortRef } from "./isSamePortRef"
+} from "../circuit-types"
+import { flipXCircuit } from "../flipCircuit"
+import { getGridFromCircuit } from "../getGridFromCircuit"
+import { NetlistBuilder } from "../../netlist/NetlistBuilder"
+import { isSamePortRef } from "../isSamePortRef"
+import { CircuitLayoutJson } from "lib/output-types"
+import { getCircuitLayoutJson } from "./getCircuitLayoutJson"
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -265,5 +267,9 @@ export class CircuitBuilder {
       }
     }
     throw new Error(`Mark "${name}" not found in circuit`)
+  }
+
+  getLayoutJson(): CircuitLayoutJson {
+    return getCircuitLayoutJson(this)
   }
 }

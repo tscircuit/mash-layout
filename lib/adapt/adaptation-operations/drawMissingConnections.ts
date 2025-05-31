@@ -62,13 +62,17 @@ export function drawMissingConnections(params: {
       ) as Array<{ boxId: string; pinNumber: number }>
 
       // Check if both chips/pins are present in this connection (regardless of how many total ports)
-      const hasFromChipPin = templateBoxPorts.some(port => 
-        port.boxId === templateFromChipId && port.pinNumber === fromPort.pinNumber
+      const hasFromChipPin = templateBoxPorts.some(
+        (port) =>
+          port.boxId === templateFromChipId &&
+          port.pinNumber === fromPort.pinNumber,
       )
-      const hasToChipPin = templateBoxPorts.some(port => 
-        port.boxId === templateToChipId && port.pinNumber === toPort.pinNumber
+      const hasToChipPin = templateBoxPorts.some(
+        (port) =>
+          port.boxId === templateToChipId &&
+          port.pinNumber === toPort.pinNumber,
       )
-      
+
       return hasFromChipPin && hasToChipPin
     })
 

@@ -1,6 +1,6 @@
 import type { Side } from "."
 import { PinBuilder } from "./PinBuilder"
-import type { CircuitBuilder } from "./CircuitBuilder"
+import type { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
 
 interface MakePinParams {

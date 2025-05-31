@@ -1,4 +1,4 @@
-import type { CircuitBuilder } from "./CircuitBuilder"
+import type { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 
 export const flipXCircuit = (circuit: CircuitBuilder): CircuitBuilder => {
   // Find minX and maxX of all occupied cells (chips, lines, netLabels, connectionPoints)
