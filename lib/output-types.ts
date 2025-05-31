@@ -12,7 +12,14 @@ export type LayoutPointRef =
       netId: string
     }
 
-export interface LaidOutBox extends Box {
+export interface LaidOutBox {
+  boxId: string
+
+  leftPinCount: number
+  rightPinCount: number
+  topPinCount: number
+  bottomPinCount: number
+
   centerX: number
   centerY: number
 
@@ -34,6 +41,7 @@ export interface LaidOutPath {
 
 export interface LaidOutNetLabel {
   netId: string
+  anchorPosition: "top" | "bottom" | "left" | "right"
   x: number
   y: number
 }

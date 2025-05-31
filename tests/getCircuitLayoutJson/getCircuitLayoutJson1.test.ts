@@ -58,6 +58,8 @@ test("getCircuitLayoutJson should convert CircuitBuilder to layout format", () =
     expect(typeof label.netId).toBe("string")
     expect(typeof label.x).toBe("number")
     expect(typeof label.y).toBe("number")
+    expect(typeof label.anchorPosition).toBe("string")
+    expect(["top", "bottom", "left", "right"]).toContain(label.anchorPosition)
   }
 
   // Verify paths have correct structure

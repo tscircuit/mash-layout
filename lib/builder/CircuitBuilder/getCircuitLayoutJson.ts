@@ -52,6 +52,7 @@ export const getCircuitLayoutJson = (
       netId: label.labelId,
       x: label.x,
       y: label.y,
+      anchorPosition: label.anchorSide,
     })
   }
 
