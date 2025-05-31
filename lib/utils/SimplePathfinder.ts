@@ -21,8 +21,8 @@ export interface Obstacle {
   maxY: number
 }
 
-const CELL_SIZE = 0.4
-const DIRECTION_CHANGE_PENALTY = 0.2
+const CELL_SIZE = 0.5
+const DIRECTION_CHANGE_PENALTY = 0.3
 
 export class SimplePathfinder {
   private obstacles: Obstacle[] = []
@@ -58,10 +58,13 @@ export class SimplePathfinder {
     nodeMap.set(startKey, startNode)
 
     let iterations = 0
-    const maxIterations = 500
+    const maxIterations = 200
 
     // Calculate max reasonable distance for early termination
-    const maxDistance = this.getHeuristic(startGrid, endGrid) * 3
+    const maxDistance = Math.min(
+      this.getHeuristic(startGrid, endGrid) * 2,
+      10 / CELL_SIZE,
+    )
 
     while (openSet.size > 0 && iterations < maxIterations) {
       iterations++
@@ -92,7 +95,7 @@ export class SimplePathfinder {
         return this.reconstructPath(currentNode)
       }
 
-      // Early termination if path is getting too long
+      // Early termination if path is getting too long (distance > 10 units)
       if (currentNode.gCost > maxDistance) {
         continue
       }
@@ -198,6 +201,11 @@ export class SimplePathfinder {
   }
 
   private reconstructPath(endNode: PathNode): Point[] {
+    // Check if total path distance exceeds 10 units
+    if (endNode.gCost * CELL_SIZE > 10) {
+      return [] // Return empty path if too long
+    }
+
     const path: Point[] = []
     let current: PathNode | null = endNode
 

@@ -2,6 +2,7 @@ import type { PortReference, Side } from "../input-types"
 import type { Line } from "./circuit-types"
 import type { CircuitBuilder } from "./CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
+import { SimplePathfinder, type Obstacle } from "../utils/SimplePathfinder"
 import { isPathClear, findClearWaypoint } from "../utils/pathfindingHelpers"
 
 export interface PinConnectionState {
@@ -88,8 +89,6 @@ export class PinBuilder {
   }
 
   pathTo(targetX: number, targetY: number): this {
-    // Smart routing that tries to avoid obstacles using simple heuristics
-
     const currentPos = { x: this.x, y: this.y }
     const targetPos = { x: targetX, y: targetY }
 
@@ -98,12 +97,52 @@ export class PinBuilder {
       return this
     }
 
-    // Check if direct path is clear
+    // First, check if direct path is clear using fast heuristic check
     if (isPathClear(currentPos, targetPos, this.circuit, this.chip.chipId)) {
       return this.lineAt(targetX, targetY)
     }
 
-    // Find a clear waypoint to route around obstacles
+    // Try A* pathfinding for complex routing, but with timeout protection
+    const pathfinder = new SimplePathfinder()
+
+    // Add all chips as obstacles, excluding the current chip
+    for (const chip of this.circuit.chips) {
+      if (chip.chipId === this.chip.chipId) {
+        continue // Don't treat our own chip as an obstacle
+      }
+
+      const width = chip.getWidth()
+      const height = chip.getHeight()
+      const margin = 0.1 // Small margin around chips
+
+      const obstacle: Obstacle = {
+        minX: chip.x - width / 2 - margin,
+        maxX: chip.x + width / 2 + margin,
+        minY: chip.y - height / 2 - margin,
+        maxY: chip.y + height / 2 + margin,
+      }
+      pathfinder.addObstacle(obstacle)
+    }
+
+    // Try pathfinding with reasonable distance constraint
+    const distance = Math.abs(targetX - this.x) + Math.abs(targetY - this.y)
+    if (distance < 10) {
+      // Only use A* for short to medium distances
+      const path = pathfinder.findPath(currentPos, targetPos)
+
+      if (path.length > 0) {
+        // Draw lines along the calculated path
+        for (let i = 1; i < path.length; i++) {
+          const point = path[i]!
+          const deltaX = point.x - this.x
+          const deltaY = point.y - this.y
+          this.line(deltaX, deltaY)
+        }
+        return this
+      }
+    }
+
+    // Fall back to smart heuristic routing
     const waypoint = findClearWaypoint(
       this.x,
       this.y,

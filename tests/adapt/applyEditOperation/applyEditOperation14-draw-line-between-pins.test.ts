@@ -25,9 +25,10 @@ test("applyEditOperation14 draws line between pins using pathfinding", () => {
   expect(`\n${circuit.toString()}\n`).toMatchInlineSnapshot(`
     "
                0.0         5.0 
-     0.8 U1          U2
+     1.0     ┌───────┐
+     0.8 U1  │       U2
      0.6 ┌────┐      ┌────┐
-     0.4 ┤1  4├──────┤1  4├
+     0.4 ┤1  4├      ┤1  4├
      0.2 ┤2  3├      ┤2  3├
      0.0 └────┘      └────┘
     "
