@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "trait-layout",
+      "dependencies": {
+        "circuit-json": "^0.0.192",
+      },
       "devDependencies": {
         "@biomejs/biome": "^1.9.4",
         "@tscircuit/circuit-json-util": "^0.0.48",
@@ -381,7 +384,7 @@
 
     "chownr": ["chownr@1.1.4", "", {}, "sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg=="],
 
-    "circuit-json": ["circuit-json@0.0.170", "", { "dependencies": { "nanoid": "^5.0.7", "zod": "^3.23.6" } }, "sha512-hl7ZKdwk2y6/u7yCR5S49ie9V2rO6s7MpvQqnDmRb4ktQFNoW/rII5wvyhU5uKVtZtvpbQxJD9yRWLDKYjXSrQ=="],
+    "circuit-json": ["circuit-json@0.0.192", "", { "dependencies": { "nanoid": "^5.0.7", "zod": "^3.23.6" } }, "sha512-V+tpWvGGa/f+0VrV0Vmnlr2avXZjm/82zm7F+0IgUhNAdAu0H6uu7iEVJ6cO0PLtzJ0br3hoKEX/2VqOtq7glg=="],
 
     "circuit-json-to-connectivity-map": ["circuit-json-to-connectivity-map@0.0.22", "", { "dependencies": { "@tscircuit/math-utils": "^0.0.9" }, "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-HN8DiISjZZLTglGEkYNRpKeQ/DMG4dDo5j4Hck0UGSJbpux9aFwtJOGszMf06Inh/gu5oKBrpZJIeWxaNacKUg=="],
 

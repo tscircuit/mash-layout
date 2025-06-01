@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "circuit-json": "^0.0.192",
     "@tscircuit/circuit-json-util": "^0.0.48",
     "@tscircuit/create-snippet-url": "^0.0.8",
     "@types/bun": "latest",
