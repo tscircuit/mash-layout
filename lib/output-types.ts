@@ -17,6 +17,7 @@ export interface LaidOutBox {
     pinNumber: number
     x: number
     y: number
+    marginFromLastPin?: number
   }>
 }
 
