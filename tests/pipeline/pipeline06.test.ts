@@ -214,4 +214,15 @@ test("pipeline06", async () => {
       },
     }
   `)
+
+  const layoutJson = adaptedTemplate.getLayoutJson()
+
+  // Check that no lines connect from/to the same object
+  const lines = layoutJson.paths || []
+  const sameObjectLines = lines.filter(
+    (line: any) =>
+      line.from?.boxId === line.to?.boxId ||
+      line.from?.junctionId === line.to?.junctionId,
+  )
+  expect(sameObjectLines).toEqual([])
 })
