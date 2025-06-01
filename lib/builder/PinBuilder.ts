@@ -260,12 +260,13 @@ export class PinBuilder {
   }
 
   intersect(): this {
-    this.circuit.addJunction({
+    const junction = this.circuit.addJunction({
       pinRef: this.ref,
       x: this.x,
       y: this.y,
       showAsIntersection: true,
     })
+    this.lastCreatedLine!.end.fromJunctionId = junction.junctionId
     return this
   }
 

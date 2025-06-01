@@ -90,6 +90,8 @@ export const getCircuitLayoutJson = (
       )
     }
 
+    console.log(refs)
+
     if (refs.size === 1) continue
 
     let [fromStr, toStr] = Array.from(refs) as [string, string]
