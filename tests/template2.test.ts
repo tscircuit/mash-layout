@@ -118,6 +118,7 @@ test("template2", () => {
             },
             {
               "netId": "A",
+              "netLabelId": "NL1",
             },
           ],
         },
@@ -129,6 +130,7 @@ test("template2", () => {
             },
             {
               "netId": "B",
+              "netLabelId": "NL2",
             },
           ],
         },
@@ -140,6 +142,7 @@ test("template2", () => {
             },
             {
               "netId": "C",
+              "netLabelId": "NL3",
             },
           ],
         },
@@ -151,6 +154,7 @@ test("template2", () => {
             },
             {
               "netId": "D",
+              "netLabelId": "NL4",
             },
           ],
         },
@@ -162,6 +166,7 @@ test("template2", () => {
             },
             {
               "netId": "E",
+              "netLabelId": "NL5",
             },
           ],
         },
@@ -173,6 +178,7 @@ test("template2", () => {
             },
             {
               "netId": "F",
+              "netLabelId": "NL6",
             },
             {
               "boxId": "U1",

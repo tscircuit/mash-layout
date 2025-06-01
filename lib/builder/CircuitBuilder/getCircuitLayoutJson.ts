@@ -84,17 +84,21 @@ export const getCircuitLayoutJson = (
       ]),
     )
 
-    if (refs.size > 2) {
+    let arRefs = Array.from(refs)
+
+    if (arRefs.length === 3 && arRefs.some((r) => r.startsWith("junction["))) {
+      arRefs = arRefs.filter((r) => !r.startsWith("junction["))
+    }
+
+    if (arRefs.length > 2) {
       throw new Error(
         `Path composed of "${Array.from(refs).join(",")}" has more than 2 references (use a junction instead of connecting multiple points to the same pin)`,
       )
     }
 
-    console.log(refs)
+    if (arRefs.length === 1) continue
 
-    if (refs.size === 1) continue
-
-    let [fromStr, toStr] = Array.from(refs) as [string, string]
+    let [fromStr, toStr] = arRefs as [string, string]
 
     if (getRefKey(lines[0]!.start.ref!) === toStr) {
       ;[fromStr, toStr] = [toStr, fromStr]

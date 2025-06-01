@@ -243,6 +243,10 @@ export class PinBuilder {
               : "top",
       fromRef: this.ref,
     })
+
+    if (!this.lastCreatedLine) {
+      this.line(0, 0)
+    }
     this.lastCreatedLine!.end.ref = {
       netId: netId,
       netLabelId: netLabel.netLabelId,

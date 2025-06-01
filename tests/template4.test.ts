@@ -71,6 +71,7 @@ test("template4", () => {
             },
             {
               "netId": "A",
+              "netLabelId": "NL1",
             },
             {
               "boxId": "R2",
@@ -86,6 +87,7 @@ test("template4", () => {
             },
             {
               "netId": "B",
+              "netLabelId": "NL2",
             },
           ],
         },
@@ -97,6 +99,7 @@ test("template4", () => {
             },
             {
               "netId": "C",
+              "netLabelId": "NL3",
             },
           ],
         },
@@ -108,6 +111,7 @@ test("template4", () => {
             },
             {
               "netId": "D",
+              "netLabelId": "NL4",
             },
           ],
         },

@@ -115,7 +115,7 @@ export function applyAddPinToSide(C: CircuitBuilder, op: AddPinToSideOp): void {
 
   /* ---- shift connection-points ---- */
   for (const cp of C.connectionPoints) {
-    const d = shiftForRef(cp.ref)
+    const d = shiftForRef(cp.pinRef)
     if (d) {
       cp.x += d.dx
       cp.y += d.dy
