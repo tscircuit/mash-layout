@@ -247,7 +247,7 @@ export const mergeCircuits = ({
       ...p,
       x: p.x + dx,
       y: p.y + dy,
-      ref: translateRef(p.ref),
+      pinRef: translateRef(p.pinRef),
     }
     merged.connectionPoints.push(copy)
   }

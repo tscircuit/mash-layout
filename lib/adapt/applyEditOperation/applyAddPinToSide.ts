@@ -17,7 +17,7 @@ const patchRefs = (
     l.start.ref = remap(l.start.ref)
     l.end.ref = remap(l.end.ref)
   }
-  for (const cp of C.connectionPoints) cp.ref = remap(cp.ref)
+  for (const cp of C.connectionPoints) cp.pinRef = remap(cp.pinRef)
   for (const nl of C.netLabels) nl.fromRef = remap(nl.fromRef)
 }
 

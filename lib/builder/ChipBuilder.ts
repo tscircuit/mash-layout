@@ -220,7 +220,10 @@ export class ChipBuilder {
       this.setPinPositions()
     }
     // Find the pin by its 1-based ccwPinNumber by checking sides in order: Left, Bottom, Right, Top
-    return this._getPin(pinNumber)
+    const pb = this._getPin(pinNumber)
+    // Reset the junctionId since we're directly accessing the pin
+    pb.fromJunctionId = null
+    return pb
   }
 
   public getPinLocation(pinNumber: number): { x: number; y: number } {
@@ -301,7 +304,15 @@ export class ChipBuilder {
     }
     const { pinBuilder, state } = this.marks[name]
 
+    // TODO if there isn't already a connectionPoint here, create one
+    const junction = this.circuit.addJunction({
+      x: state.x,
+      y: state.y,
+      pinRef: this.marks[name].pinBuilder.ref,
+    })
+
     pinBuilder.applyMarkableState(state)
+    pinBuilder.fromJunctionId = junction.junctionId
     return pinBuilder
   }
 

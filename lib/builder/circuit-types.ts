@@ -4,8 +4,8 @@ export const SIDES_CCW: Side[] = ["left", "bottom", "right", "top"]
 
 export type Edge = "left" | "right" | "up" | "down"
 export interface Line {
-  start: { x: number; y: number; ref: PortReference }
-  end: { x: number; y: number; ref: PortReference }
+  start: { x: number; y: number; ref: PortReference; fromJunctionId?: string }
+  end: { x: number; y: number; ref: PortReference; fromJunctionId?: string }
   pathId?: string
 }
 
@@ -24,7 +24,8 @@ export interface NetLabel {
 }
 
 export interface ConnectionPoint {
-  ref: PortReference
+  pinRef: PortReference
+  junctionId: string
   x: number
   y: number
   showAsIntersection?: boolean

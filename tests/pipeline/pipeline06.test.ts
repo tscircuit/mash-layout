@@ -221,7 +221,8 @@ test("pipeline06", async () => {
   const lines = layoutJson.paths || []
   const sameObjectLines = lines.filter(
     (line: any) =>
-      (line.from?.boxId === line.to?.boxId &&
+      (line.from?.boxId &&
+        line.from?.boxId === line.to?.boxId &&
         line.from?.pinNumber === line.to?.pinNumber) ||
       (line.from?.junctionId &&
         line.to?.junctionId &&
@@ -288,8 +289,7 @@ test("pipeline06", async () => {
       },
       {
         "from": {
-          "boxId": "U3",
-          "pinNumber": 1,
+          "junctionId": "XX1",
         },
         "points": [
           {
@@ -426,8 +426,7 @@ test("pipeline06", async () => {
       },
       {
         "from": {
-          "boxId": "U3",
-          "pinNumber": 8,
+          "junctionId": "XX4",
         },
         "points": [
           {

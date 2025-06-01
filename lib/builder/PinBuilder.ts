@@ -24,6 +24,8 @@ export class PinBuilder {
   lastDx = 0
   lastDy = 0
 
+  fromJunctionId: string | null = null
+
   constructor(
     private readonly chip: any, // TODO: Replace with proper ChipBuilder type
     public pinNumber: number,
@@ -37,10 +39,14 @@ export class PinBuilder {
     if (!this.pathId) {
       this.pathId = this.circuit.addPath().pathId
     }
-    const start = { x: this.x, y: this.y, ref: this.ref }
+    const start: Line["start"] = { x: this.x, y: this.y, ref: this.ref }
     this.x += dx
     this.y += dy
-    const end = { x: this.x, y: this.y, ref: this.ref }
+    const end: Line["end"] = { x: this.x, y: this.y, ref: this.ref }
+    if (this.fromJunctionId) {
+      start.fromJunctionId = this.fromJunctionId
+      end.fromJunctionId = this.fromJunctionId
+    }
     const line = { start, end, pathId: this.pathId }
     this.circuit.lines.push(line)
     this.lastDx = dx
@@ -216,6 +222,7 @@ export class PinBuilder {
         : [passive.pin(2), passive.pin(1)]
 
     this.lastCreatedLine!.end.ref = entryPin.ref
+    this.lastCreatedLine!.end.fromJunctionId = undefined
 
     return exitPin
   }
@@ -239,11 +246,12 @@ export class PinBuilder {
     this.lastCreatedLine!.end.ref = {
       netId: id,
     }
+    this.lastCreatedLine!.end.fromJunctionId = undefined
   }
 
   connect(): this {
-    this.circuit.connectionPoints.push({
-      ref: this.ref,
+    this.circuit.addJunction({
+      pinRef: this.ref,
       x: this.x,
       y: this.y,
     })
@@ -251,8 +259,8 @@ export class PinBuilder {
   }
 
   intersect(): this {
-    this.circuit.connectionPoints.push({
-      ref: this.ref,
+    this.circuit.addJunction({
+      pinRef: this.ref,
       x: this.x,
       y: this.y,
       showAsIntersection: true,

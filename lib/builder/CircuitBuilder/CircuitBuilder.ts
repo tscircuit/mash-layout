@@ -140,6 +140,34 @@ export class CircuitBuilder {
     return path
   }
 
+  _junctionCounter = 1
+  addJunction({
+    x,
+    y,
+    pinRef,
+    showAsIntersection = false,
+  }: {
+    x: number
+    y: number
+    showAsIntersection?: boolean
+    pinRef: PortReference
+  }): ConnectionPoint {
+    // If there's already a connectionPoint here, return it
+    for (const cp of this.connectionPoints) {
+      if (cp.x === x && cp.y === y) {
+        return cp
+      }
+    }
+    const junction = {
+      junctionId: `XX${this._junctionCounter++}`,
+      x,
+      y,
+      pinRef,
+      showAsIntersection,
+    }
+    this.connectionPoints.push(junction)
+    return junction
+  }
   toString(): string {
     return getGridFromCircuit(this, {
       chipLabels: true,

@@ -3,6 +3,7 @@ import { CircuitBuilder } from "./CircuitBuilder"
 import { PortReference } from "lib/input-types"
 import { ConnectivityMap } from "circuit-json-to-connectivity-map"
 import { getRefKey, parseRefKey } from "../refkey"
+import { Line } from "../circuit-types"
 
 export const getCircuitLayoutJson = (
   circuitBuilder: CircuitBuilder,
@@ -73,7 +74,9 @@ export const getCircuitLayoutJson = (
           Math.abs(cp.x - point.x) < 0.001 &&
           Math.abs(cp.y - point.y) < 0.001
         ) {
-          connMap.addConnections([[getRefKey(point.ref), getRefKey(cp.ref)]])
+          connMap.addConnections([
+            [getRefKey(point.ref), getRefKey({ junctionId: cp.junctionId })],
+          ])
         }
       }
     }
@@ -87,14 +90,25 @@ export const getCircuitLayoutJson = (
     // console.log(connectedRefs)
   }
 
-  console.log(circuitBuilder.paths)
+  console.log(circuitBuilder.lines)
   for (const path of circuitBuilder.paths) {
     // Find the lines that are part of this path
     const lines = circuitBuilder.lines.filter((l) => l.pathId === path.pathId)
 
     // Find the two references within the lines
     const refs = new Set(
-      lines.flatMap((l) => [getRefKey(l.start.ref), getRefKey(l.end.ref)]),
+      lines.flatMap((l) => [
+        getRefKey(
+          l.start.fromJunctionId
+            ? { junctionId: l.start.fromJunctionId }
+            : l.start.ref,
+        ),
+        getRefKey(
+          l.end.fromJunctionId
+            ? { junctionId: l.end.fromJunctionId }
+            : l.end.ref,
+        ),
+      ]),
     )
 
     if (refs.size > 2) {
@@ -105,10 +119,10 @@ export const getCircuitLayoutJson = (
 
     if (refs.size === 1) continue
 
-    let [from, to] = Array.from(refs)
+    let [fromStr, toStr] = Array.from(refs) as [string, string]
 
-    if (getRefKey(lines[0]!.start.ref!) === to) {
-      ;[from, to] = [to, from]
+    if (getRefKey(lines[0]!.start.ref!) === toStr) {
+      ;[fromStr, toStr] = [toStr, fromStr]
     }
 
     paths.push({
@@ -122,8 +136,8 @@ export const getCircuitLayoutJson = (
           y: l.end.y,
         },
       ]),
-      from: parseRefKey(from!),
-      to: parseRefKey(to!),
+      from: parseRefKey(fromStr!),
+      to: parseRefKey(toStr!),
     })
   }
 

@@ -28,3 +28,4 @@ export interface InputNetlist {
 export type PortReference =
   | { boxId: string; pinNumber: number }
   | { netId: string }
+  | { junctionId: string }
