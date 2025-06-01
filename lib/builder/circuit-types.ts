@@ -12,11 +12,12 @@ export interface Line {
 export type { Side }
 export type PortReference =
   | { boxId: string; pinNumber: number }
-  | { netId: string }
+  | { netId: string; netLabelId: string }
   | { junctionId: string }
 
 export interface NetLabel {
-  labelId: string
+  netLabelId: string
+  netId: string
   x: number
   y: number
   anchorSide: Side

@@ -134,10 +134,20 @@ export class CircuitBuilder {
   _pathCounter = 1
   addPath(): Path {
     const path = {
-      pathId: `path[${this._pathCounter++}]`,
+      pathId: `PATH${this._pathCounter++}`,
     }
     this.paths.push(path)
     return path
+  }
+
+  _netLabelCounter = 1
+  addNetLabel(params: Omit<NetLabel, "netLabelId">): NetLabel {
+    const netLabel = {
+      netLabelId: `NL${this._netLabelCounter++}`,
+      ...params,
+    }
+    this.netLabels.push(netLabel)
+    return netLabel
   }
 
   _junctionCounter = 1
@@ -192,8 +202,8 @@ export class CircuitBuilder {
     }
     // c. For every netLabel
     for (const label of this.netLabels) {
-      nb.addNet({ netId: label.labelId })
-      nb.connect(label.fromRef, { netId: label.labelId })
+      nb.addNet({ netId: label.netId })
+      nb.connect(label.fromRef, { netId: label.netId })
     }
     for (const line of this.lines) {
       if (!isSamePortRef(line.start.ref, line.end.ref)) {

@@ -230,7 +230,7 @@ export class PinBuilder {
   label(text?: string): void {
     const id = text ?? this.circuit.generateAutoLabel()
     this.circuit.netLabels.push({
-      labelId: id,
+      netId: id,
       x: this.x,
       y: this.y,
       anchorSide:

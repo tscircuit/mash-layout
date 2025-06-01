@@ -134,9 +134,9 @@ export const getGridFromCircuit = (
   }
   // 2. Draw labels
   for (const label of circuit.netLabels) {
-    if (label.labelId.length > 0) {
+    if (label.netId.length > 0) {
       // Render only the first character of the label as an abbreviation.
-      const abbreviatedChar = label.labelId[0]!
+      const abbreviatedChar = label.netId[0]!
       g.putOverlay(label.x, label.y, abbreviatedChar)
     }
   }

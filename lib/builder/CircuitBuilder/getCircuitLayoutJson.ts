@@ -53,44 +53,17 @@ export const getCircuitLayoutJson = (
   }
 
   // Convert net labels
+  console.log(circuitBuilder.netLabels)
   for (const label of circuitBuilder.netLabels) {
     netLabels.push({
-      netId: label.labelId,
+      netLabelId: label.netLabelId,
+      netId: label.netId,
       x: label.x,
       y: label.y,
       anchorPosition: label.anchorSide,
     })
   }
 
-  // Find all mutually connected refs
-  const connMap = new ConnectivityMap({})
-  for (const line of circuitBuilder.lines) {
-    connMap.addConnections([
-      [getRefKey(line.start.ref), getRefKey(line.end.ref)],
-    ])
-    for (const point of [line.start, line.end]) {
-      for (const cp of circuitBuilder.connectionPoints) {
-        if (
-          Math.abs(cp.x - point.x) < 0.001 &&
-          Math.abs(cp.y - point.y) < 0.001
-        ) {
-          connMap.addConnections([
-            [getRefKey(point.ref), getRefKey({ junctionId: cp.junctionId })],
-          ])
-        }
-      }
-    }
-  }
-
-  for (const netId in connMap.netMap) {
-    const connectedRefs = connMap.getIdsConnectedToNet(netId)
-    // console.log(connectedRefs)
-    if (connectedRefs.length < 2) continue
-
-    // console.log(connectedRefs)
-  }
-
-  console.log(circuitBuilder.lines)
   for (const path of circuitBuilder.paths) {
     // Find the lines that are part of this path
     const lines = circuitBuilder.lines.filter((l) => l.pathId === path.pathId)
@@ -142,10 +115,9 @@ export const getCircuitLayoutJson = (
   }
 
   // Create junctions from connection points that are marked as intersections
-  let junctionCounter = 1
   for (const cp of circuitBuilder.connectionPoints) {
     junctions.push({
-      junctionId: `junction[${junctionCounter++}]`,
+      junctionId: cp.junctionId,
       x: cp.x,
       y: cp.y,
     })
