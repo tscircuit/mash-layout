@@ -8,10 +8,12 @@ export interface Box {
 
 export type Side = "left" | "right" | "top" | "bottom"
 
+export type NetReference =
+  | { boxId: string; pinNumber: number }
+  | { netId: string }
+
 export interface Connection {
-  connectedPorts: Array<
-    { boxId: string; pinNumber: number } | { netId: string }
-  >
+  connectedPorts: Array<NetReference>
 }
 
 export interface Net {

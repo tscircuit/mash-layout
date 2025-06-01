@@ -218,7 +218,7 @@ export const mergeCircuits = ({
     l.end.ref = translateRef(l.end.ref)
   }
   for (const p of merged.connectionPoints) {
-    p.ref = translateRef(p.ref)
+    p.pinRef = translateRef(p.pinRef)
   }
   for (const nl of merged.netLabels) {
     nl.fromRef = translateRef(nl.fromRef)

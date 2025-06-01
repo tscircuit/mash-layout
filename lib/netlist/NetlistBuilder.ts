@@ -3,6 +3,7 @@ import type {
   Connection,
   InputNetlist,
   Net,
+  NetReference,
   PortReference,
 } from "lib/input-types"
 
@@ -37,32 +38,38 @@ export class NetlistBuilder {
     if ("netId" in a && "netId" in b) {
       return a.netId === b.netId
     }
+    if ("junctionId" in a && "junctionId" in b) {
+      return a.junctionId === b.junctionId
+    }
     return false
   }
 
   // Helper: Check if a port is in a given connection
   private isPortInConnection(
-    port: PortReference,
+    port: NetReference,
     connection: Connection,
   ): boolean {
     return connection.connectedPorts.some((p) =>
-      this.areSamePortRef(port, p as PortReference),
+      this.areSamePortRef(port, p as NetReference),
     )
   }
 
   // Helper: Find the connection that contains a given port
-  private findConnectionContaining(
-    port: PortReference,
-  ): Connection | undefined {
+  private findConnectionContaining(port: NetReference): Connection | undefined {
     return this.netlist.connections.find((conn) =>
       this.isPortInConnection(port, conn),
     )
   }
 
-  connect(port1: PortReference, port2: PortReference): void {
-    if (!port1 || !port2 || this.areSamePortRef(port1, port2)) {
+  connect(port1PRef: PortReference, port2PRef: PortReference): void {
+    if (!port1PRef || !port2PRef || this.areSamePortRef(port1PRef, port2PRef)) {
       return
     }
+
+    const port1: NetReference =
+      "junctionId" in port1PRef ? { netId: port1PRef.junctionId } : port1PRef
+    const port2: NetReference =
+      "junctionId" in port2PRef ? { netId: port2PRef.junctionId } : port2PRef
 
     const conn1 = this.findConnectionContaining(port1)
     const conn2 = this.findConnectionContaining(port2)
@@ -75,8 +82,8 @@ export class NetlistBuilder {
       }
       // Merge conn2 into conn1
       for (const p of conn2.connectedPorts) {
-        if (!this.isPortInConnection(p as PortReference, conn1)) {
-          conn1.connectedPorts.push(p as PortReference)
+        if (!this.isPortInConnection(p, conn1)) {
+          conn1.connectedPorts.push(p)
         }
       }
       // Remove conn2

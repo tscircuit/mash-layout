@@ -56,7 +56,7 @@ export function fixMatchedBoxPinShapes(params: {
 function findBestPinRemovalStrategy(params: {
   template: CircuitBuilder
   chipId: string
-  side: SIDE
+  side: Side
   pinsToRemove: number
 }): EditOperation[] {
   const { template, chipId, side, pinsToRemove } = params
@@ -64,7 +64,7 @@ function findBestPinRemovalStrategy(params: {
   const chip = template.chips.find((c) => c.chipId === chipId)
   if (!chip) return []
 
-  const sidePinsMap: Record<SIDE, PinBuilder[]> = {
+  const sidePinsMap: Record<Side, PinBuilder[]> = {
     left: chip.leftPins,
     right: chip.rightPins,
     top: chip.topPins,
@@ -91,7 +91,7 @@ function findBestPinRemovalStrategy(params: {
       type: "remove_pin_from_side" as const,
       chipId,
       side,
-      pinNumber: highestPin.pinNumber,
+      pinNumber: highestPin!.pinNumber,
     },
   ]
 }
