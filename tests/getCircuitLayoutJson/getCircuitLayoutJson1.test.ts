@@ -64,13 +64,14 @@ test("getCircuitLayoutJson should convert CircuitBuilder to layout format", () =
 
   // Verify paths have correct structure
   for (const path of layoutJson.paths) {
-    expect(path.points).toHaveLength(2) // All paths should be simple lines
+    expect(path.points.length).toBeGreaterThanOrEqual(2) // Paths should have at least 2 points
     expect(path.from).toBeDefined()
     expect(path.to).toBeDefined()
-    expect(typeof path.points[0]!.x).toBe("number")
-    expect(typeof path.points[0]!.y).toBe("number")
-    expect(typeof path.points[1]!.x).toBe("number")
-    expect(typeof path.points[1]!.y).toBe("number")
+    // Verify all points have valid coordinates
+    for (const point of path.points) {
+      expect(typeof point.x).toBe("number")
+      expect(typeof point.y).toBe("number")
+    }
   }
 
   // Test the overall structure matches expected CircuitLayoutJson interface

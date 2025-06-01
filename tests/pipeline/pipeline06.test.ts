@@ -223,7 +223,11 @@ test("pipeline06", async () => {
     (line: any) =>
       (line.from?.boxId === line.to?.boxId &&
         line.from?.pinNumber === line.to?.pinNumber) ||
-      line.from?.junctionId === line.to?.junctionId,
+      (line.from?.junctionId &&
+        line.to?.junctionId &&
+        line.from?.junctionId === line.to?.junctionId),
   )
   expect(sameObjectLines).toEqual([])
+
+  Bun.write("adapted-template.json", JSON.stringify(layoutJson, null, 2))
 })
