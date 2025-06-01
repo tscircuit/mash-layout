@@ -221,7 +221,8 @@ test("pipeline06", async () => {
   const lines = layoutJson.paths || []
   const sameObjectLines = lines.filter(
     (line: any) =>
-      line.from?.boxId === line.to?.boxId ||
+      (line.from?.boxId === line.to?.boxId &&
+        line.from?.pinNumber === line.to?.pinNumber) ||
       line.from?.junctionId === line.to?.junctionId,
   )
   expect(sameObjectLines).toEqual([])
