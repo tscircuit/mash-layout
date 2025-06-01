@@ -31,7 +31,10 @@ export class NetlistBuilder {
   }
 
   // Helper: Check if two port references are the same
-  private areSamePortRef(a: PortReference, b: PortReference): boolean {
+  private areSamePortRef(
+    a: PortReference | NetReference,
+    b: PortReference | NetReference,
+  ): boolean {
     if ("boxId" in a && "boxId" in b) {
       return a.boxId === b.boxId && a.pinNumber === b.pinNumber
     }
@@ -46,7 +49,7 @@ export class NetlistBuilder {
 
   // Helper: Check if a port is in a given connection
   private isPortInConnection(
-    port: NetReference,
+    port: NetReference | PortReference,
     connection: Connection,
   ): boolean {
     return connection.connectedPorts.some((p) =>
