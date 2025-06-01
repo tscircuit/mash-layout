@@ -27,10 +27,11 @@ export const getCircuitLayoutJson = (
     ]
 
     for (const pin of allPins) {
+      const pinLocation = chip.getPinLocation(pin.pinNumber)
       pins.push({
         pinNumber: pin.pinNumber,
-        x: pin.x,
-        y: pin.y,
+        x: pinLocation.x,
+        y: pinLocation.y,
       })
     }
 

@@ -83,10 +83,6 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
     }
 
     if (this.activeSubSolver) {
-      console.log(
-        "stepping active subsolver",
-        this.activeSubSolver.constructor.name,
-      )
       this.activeSubSolver.step()
       if (this.activeSubSolver.solved) {
         this.endTimeOfPhase[pipelineStepDef.solverName] = performance.now()
