@@ -29,7 +29,7 @@ const getPinConnectionLabel = (
     return "..."
   }
 
-  const connection = relevantConnections[0]
+  const connection = relevantConnections[0]!
   const otherPorts = connection.connectedPorts.filter((p) => {
     if (
       "boxId" in p &&
