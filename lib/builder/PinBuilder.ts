@@ -228,9 +228,9 @@ export class PinBuilder {
   }
 
   label(text?: string): void {
-    const id = text ?? this.circuit.generateAutoLabel()
-    this.circuit.netLabels.push({
-      netId: id,
+    const netId = text ?? this.circuit.generateAutoLabel()
+    const netLabel = this.circuit.addNetLabel({
+      netId: netId,
       x: this.x,
       y: this.y,
       anchorSide:
@@ -244,7 +244,8 @@ export class PinBuilder {
       fromRef: this.ref,
     })
     this.lastCreatedLine!.end.ref = {
-      netId: id,
+      netId: netId,
+      netLabelId: netLabel.netLabelId,
     }
     this.lastCreatedLine!.end.fromJunctionId = undefined
   }

@@ -5,7 +5,7 @@ export const getRefKey = (ref: PortReference) =>
     ? `box[${ref.boxId}].${ref.pinNumber}`
     : "junctionId" in ref
       ? `junction[${ref.junctionId}]`
-      : `net[${ref.netId}]`
+      : `netlabel[${ref.netId},${ref.netLabelId}]`
 
 export const parseRefKey = (refKey: string): PortReference => {
   let match = refKey.match(/^box\[([^\]]+)\]\.(\d+)$/)
@@ -16,9 +16,9 @@ export const parseRefKey = (refKey: string): PortReference => {
   if (match) {
     return { junctionId: match[1]! }
   }
-  match = refKey.match(/^net\[([^\]]+)\]$/)
+  match = refKey.match(/^netlabel\[([^\]]+),([^\]]+)\]$/)
   if (match) {
-    return { netId: match[1]! }
+    return { netId: match[1]!, netLabelId: match[2]! }
   }
   throw new Error(`Invalid ref key: ${refKey}`)
 }

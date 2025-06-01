@@ -27,5 +27,5 @@ export interface InputNetlist {
 /** Represents a reference to a connectable point (a pin on a box or a named net). */
 export type PortReference =
   | { boxId: string; pinNumber: number }
-  | { netId: string }
+  | { netId: string; netLabelId: string }
   | { junctionId: string }

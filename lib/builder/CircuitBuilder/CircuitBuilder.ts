@@ -203,7 +203,10 @@ export class CircuitBuilder {
     // c. For every netLabel
     for (const label of this.netLabels) {
       nb.addNet({ netId: label.netId })
-      nb.connect(label.fromRef, { netId: label.netId })
+      nb.connect(label.fromRef, {
+        netId: label.netId,
+        netLabelId: label.netLabelId,
+      })
     }
     for (const line of this.lines) {
       if (!isSamePortRef(line.start.ref, line.end.ref)) {
@@ -231,7 +234,7 @@ export class CircuitBuilder {
 
     // 1. connectionPoints (added by .connect() / .intersect())
     for (const cp of this.connectionPoints) {
-      addToCoordMap(portsByCoord, `${cp.x},${cp.y}`, cp.ref)
+      addToCoordMap(portsByCoord, `${cp.x},${cp.y}`, cp.pinRef)
     }
 
     // We only want to auto-join things at coordinates that contain at least
@@ -282,7 +285,7 @@ export class CircuitBuilder {
     for (const cp of this.connectionPoints) {
       for (const line of this.lines) {
         if (isCoordOnSegment(cp.x, cp.y, line)) {
-          nb.connect(cp.ref, line.start.ref) // line.start.ref === line.end.ref
+          nb.connect(cp.pinRef, line.start.ref) // line.start.ref === line.end.ref
         }
       }
     }

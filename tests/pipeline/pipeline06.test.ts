@@ -285,6 +285,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "GND",
+          "netLabelId": "NL1",
         },
       },
       {
@@ -303,6 +304,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "V3_3",
+          "netLabelId": "NL2",
         },
       },
       {
@@ -338,6 +340,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "V3_3",
+          "netLabelId": "NL3",
         },
       },
       {
@@ -357,6 +360,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "A",
+          "netLabelId": "NL4",
         },
       },
       {
@@ -376,6 +380,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "B",
+          "netLabelId": "NL5",
         },
       },
       {
@@ -395,6 +400,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "C",
+          "netLabelId": "NL6",
         },
       },
       {
@@ -422,6 +428,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "D",
+          "netLabelId": "NL7",
         },
       },
       {
@@ -460,6 +467,7 @@ test("pipeline06", async () => {
         ],
         "to": {
           "netId": "V3_3",
+          "netLabelId": "NL8",
         },
       },
     ]
