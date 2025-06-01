@@ -526,6 +526,4 @@ test("pipeline06", async () => {
       },
     ]
   `)
-
-  Bun.write("adapted-template.json", JSON.stringify(layoutJson, null, 2))
 })
