@@ -228,6 +228,4 @@ test("pipeline06", async () => {
         line.from?.junctionId === line.to?.junctionId),
   )
   expect(sameObjectLines).toEqual([])
-
-  Bun.write("adapted-template.json", JSON.stringify(layoutJson, null, 2))
 })

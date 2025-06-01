@@ -6,15 +6,14 @@ export type Edge = "left" | "right" | "up" | "down"
 export interface Line {
   start: { x: number; y: number; ref: PortReference }
   end: { x: number; y: number; ref: PortReference }
+  pathId?: string
 }
 
 export type { Side }
 export type PortReference =
   | { boxId: string; pinNumber: number }
   | { netId: string }
-// | {
-//     /* relevant for .intersect(), .connect() and .fromMark() */ lineId: string
-//   }
+  | { junctionId: string }
 
 export interface NetLabel {
   labelId: string
@@ -29,4 +28,8 @@ export interface ConnectionPoint {
   x: number
   y: number
   showAsIntersection?: boolean
+}
+
+export interface Path {
+  pathId: string
 }

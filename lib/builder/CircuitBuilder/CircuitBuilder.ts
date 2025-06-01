@@ -7,6 +7,7 @@ import type {
   NetLabel,
   ConnectionPoint,
   PortReference,
+  Path,
 } from "../circuit-types"
 import { flipXCircuit } from "../flipCircuit"
 import { getGridFromCircuit } from "../getGridFromCircuit"
@@ -21,6 +22,7 @@ export class CircuitBuilder {
   chips: ChipBuilder[] = []
   netLabels: NetLabel[] = []
   lines: Line[] = []
+  paths: Path[] = []
   connectionPoints: ConnectionPoint[] = []
 
   public defaultChipWidth = 2
@@ -108,6 +110,7 @@ export class CircuitBuilder {
 
     /* 3.  simple collections (no cycles inside) ---------------------- */
     clone.lines = structuredClone(this.lines)
+    clone.paths = structuredClone(this.paths)
     clone.netLabels = structuredClone(this.netLabels)
     clone.connectionPoints = structuredClone(this.connectionPoints)
 
@@ -126,6 +129,15 @@ export class CircuitBuilder {
     const c = new ChipBuilder(this, id, true)
     this.chips.push(c)
     return c
+  }
+
+  _pathCounter = 1
+  addPath(): Path {
+    const path = {
+      pathId: `path[${this._pathCounter++}]`,
+    }
+    this.paths.push(path)
+    return path
   }
 
   toString(): string {

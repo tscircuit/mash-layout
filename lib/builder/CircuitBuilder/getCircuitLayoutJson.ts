@@ -1,5 +1,8 @@
 import { CircuitLayoutJson } from "lib/output-types"
 import { CircuitBuilder } from "./CircuitBuilder"
+import { PortReference } from "lib/input-types"
+import { ConnectivityMap } from "circuit-json-to-connectivity-map"
+import { getRefKey, parseRefKey } from "../refkey"
 
 export const getCircuitLayoutJson = (
   circuitBuilder: CircuitBuilder,
@@ -58,28 +61,76 @@ export const getCircuitLayoutJson = (
     })
   }
 
-  // Convert lines to paths
+  // Find all mutually connected refs
+  const connMap = new ConnectivityMap({})
   for (const line of circuitBuilder.lines) {
+    connMap.addConnections([
+      [getRefKey(line.start.ref), getRefKey(line.end.ref)],
+    ])
+    for (const point of [line.start, line.end]) {
+      for (const cp of circuitBuilder.connectionPoints) {
+        if (
+          Math.abs(cp.x - point.x) < 0.001 &&
+          Math.abs(cp.y - point.y) < 0.001
+        ) {
+          connMap.addConnections([[getRefKey(point.ref), getRefKey(cp.ref)]])
+        }
+      }
+    }
+  }
+
+  for (const netId in connMap.netMap) {
+    const connectedRefs = connMap.getIdsConnectedToNet(netId)
+    // console.log(connectedRefs)
+    if (connectedRefs.length < 2) continue
+
+    // console.log(connectedRefs)
+  }
+
+  console.log(circuitBuilder.paths)
+  for (const path of circuitBuilder.paths) {
+    // Find the lines that are part of this path
+    const lines = circuitBuilder.lines.filter((l) => l.pathId === path.pathId)
+
+    // Find the two references within the lines
+    const refs = new Set(
+      lines.flatMap((l) => [getRefKey(l.start.ref), getRefKey(l.end.ref)]),
+    )
+
+    if (refs.size > 2) {
+      throw new Error(
+        `Path composed of "${Array.from(refs).join(",")}" has more than 2 references (use a junction instead of connecting multiple points to the same pin)`,
+      )
+    }
+
+    if (refs.size === 1) continue
+
+    const [from, to] = Array.from(refs)
+
     paths.push({
-      points: [
-        { x: line.start.x, y: line.start.y },
-        { x: line.end.x, y: line.end.y },
-      ],
-      from: line.start.ref,
-      to: line.end.ref,
+      points: lines.flatMap((l) => [
+        {
+          x: l.start.x,
+          y: l.start.y,
+        },
+        {
+          x: l.end.x,
+          y: l.end.y,
+        },
+      ]),
+      from: parseRefKey(from!),
+      to: parseRefKey(to!),
     })
   }
 
   // Create junctions from connection points that are marked as intersections
   let junctionCounter = 1
   for (const cp of circuitBuilder.connectionPoints) {
-    if (cp.showAsIntersection) {
-      junctions.push({
-        junctionId: `J${junctionCounter++}`,
-        x: cp.x,
-        y: cp.y,
-      })
-    }
+    junctions.push({
+      junctionId: `junction[${junctionCounter++}]`,
+      x: cp.x,
+      y: cp.y,
+    })
   }
 
   return {

@@ -1,5 +1,5 @@
 import type { PortReference, Side } from "../input-types"
-import type { Line } from "./circuit-types"
+import type { Line, Path } from "./circuit-types"
 import type { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
 import { SimplePathfinder, type Obstacle } from "../utils/SimplePathfinder"
@@ -17,6 +17,7 @@ export class PinBuilder {
   /* location (absolute coords inside circuit grid) */
   x = 0
   y = 0
+  pathId: string | null = null
 
   lastConnected: PortReference | null = null
   lastCreatedLine: Line | null = null
@@ -33,11 +34,14 @@ export class PinBuilder {
   }
 
   line(dx: number, dy: number): this {
+    if (!this.pathId) {
+      this.pathId = this.circuit.addPath().pathId
+    }
     const start = { x: this.x, y: this.y, ref: this.ref }
     this.x += dx
     this.y += dy
     const end = { x: this.x, y: this.y, ref: this.ref }
-    const line = { start, end }
+    const line = { start, end, pathId: this.pathId }
     this.circuit.lines.push(line)
     this.lastDx = dx
     this.lastDy = dy
@@ -232,8 +236,9 @@ export class PinBuilder {
               : "top",
       fromRef: this.ref,
     })
-    // Optionally, overlay label on grid if available
-    // this.circuit.getGrid().putOverlay(this.x, this.y, id)
+    this.lastCreatedLine!.end.ref = {
+      netId: id,
+    }
   }
 
   connect(): this {
@@ -298,5 +303,6 @@ export class PinBuilder {
     this.lastConnected = state.lastConnected
     this.lastDx = state.lastDx
     this.lastDy = state.lastDy
+    this.pathId = this.circuit.addPath().pathId
   }
 }
