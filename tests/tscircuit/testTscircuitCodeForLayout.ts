@@ -30,20 +30,19 @@ export const testTscircuitCodeForLayout = async (
   // HACK: Add schematic_net_label_id since core doesn't add it currently
   let schLabelIdCounter = 0
   for (const schLabel of cju(circuitJson).schematic_net_label.list()) {
-    // @ts-expect-error until circuit-json adds schematic_net_label_id
     schLabel.schematic_net_label_id ??= `schematic_net_label_${schLabelIdCounter++}`
   }
 
   const ccwOrderedCircuitJson = reorderChipPinsToCcw(circuitJson)
 
-  const inputNetlist = convertCircuitJsonToInputNetlist(circuitJson)
+  const inputNetlist = convertCircuitJsonToInputNetlist(ccwOrderedCircuitJson)
   const readableNetlist = getReadableNetlist(inputNetlist)
 
   const solver = new SchematicLayoutPipelineSolver({
     inputNetlist: inputNetlist,
     templateFns: opts.templateFns,
   })
-  await solver.solve()
+  solver.solve()
 
   const matchedTemplate =
     solver.matchPhaseSolver!.outputMatchedTemplates[0]!.template
