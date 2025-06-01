@@ -105,7 +105,11 @@ export const getCircuitLayoutJson = (
 
     if (refs.size === 1) continue
 
-    const [from, to] = Array.from(refs)
+    let [from, to] = Array.from(refs)
+
+    if (getRefKey(lines[0]!.start.ref!) === to) {
+      ;[from, to] = [to, from]
+    }
 
     paths.push({
       points: lines.flatMap((l) => [
