@@ -35,17 +35,17 @@ test("ScoreNetlistTemplatePairSolver handles non-passive components without rota
 
   // Non-passive components should not be rotated
   const matchedBox = solver.matchedBoxes[0]
-  expect(matchedBox.targetBoxRotationCcw).toBe(0)
+  expect(matchedBox?.targetBoxRotationCcw).toBe(0)
 
   // The input should remain unchanged
   const originalBox = inputNetlist.boxes[0]
   const rotatedBox = solver.inputNetlistWithRotations?.boxes[0]
   expect(rotatedBox).toBeDefined()
-  expect(rotatedBox!.boxId).toBe(originalBox.boxId)
-  expect(rotatedBox!.leftPinCount).toBe(originalBox.leftPinCount)
-  expect(rotatedBox!.rightPinCount).toBe(originalBox.rightPinCount)
-  expect(rotatedBox!.topPinCount).toBe(originalBox.topPinCount)
-  expect(rotatedBox!.bottomPinCount).toBe(originalBox.bottomPinCount)
+  expect(rotatedBox?.boxId).toBe(originalBox!.boxId)
+  expect(rotatedBox?.leftPinCount).toBe(originalBox!.leftPinCount)
+  expect(rotatedBox?.rightPinCount).toBe(originalBox!.rightPinCount)
+  expect(rotatedBox?.topPinCount).toBe(originalBox!.topPinCount)
+  expect(rotatedBox?.bottomPinCount).toBe(originalBox!.bottomPinCount)
 
   // Should achieve perfect score since no rotation is needed
   expect(solver.outputSimilarityDistance).toBe(0)

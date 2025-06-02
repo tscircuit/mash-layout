@@ -31,7 +31,7 @@ export const ForceDirectedNetlistGraph: React.FC<
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [nodes, setNodes] = useState<GraphNode[]>([])
   const [edges, setEdges] = useState<GraphEdge[]>([])
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number>(0)
   const isDragging = useRef(false)
   const dragNode = useRef<GraphNode | null>(null)
 
@@ -58,10 +58,10 @@ export const ForceDirectedNetlistGraph: React.FC<
       for (let i = 0; i < boxPorts.length; i++) {
         for (let j = i + 1; j < boxPorts.length; j++) {
           graphEdges.push({
-            source: boxPorts[i].boxId,
-            target: boxPorts[j].boxId,
-            sourcePin: boxPorts[i].pinNumber,
-            targetPin: boxPorts[j].pinNumber,
+            source: boxPorts[i]?.boxId || '',
+            target: boxPorts[j]?.boxId || '',
+            sourcePin: boxPorts[i]?.pinNumber || 0,
+            targetPin: boxPorts[j]?.pinNumber || 0,
           })
         }
       }
@@ -130,18 +130,22 @@ export const ForceDirectedNetlistGraph: React.FC<
             const nodeA = nodes[i]
             const nodeB = nodes[j]
 
-            const dx = nodeB.x - nodeA.x
-            const dy = nodeB.y - nodeA.y
+            const dx = (nodeB?.x || 0) - (nodeA?.x || 0)
+            const dy = (nodeB?.y || 0) - (nodeA?.y || 0)
             const distance = Math.sqrt(dx * dx + dy * dy) || 1
 
             const force = (nodeStrength * currentAlpha) / (distance * distance)
             const fx = (dx / distance) * force
             const fy = (dy / distance) * force
 
-            nodeA.vx -= fx
-            nodeA.vy -= fy
-            nodeB.vx += fx
-            nodeB.vy += fy
+            if (nodeA) {
+              nodeA.vx -= fx
+              nodeA.vy -= fy
+            }
+            if (nodeB) {
+              nodeB.vx += fx
+              nodeB.vy += fy
+            }
           }
         }
 
