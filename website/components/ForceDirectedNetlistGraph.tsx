@@ -58,8 +58,8 @@ export const ForceDirectedNetlistGraph: React.FC<
       for (let i = 0; i < boxPorts.length; i++) {
         for (let j = i + 1; j < boxPorts.length; j++) {
           graphEdges.push({
-            source: boxPorts[i]?.boxId || '',
-            target: boxPorts[j]?.boxId || '',
+            source: boxPorts[i]?.boxId || "",
+            target: boxPorts[j]?.boxId || "",
             sourcePin: boxPorts[i]?.pinNumber || 0,
             targetPin: boxPorts[j]?.pinNumber || 0,
           })

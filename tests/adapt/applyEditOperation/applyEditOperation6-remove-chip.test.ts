@@ -11,7 +11,9 @@ test("remove chip", () => {
   expect(C.chips.find((c) => c.chipId === U1.chipId)).toBeUndefined()
   // All artefacts that referenced U1 are gone
   for (const l of C.lines) {
-    expect('boxId' in l.start.ref ? l.start.ref.boxId : null).not.toBe(U1.chipId)
-    expect('boxId' in l.end.ref ? l.end.ref.boxId : null).not.toBe(U1.chipId)
+    expect("boxId" in l.start.ref ? l.start.ref.boxId : null).not.toBe(
+      U1.chipId,
+    )
+    expect("boxId" in l.end.ref ? l.end.ref.boxId : null).not.toBe(U1.chipId)
   }
 })
