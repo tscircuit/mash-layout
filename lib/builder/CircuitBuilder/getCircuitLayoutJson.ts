@@ -53,7 +53,6 @@ export const getCircuitLayoutJson = (
   }
 
   // Convert net labels
-  console.log(circuitBuilder.netLabels)
   for (const label of circuitBuilder.netLabels) {
     netLabels.push({
       netLabelId: label.netLabelId,
