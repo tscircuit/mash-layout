@@ -29,7 +29,7 @@ const getPinConnectionLabel = (
     return "..."
   }
 
-  const connection = relevantConnections[0]
+  const connection = relevantConnections[0]!
   const otherPorts = connection.connectedPorts.filter((p) => {
     if (
       "boxId" in p &&
@@ -115,7 +115,7 @@ const drawBoxAscii = (
     const remainderCells = innerWidth % tp
     const cellWidths: number[] = Array(tp).fill(baseCellWidth)
     for (let i = 0; i < remainderCells; i++) {
-      cellWidths[i % tp]++ // Distribute remainder
+      cellWidths[i % tp]!++ // Distribute remainder
     }
 
     for (let i = 0; i < tp; i++) {
@@ -123,7 +123,7 @@ const drawBoxAscii = (
       const pinStr = currentTopPinNumber.toString()
       const connLabel =
         getPinConnectionLabel(boxId, currentTopPinNumber, connections) ?? ""
-      const cellWidth = cellWidths[i]
+      const cellWidth = cellWidths[i]!
 
       labelsRow += formatCell(connLabel, cellWidth)
       pinsRow += formatCell(pinStr, cellWidth)
@@ -209,7 +209,7 @@ const drawBoxAscii = (
     const remainderCells = innerWidth % bp
     const cellWidths: number[] = Array(bp).fill(baseCellWidth)
     for (let i = 0; i < remainderCells; i++) {
-      cellWidths[i % bp]++ // Distribute remainder
+      cellWidths[i % bp]!++ // Distribute remainder
     }
 
     for (let i = 0; i < bp; i++) {
@@ -217,7 +217,7 @@ const drawBoxAscii = (
       const pinStr = currentBottomPinNumber.toString()
       const connLabel =
         getPinConnectionLabel(boxId, currentBottomPinNumber, connections) ?? ""
-      const cellWidth = cellWidths[i]
+      const cellWidth = cellWidths[i]!
 
       labelsRow += formatCell(connLabel, cellWidth)
       pinsRow += formatCell(pinStr, cellWidth)
@@ -262,7 +262,7 @@ export const getReadableNetlist = (netlist: InputNetlist): string => {
     lines.push("  (none)")
   } else {
     for (let i = 0; i < complexConnections.length; i++) {
-      const connection = complexConnections[i]
+      const connection = complexConnections[i]!
       lines.push(`  - complex connection[${i}]:`) // Or use original index if preferred
       for (const port of connection.connectedPorts) {
         if ("boxId" in port) {

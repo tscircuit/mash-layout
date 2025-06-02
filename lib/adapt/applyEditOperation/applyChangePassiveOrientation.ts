@@ -40,8 +40,8 @@ export function applyChangePassiveOrientation(
     chip.topPinCount = 0
 
     // Update pin arrays
-    chip.leftPins = [chip.bottomPins[0] || chip.topPins[0]]
-    chip.rightPins = [chip.topPins[0] || chip.bottomPins[0]]
+    chip.leftPins = [chip.bottomPins[0] || chip.topPins[0]!]
+    chip.rightPins = [chip.topPins[0] || chip.bottomPins[0]!]
     chip.bottomPins = []
     chip.topPins = []
   } else {
@@ -52,8 +52,8 @@ export function applyChangePassiveOrientation(
     chip.rightPinCount = 0
 
     // Update pin arrays
-    chip.bottomPins = [chip.leftPins[0] || chip.rightPins[0]]
-    chip.topPins = [chip.rightPins[0] || chip.leftPins[0]]
+    chip.bottomPins = [chip.leftPins[0] || chip.rightPins[0]!]
+    chip.topPins = [chip.rightPins[0] || chip.leftPins[0]!]
     chip.leftPins = []
     chip.rightPins = []
   }

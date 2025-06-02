@@ -50,6 +50,7 @@ test("repro2-netlist-shared-gnd", () => {
             },
             {
               "netId": "VCC",
+              "netLabelId": "NL1",
             },
             {
               "boxId": "U1",
@@ -65,6 +66,7 @@ test("repro2-netlist-shared-gnd", () => {
             },
             {
               "netId": "GND",
+              "netLabelId": "NL2",
             },
             {
               "boxId": "U1",

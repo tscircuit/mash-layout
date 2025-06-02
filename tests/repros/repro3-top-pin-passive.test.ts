@@ -63,6 +63,7 @@ test("repro3-top-pin-passive", () => {
             },
             {
               "netId": "VCC",
+              "netLabelId": "NL1",
             },
             {
               "boxId": "U1",
@@ -78,6 +79,7 @@ test("repro3-top-pin-passive", () => {
             },
             {
               "netId": "GND",
+              "netLabelId": "NL2",
             },
             {
               "boxId": "U1",

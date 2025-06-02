@@ -137,7 +137,7 @@ export function applyMatchedBoxRotationsToInputNetlist(params: {
   // Apply rotations to boxes
   const rotatedBoxes = inputNetlist.boxes.map((box, index) => {
     const rotation = rotationMap.get(index)
-    if (rotation && rotation !== 0) {
+    if (rotation) {
       return rotateInputBox(box, rotation)
     }
     return box
@@ -154,7 +154,7 @@ export function applyMatchedBoxRotationsToInputNetlist(params: {
           )
           if (boxIndex !== -1) {
             const rotation = rotationMap.get(boxIndex)
-            if (rotation && rotation !== 0) {
+            if (rotation) {
               const originalBox = inputNetlist.boxes[boxIndex]!
               const newPinNumber = getPinNumberAfterRotation(
                 port.pinNumber,

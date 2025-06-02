@@ -1,16 +1,6 @@
-import { Box } from "./input-types"
+import { Box, PortReference } from "./input-types"
 
-export type LayoutPointRef =
-  | {
-      boxId: string
-      pinNumber: number
-    }
-  | {
-      junctionId: string
-    }
-  | {
-      netId: string
-    }
+export type LayoutPointRef = PortReference
 
 export interface LaidOutBox {
   boxId: string
@@ -27,6 +17,7 @@ export interface LaidOutBox {
     pinNumber: number
     x: number
     y: number
+    marginFromLastPin?: number
   }>
 }
 
@@ -40,6 +31,7 @@ export interface LaidOutPath {
 }
 
 export interface LaidOutNetLabel {
+  netLabelId: string
   netId: string
   anchorPosition: "top" | "bottom" | "left" | "right"
   x: number

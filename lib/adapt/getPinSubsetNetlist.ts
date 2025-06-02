@@ -5,6 +5,7 @@ import type {
   Connection,
   Net,
   PortReference,
+  NetReference,
 } from "lib/input-types"
 
 /**
@@ -43,7 +44,7 @@ export function getPinSubsetNetlist(params: {
     )
 
     if (isTargetPinInConnection) {
-      const subsetConnectionPorts: PortReference[] = [
+      const subsetConnectionPorts: NetReference[] = [
         { boxId: pinBoxId, pinNumber: 1 },
       ]
 
@@ -67,7 +68,9 @@ export function getPinSubsetNetlist(params: {
             processedBoxIds.add(port.boxId)
           }
         } else if ("netId" in port) {
-          subsetConnectionPorts.push({ netId: port.netId })
+          subsetConnectionPorts.push({
+            netId: port.netId,
+          })
           if (!processedNetIds.has(port.netId)) {
             newNets.push({ netId: port.netId })
             processedNetIds.add(port.netId)

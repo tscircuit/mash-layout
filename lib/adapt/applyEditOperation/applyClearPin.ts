@@ -8,6 +8,6 @@ export function applyClearPin(C: CircuitBuilder, op: ClearPinOp): void {
     "boxId" in ref && ref.boxId === chipId && ref.pinNumber === pinNumber
 
   C.lines = C.lines.filter((l) => !match(l.start.ref) && !match(l.end.ref))
-  C.connectionPoints = C.connectionPoints.filter((cp) => !match(cp.ref))
+  C.connectionPoints = C.connectionPoints.filter((cp) => !match(cp.pinRef))
   C.netLabels = C.netLabels.filter((nl) => !match(nl.fromRef))
 }

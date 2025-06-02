@@ -30,8 +30,9 @@ test.skip("bifurcate2", () => {
     "
   `)
 
-  const [left, right] = C.bifurcateX(U1.chipId)
+  // const [left, right] = C.bifurcateX(U1.chipId)
 
+  /*
   expect(`\n${left.toString()}\n`).toMatchInlineSnapshot(`
     "
        ┌───┐
@@ -54,4 +55,5 @@ test.skip("bifurcate2", () => {
          L  L └───┘
     "
   `)
+  */
 })

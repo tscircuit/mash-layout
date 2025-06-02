@@ -33,7 +33,6 @@ export default () => (
   // HACK: Add schematic_net_label_id since core doesn't add it currently
   let schLabelIdCounter = 0
   for (const schLabel of cju(circuitJson).schematic_net_label.list()) {
-    // @ts-expect-error until circuit-json adds schematic_net_label_id
     schLabel.schematic_net_label_id ??= `schematic_net_label_${schLabelIdCounter++}`
   }
 
@@ -42,7 +41,7 @@ export default () => (
     if (mode === "cj") {
       C.defaultChipWidth = 2
       C.defaultPinSpacing = 0.2
-      C.defaultLineDistanceMultiple = 0.4
+      // C.defaultLineDistanceMultiple = 0.4
     }
     const U1 = C.chip().leftpins(1).rightpins(1)
 

@@ -214,4 +214,316 @@ test("pipeline06", async () => {
       },
     }
   `)
+
+  const layoutJson = adaptedTemplate.getLayoutJson()
+
+  // Check that no lines connect from/to the same object
+  const lines = layoutJson.paths || []
+  const sameObjectLines = lines.filter(
+    (line: any) =>
+      (line.from?.boxId &&
+        line.from?.boxId === line.to?.boxId &&
+        line.from?.pinNumber === line.to?.pinNumber) ||
+      (line.from?.junctionId &&
+        line.to?.junctionId &&
+        line.from?.junctionId === line.to?.junctionId),
+  )
+  expect(sameObjectLines).toEqual([])
+
+  expect(layoutJson.paths).toMatchInlineSnapshot(`
+    [
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 1,
+        },
+        "points": [
+          {
+            "x": 0,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": -1,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": -1,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": -1,
+            "y": 1.1990000000000003,
+          },
+        ],
+        "to": {
+          "boxId": "C20",
+          "pinNumber": 2,
+        },
+      },
+      {
+        "from": {
+          "boxId": "C20",
+          "pinNumber": 1,
+        },
+        "points": [
+          {
+            "x": -1,
+            "y": 0.1990000000000003,
+          },
+          {
+            "x": -1,
+            "y": 0.1980000000000003,
+          },
+          {
+            "x": -1,
+            "y": 0.1980000000000003,
+          },
+          {
+            "x": -1,
+            "y": -0.0019999999999997242,
+          },
+        ],
+        "to": {
+          "netId": "GND",
+          "netLabelId": "NL1",
+        },
+      },
+      {
+        "from": {
+          "junctionId": "XX1",
+        },
+        "points": [
+          {
+            "x": -1,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": -1,
+            "y": 1.4000000000000001,
+          },
+        ],
+        "to": {
+          "netId": "V3_3",
+          "netLabelId": "NL2",
+        },
+      },
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 2,
+        },
+        "points": [
+          {
+            "x": 0,
+            "y": 0.20000000000000007,
+          },
+          {
+            "x": -1,
+            "y": 0.20000000000000007,
+          },
+          {
+            "x": -1,
+            "y": 0.20000000000000007,
+          },
+          {
+            "x": -1,
+            "y": 0.1980000000000003,
+          },
+        ],
+        "to": {
+          "junctionId": "XX2",
+        },
+      },
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 3,
+        },
+        "points": [
+          {
+            "x": 2,
+            "y": 0.20000000000000007,
+          },
+          {
+            "x": 4,
+            "y": 0.20000000000000007,
+          },
+          {
+            "x": 4,
+            "y": 0.20000000000000007,
+          },
+          {
+            "x": 4,
+            "y": 0.4000000000000001,
+          },
+          {
+            "x": 4,
+            "y": 0.4000000000000001,
+          },
+          {
+            "x": 4,
+            "y": 2.4,
+          },
+        ],
+        "to": {
+          "netId": "V3_3",
+          "netLabelId": "NL3",
+        },
+      },
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 4,
+        },
+        "points": [
+          {
+            "x": 2,
+            "y": 0.4,
+          },
+          {
+            "x": 4,
+            "y": 0.4,
+          },
+          {
+            "x": 4,
+            "y": 0.4,
+          },
+          {
+            "x": 4,
+            "y": 0.4000000000000001,
+          },
+        ],
+        "to": {
+          "junctionId": "XX3",
+        },
+      },
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 5,
+        },
+        "points": [
+          {
+            "x": 2,
+            "y": 0.6,
+          },
+          {
+            "x": 5,
+            "y": 0.6,
+          },
+        ],
+        "to": {
+          "netId": "A",
+          "netLabelId": "NL4",
+        },
+      },
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 6,
+        },
+        "points": [
+          {
+            "x": 2,
+            "y": 0.8000000000000002,
+          },
+          {
+            "x": 5,
+            "y": 0.8000000000000002,
+          },
+        ],
+        "to": {
+          "netId": "B",
+          "netLabelId": "NL5",
+        },
+      },
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 7,
+        },
+        "points": [
+          {
+            "x": 2,
+            "y": 1,
+          },
+          {
+            "x": 5,
+            "y": 1,
+          },
+        ],
+        "to": {
+          "netId": "C",
+          "netLabelId": "NL6",
+        },
+      },
+      {
+        "from": {
+          "boxId": "U3",
+          "pinNumber": 8,
+        },
+        "points": [
+          {
+            "x": 2,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": 3,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": 3,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": 5,
+            "y": 1.2000000000000002,
+          },
+        ],
+        "to": {
+          "netId": "D",
+          "netLabelId": "NL7",
+        },
+      },
+      {
+        "from": {
+          "junctionId": "XX4",
+        },
+        "points": [
+          {
+            "x": 3,
+            "y": 1.2000000000000002,
+          },
+          {
+            "x": 3,
+            "y": 1.4000000000000001,
+          },
+        ],
+        "to": {
+          "boxId": "R11",
+          "pinNumber": 1,
+        },
+      },
+      {
+        "from": {
+          "boxId": "R11",
+          "pinNumber": 2,
+        },
+        "points": [
+          {
+            "x": 3,
+            "y": 2.4000000000000004,
+          },
+          {
+            "x": 3,
+            "y": 2.6000000000000005,
+          },
+        ],
+        "to": {
+          "netId": "V3_3",
+          "netLabelId": "NL8",
+        },
+      },
+    ]
+  `)
 })

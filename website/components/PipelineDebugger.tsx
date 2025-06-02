@@ -33,6 +33,7 @@ export const PipelineDebugger = (props: {
   const [laidOutSvgString, setLaidOutSvgString] = useState<string | null>(null)
   const [inputNetlist, setInputNetlist] = useState<any>(null)
   const [matchedTemplate, setMatchedTemplate] = useState<any>(null)
+  const [adaptedTemplate, setAdaptedTemplate] = useState<any>(null)
   const [originalCircuitJson, setOriginalCircuitJson] = useState<any>(null)
 
   useEffect(() => {
@@ -86,10 +87,14 @@ export const PipelineDebugger = (props: {
 
         // Generate the laid out SVG if we have an adapted template
         if (solver.adaptPhaseSolver?.outputAdaptedTemplates[0]?.template) {
+          const adaptedTemplate =
+            solver.adaptPhaseSolver.outputAdaptedTemplates[0].template
+          setAdaptedTemplate(adaptedTemplate)
+
           const laidOutCircuitJson = applyCircuitLayoutToCircuitJson(
             ccwOrderedCircuitJson,
             inputNetlist,
-            solver.adaptPhaseSolver.outputAdaptedTemplates[0].template,
+            adaptedTemplate,
           )
 
           setLaidOutSvgString(
@@ -236,10 +241,10 @@ export const PipelineDebugger = (props: {
               )}
             {selectedSolver.constructor.name ===
               "SchematicLayoutPipelineSolver" &&
-              (inputNetlist || originalCircuitJson) && (
+              (inputNetlist || originalCircuitJson || adaptedTemplate) && (
                 <div className="bg-gray-50 p-4 rounded mb-5">
                   <h3 className="text-lg font-semibold mb-3">Downloads</h3>
-                  <div className="space-x-2">
+                  <div className="space-x-2 space-y-2">
                     {inputNetlist && (
                       <button
                         type="button"
@@ -263,6 +268,20 @@ export const PipelineDebugger = (props: {
                         className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
                       >
                         Download Original Circuit JSON
+                      </button>
+                    )}
+                    {adaptedTemplate && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          downloadJson(
+                            adaptedTemplate.getLayoutJson(),
+                            "circuit-layout.json",
+                          )
+                        }
+                        className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                      >
+                        Download Circuit Layout JSON
                       </button>
                     )}
                   </div>

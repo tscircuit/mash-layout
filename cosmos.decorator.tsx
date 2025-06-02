@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 
-const TailwindDecorator = ({ children }) => {
+const TailwindDecorator = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Check if Tailwind CDN is already loaded
     const existingLink = document.querySelector('link[href*="tailwindcss"]')

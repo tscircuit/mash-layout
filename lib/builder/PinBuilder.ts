@@ -1,5 +1,5 @@
 import type { PortReference, Side } from "../input-types"
-import type { Line } from "./circuit-types"
+import type { Line, Path } from "./circuit-types"
 import type { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
 import { SimplePathfinder, type Obstacle } from "../utils/SimplePathfinder"
@@ -17,11 +17,14 @@ export class PinBuilder {
   /* location (absolute coords inside circuit grid) */
   x = 0
   y = 0
+  pathId: string | null = null
 
   lastConnected: PortReference | null = null
   lastCreatedLine: Line | null = null
   lastDx = 0
   lastDy = 0
+
+  fromJunctionId: string | null = null
 
   constructor(
     private readonly chip: any, // TODO: Replace with proper ChipBuilder type
@@ -33,11 +36,18 @@ export class PinBuilder {
   }
 
   line(dx: number, dy: number): this {
-    const start = { x: this.x, y: this.y, ref: this.ref }
+    if (!this.pathId) {
+      this.pathId = this.circuit.addPath().pathId
+    }
+    const start: Line["start"] = { x: this.x, y: this.y, ref: this.ref }
     this.x += dx
     this.y += dy
-    const end = { x: this.x, y: this.y, ref: this.ref }
-    const line = { start, end }
+    const end: Line["end"] = { x: this.x, y: this.y, ref: this.ref }
+    if (this.fromJunctionId) {
+      start.fromJunctionId = this.fromJunctionId
+      end.fromJunctionId = this.fromJunctionId
+    }
+    const line = { start, end, pathId: this.pathId }
     this.circuit.lines.push(line)
     this.lastDx = dx
     this.lastDy = dy
@@ -212,14 +222,15 @@ export class PinBuilder {
         : [passive.pin(2), passive.pin(1)]
 
     this.lastCreatedLine!.end.ref = entryPin.ref
+    this.lastCreatedLine!.end.fromJunctionId = undefined
 
     return exitPin
   }
 
   label(text?: string): void {
-    const id = text ?? this.circuit.generateAutoLabel()
-    this.circuit.netLabels.push({
-      labelId: id,
+    const netId = text ?? this.circuit.generateAutoLabel()
+    const netLabel = this.circuit.addNetLabel({
+      netId: netId,
       x: this.x,
       y: this.y,
       anchorSide:
@@ -232,13 +243,20 @@ export class PinBuilder {
               : "top",
       fromRef: this.ref,
     })
-    // Optionally, overlay label on grid if available
-    // this.circuit.getGrid().putOverlay(this.x, this.y, id)
+
+    if (!this.lastCreatedLine) {
+      this.line(0, 0)
+    }
+    this.lastCreatedLine!.end.ref = {
+      netId: netId,
+      netLabelId: netLabel.netLabelId,
+    }
+    this.lastCreatedLine!.end.fromJunctionId = undefined
   }
 
   connect(): this {
-    this.circuit.connectionPoints.push({
-      ref: this.ref,
+    this.circuit.addJunction({
+      pinRef: this.ref,
       x: this.x,
       y: this.y,
     })
@@ -246,12 +264,13 @@ export class PinBuilder {
   }
 
   intersect(): this {
-    this.circuit.connectionPoints.push({
-      ref: this.ref,
+    const junction = this.circuit.addJunction({
+      pinRef: this.ref,
       x: this.x,
       y: this.y,
       showAsIntersection: true,
     })
+    this.lastCreatedLine!.end.fromJunctionId = junction.junctionId
     return this
   }
 
@@ -298,5 +317,6 @@ export class PinBuilder {
     this.lastConnected = state.lastConnected
     this.lastDx = state.lastDx
     this.lastDy = state.lastDy
+    this.pathId = this.circuit.addPath().pathId
   }
 }

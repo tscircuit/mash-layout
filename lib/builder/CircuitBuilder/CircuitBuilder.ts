@@ -7,6 +7,7 @@ import type {
   NetLabel,
   ConnectionPoint,
   PortReference,
+  Path,
 } from "../circuit-types"
 import { flipXCircuit } from "../flipCircuit"
 import { getGridFromCircuit } from "../getGridFromCircuit"
@@ -21,6 +22,7 @@ export class CircuitBuilder {
   chips: ChipBuilder[] = []
   netLabels: NetLabel[] = []
   lines: Line[] = []
+  paths: Path[] = []
   connectionPoints: ConnectionPoint[] = []
 
   public defaultChipWidth = 2
@@ -108,6 +110,7 @@ export class CircuitBuilder {
 
     /* 3.  simple collections (no cycles inside) ---------------------- */
     clone.lines = structuredClone(this.lines)
+    clone.paths = structuredClone(this.paths)
     clone.netLabels = structuredClone(this.netLabels)
     clone.connectionPoints = structuredClone(this.connectionPoints)
 
@@ -128,6 +131,53 @@ export class CircuitBuilder {
     return c
   }
 
+  _pathCounter = 1
+  addPath(): Path {
+    const path = {
+      pathId: `PATH${this._pathCounter++}`,
+    }
+    this.paths.push(path)
+    return path
+  }
+
+  _netLabelCounter = 1
+  addNetLabel(params: Omit<NetLabel, "netLabelId">): NetLabel {
+    const netLabel = {
+      netLabelId: `NL${this._netLabelCounter++}`,
+      ...params,
+    }
+    this.netLabels.push(netLabel)
+    return netLabel
+  }
+
+  _junctionCounter = 1
+  addJunction({
+    x,
+    y,
+    pinRef,
+    showAsIntersection = false,
+  }: {
+    x: number
+    y: number
+    showAsIntersection?: boolean
+    pinRef: PortReference
+  }): ConnectionPoint {
+    // If there's already a connectionPoint here, return it
+    for (const cp of this.connectionPoints) {
+      if (cp.x === x && cp.y === y) {
+        return cp
+      }
+    }
+    const junction = {
+      junctionId: `XX${this._junctionCounter++}`,
+      x,
+      y,
+      pinRef,
+      showAsIntersection,
+    }
+    this.connectionPoints.push(junction)
+    return junction
+  }
   toString(): string {
     return getGridFromCircuit(this, {
       chipLabels: true,
@@ -152,8 +202,11 @@ export class CircuitBuilder {
     }
     // c. For every netLabel
     for (const label of this.netLabels) {
-      nb.addNet({ netId: label.labelId })
-      nb.connect(label.fromRef, { netId: label.labelId })
+      nb.addNet({ netId: label.netId })
+      nb.connect(label.fromRef, {
+        netId: label.netId,
+        netLabelId: label.netLabelId,
+      })
     }
     for (const line of this.lines) {
       if (!isSamePortRef(line.start.ref, line.end.ref)) {
@@ -181,7 +234,7 @@ export class CircuitBuilder {
 
     // 1. connectionPoints (added by .connect() / .intersect())
     for (const cp of this.connectionPoints) {
-      addToCoordMap(portsByCoord, `${cp.x},${cp.y}`, cp.ref)
+      addToCoordMap(portsByCoord, `${cp.x},${cp.y}`, cp.pinRef)
     }
 
     // We only want to auto-join things at coordinates that contain at least
@@ -232,7 +285,7 @@ export class CircuitBuilder {
     for (const cp of this.connectionPoints) {
       for (const line of this.lines) {
         if (isCoordOnSegment(cp.x, cp.y, line)) {
-          nb.connect(cp.ref, line.start.ref) // line.start.ref === line.end.ref
+          nb.connect(cp.pinRef, line.start.ref) // line.start.ref === line.end.ref
         }
       }
     }

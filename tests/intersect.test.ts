@@ -41,6 +41,7 @@ test(".intersect", () => {
             },
             {
               "netId": "A",
+              "netLabelId": "NL1",
             },
           ],
         },

@@ -85,7 +85,6 @@ export default function EvalPage() {
       // Add schematic_net_label_id hack (from test file)
       let schLabelIdCounter = 0
       for (const schLabel of cju(circuitJson).schematic_net_label.list()) {
-        // @ts-expect-error until circuit-json adds schematic_net_label_id
         schLabel.schematic_net_label_id ??= `schematic_net_label_${schLabelIdCounter++}`
       }
 

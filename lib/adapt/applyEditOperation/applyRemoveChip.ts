@@ -59,7 +59,7 @@ export function applyRemoveChip(C: CircuitBuilder, op: RemoveChipOp) {
     }
   }
 
-  C.connectionPoints = C.connectionPoints.filter((cp) => !refBelongs(cp.ref))
+  C.connectionPoints = C.connectionPoints.filter((cp) => !refBelongs(cp.pinRef))
   C.netLabels = C.netLabels.filter((nl) => !refBelongs(nl.fromRef))
 }
 

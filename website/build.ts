@@ -27,7 +27,7 @@ if (!result.success) {
 }
 
 const [output] = result.outputs
-const bundleName = output.path.split("/").pop()
+const bundleName = output?.path.split("/").pop()
 
 // Generate static HTML
 const html = `<!DOCTYPE html>

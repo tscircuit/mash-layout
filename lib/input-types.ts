@@ -8,10 +8,12 @@ export interface Box {
 
 export type Side = "left" | "right" | "top" | "bottom"
 
+export type NetReference =
+  | { boxId: string; pinNumber: number }
+  | { netId: string }
+
 export interface Connection {
-  connectedPorts: Array<
-    { boxId: string; pinNumber: number } | { netId: string }
-  >
+  connectedPorts: Array<NetReference>
 }
 
 export interface Net {
@@ -27,4 +29,5 @@ export interface InputNetlist {
 /** Represents a reference to a connectable point (a pin on a box or a named net). */
 export type PortReference =
   | { boxId: string; pinNumber: number }
-  | { netId: string }
+  | { netId: string; netLabelId: string }
+  | { junctionId: string }

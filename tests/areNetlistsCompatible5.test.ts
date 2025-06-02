@@ -46,12 +46,15 @@ test("areNetlistsCompatible2: input connection not satisfiable by template's con
 
 
                           ┌────────────────┐
-                          │       U1       │2  ── A             
-                          │                │1                   
+                          │       U1       │2  ── A,U1.1        
+                          │                │1  ── U1.2,A        
                           └────────────────┘
 
     Complex Connections (more than 2 points):
-      (none)"
+      - complex connection[0]:
+        - U1.2
+        - A
+        - U1.1"
   `)
   expect(templateCircuit.getReadableNetlist()).toMatchInlineSnapshot(`
     "Boxes:

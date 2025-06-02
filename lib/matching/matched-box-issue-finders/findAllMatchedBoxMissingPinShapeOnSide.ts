@@ -111,6 +111,7 @@ export function findAllMatchedBoxMissingPinShapeOnSide(params: {
       targetBoxIndex: params.targetBoxIndex,
       targetPinNumber,
       targetPinShapeSignature: targetPin.signature,
+      // @ts-ignore
       candidateShapeSignatures: unusedCandidatePinShapes.map(
         (candidatePin) => candidatePin.signature,
       ),

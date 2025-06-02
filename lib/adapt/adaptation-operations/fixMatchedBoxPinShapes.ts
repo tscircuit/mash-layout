@@ -1,6 +1,6 @@
-import type { InputNetlist } from "lib/input-types"
+import type { InputNetlist, Side } from "lib/input-types"
 import type { MatchedBoxWithChipIds } from "./removeUnmatchedChips"
-import type { CircuitBuilder, SIDE } from "lib/builder"
+import type { CircuitBuilder } from "lib/builder"
 import type { EditOperation } from "../EditOperation"
 import { applyEditOperation } from "../applyEditOperation"
 import type { PinBuilder } from "lib/builder"
@@ -22,7 +22,7 @@ export function fixMatchedBoxPinShapes(params: {
     if (!targetBox || !chip) continue
 
     // Check each side for pin count mismatches
-    const sides: SIDE[] = ["left", "right", "top", "bottom"]
+    const sides: Side[] = ["left", "right", "top", "bottom"]
     for (const side of sides) {
       const templatePinCount = chip[`${side}PinCount`] as number
       const targetPinCount = (targetBox as any)[`${side}PinCount`] || 0
@@ -34,7 +34,7 @@ export function fixMatchedBoxPinShapes(params: {
         // Try removing different combinations of pins and pick the best option
         const bestRemovalOps = findBestPinRemovalStrategy({
           template,
-          chipId: candidateChipId,
+          chipId: candidateChipId!,
           side,
           pinsToRemove: excessPins,
         })
@@ -56,7 +56,7 @@ export function fixMatchedBoxPinShapes(params: {
 function findBestPinRemovalStrategy(params: {
   template: CircuitBuilder
   chipId: string
-  side: SIDE
+  side: Side
   pinsToRemove: number
 }): EditOperation[] {
   const { template, chipId, side, pinsToRemove } = params
@@ -64,7 +64,7 @@ function findBestPinRemovalStrategy(params: {
   const chip = template.chips.find((c) => c.chipId === chipId)
   if (!chip) return []
 
-  const sidePinsMap: Record<SIDE, PinBuilder[]> = {
+  const sidePinsMap: Record<Side, PinBuilder[]> = {
     left: chip.leftPins,
     right: chip.rightPins,
     top: chip.topPins,
@@ -91,7 +91,7 @@ function findBestPinRemovalStrategy(params: {
       type: "remove_pin_from_side" as const,
       chipId,
       side,
-      pinNumber: highestPin.pinNumber,
+      pinNumber: highestPin!.pinNumber,
     },
   ]
 }
