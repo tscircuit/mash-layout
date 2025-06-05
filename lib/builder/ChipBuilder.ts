@@ -150,6 +150,15 @@ export class ChipBuilder {
       return this.circuit.defaultSingleSidedChipWidth
     }
 
+    const hasLeftRightPins = this.leftPinCount > 0 && this.rightPinCount > 0
+    if (
+      hasLeftRightPins &&
+      this.topPinCount === 0 &&
+      this.bottomPinCount === 0
+    ) {
+      return this.circuit.defaultLeftRightChipWidth
+    }
+
     return this.circuit.defaultChipWidth
   }
 
