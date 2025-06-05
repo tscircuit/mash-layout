@@ -128,9 +128,13 @@ test("normalizeNetlist should correctly normalize a simple netlist", () => {
       ],
       "nets": [
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 0,
         },
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 1,
         },
       ],
@@ -250,6 +254,8 @@ test("normalizeNetlist with different ID order but same structure", () => {
       ],
       "nets": [
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 0,
         },
       ],

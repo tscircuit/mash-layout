@@ -410,6 +410,8 @@ export default () => (
         ],
         "nets": [
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 0,
           },
         ],
@@ -490,9 +492,13 @@ export default () => (
         ],
         "nets": [
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 0,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 1,
           },
         ],

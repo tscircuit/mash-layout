@@ -66,9 +66,14 @@ export const normalizeNetlist = (
   })
 
   const normalizedNets: NormalizedNetlist["nets"] = finalSortedNetIds.map(
-    (nid) => ({
-      netIndex: transform.netIdToNetIndex[nid]!,
-    }),
+    (nid) => {
+      const original = netlist.nets.find((n) => n.netId === nid)!
+      return {
+        netIndex: transform.netIdToNetIndex[nid]!,
+        isGround: original.isGround,
+        isPositivePower: original.isPositivePower,
+      }
+    },
   )
 
   /* ---------- connections (unchanged) ---------- */

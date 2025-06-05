@@ -77,9 +77,11 @@ test("repro2-netlist-shared-gnd", () => {
       ],
       "nets": [
         {
+          "isPositivePower": true,
           "netId": "VCC",
         },
         {
+          "isGround": true,
           "netId": "GND",
         },
       ],
