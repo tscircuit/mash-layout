@@ -11,13 +11,13 @@ test("remove pin from side", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0     
+             0.0      
      1.0     U1
-     0.8     ┌────┐
-     0.6   A─┤1  4├
-     0.4 B───┤2   │
-     0.2 ┌───┤3   │
-     0.0 │   └────┘
+     0.8     ┌─────┐
+     0.6   A─┤1   4├
+     0.4 B───┤2    │
+     0.2 ┌───┤3    │
+     0.0 │   └─────┘
     -0.2 │
     -0.4 │
     -0.6 │
@@ -38,12 +38,12 @@ test("remove pin from side", () => {
   // Expect pin 1, then new pin, then pin 2 (now pin 3)
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0     
+             0.0      
      0.8     U1
-     0.6     ┌────┐
-     0.4   A ┤1  3├
-     0.2     │    │
-     0.0 ┌───└────┘
+     0.6     ┌─────┐
+     0.4   A ┤1   3├
+     0.2     │     │
+     0.0 ┌───└─────┘
     -0.2 │
     -0.4 │
     -0.6 │

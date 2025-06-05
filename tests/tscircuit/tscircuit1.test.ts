@@ -326,12 +326,12 @@ export default () => (
 
   expect(`\n${C("ascii").toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0      
+             0.0        
      0.8     U1
-     0.6     ┌────┐
-     0.4 R2──┤1  4├
-     0.2 │   ┤2  3├B
-     0.0 │   └────┘
+     0.6     ┌─────┐
+     0.4 R2──┤1   4├
+     0.2 │   ┤2   3├─B
+     0.0 │   └─────┘
     -0.2 │
     -0.4 │
     -0.6 A
@@ -534,7 +534,7 @@ export default () => (
     [
       {
         "center": {
-          "x": 1,
+          "x": 1.4,
           "y": 0.4,
         },
         "pin_spacing": 0.2,
@@ -545,7 +545,7 @@ export default () => (
         "schematic_component_id": "schematic_component_0",
         "size": {
           "height": 0.8,
-          "width": 1.2,
+          "width": 1.9999999999999998,
         },
         "source_component_id": "source_component_0",
         "type": "schematic_component",

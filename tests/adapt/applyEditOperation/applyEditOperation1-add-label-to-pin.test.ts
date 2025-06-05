@@ -9,11 +9,11 @@ test("applyEditOperation1", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0     
+         0.0      
      0.6 U1
-     0.4 ┌────┐
-     0.2 ┤1  2├
-     0.0 └────┘
+     0.4 ┌─────┐
+     0.2 ┤1   2├
+     0.0 └─────┘
     "
   `)
 
@@ -25,11 +25,11 @@ test("applyEditOperation1", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0     
+             0.0      
      0.6     U1
-     0.4     ┌────┐
-     0.2 A───┤1  2├
-     0.0     └────┘
+     0.4     ┌─────┐
+     0.2 A───┤1   2├
+     0.0     └─────┘
     "
   `)
 
@@ -41,11 +41,11 @@ test("applyEditOperation1", () => {
 
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-             0.0        
+             0.0         5.0
      0.6     U1
-     0.4     ┌────┐
-     0.2 A───┤1  2├──B
-     0.0     └────┘
+     0.4     ┌─────┐
+     0.2 A───┤1   2├───B
+     0.0     └─────┘
     "
   `)
 })

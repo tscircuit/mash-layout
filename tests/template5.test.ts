@@ -5,12 +5,12 @@ test("template5", () => {
   const C = template5()
   expect(`\n${C.toString()}\n`).toMatchInlineSnapshot(`
     "
-         0.0         5.0         10.0     
+         0.0         5.0         10.0      
      0.8 U1                  U2
-     0.6 ┌────┐              ┌────┐
-     0.4 ┤1  4├──────────────┤1  2├
-     0.2 ┤2  3├              └────┘
-     0.0 └────┘
+     0.6 ┌─────┐             ┌─────┐
+     0.4 ┤1   4├─────────────┤1   2├
+     0.2 ┤2   3├             └─────┘
+     0.0 └─────┘
     "
   `)
   expect(C.getNetlist()).toMatchInlineSnapshot(`

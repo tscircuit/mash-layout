@@ -25,11 +25,13 @@ test("applyEditOperation16 falls back to heuristic routing for long distances", 
   // Should fall back to heuristic routing since distance > 10
   expect(`\n${circuit.toString()}\n`).toMatchInlineSnapshot(`
     "
-               -5.0         0.0         5.0         10.0 
-     0.6 U1                              U2
-     0.4 ┌────┐                          ┌────┐
-     0.2 ┤1  2├──────────────────────────┤1  2├
-     0.0 └────┘                          └────┘
+               -5.0         0.0         5.0         10.0  
+     1.0       ┌─────────────────────────┐
+     0.8       │                         │
+     0.6 U1    │                         U2
+     0.4 ┌─────┐                         ┌─────┐
+     0.2 ┤1   2├                         ┤1   2├
+     0.0 └─────┘                         └─────┘
     "
   `)
 })

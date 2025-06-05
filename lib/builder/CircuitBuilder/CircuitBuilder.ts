@@ -27,6 +27,8 @@ export class CircuitBuilder {
 
   public defaultChipWidth = 2
   public defaultSingleSidedChipWidth = 2
+  /** Width for chips with pins on both left and right sides */
+  public defaultLeftRightChipWidth = 2.8
   public defaultPinSpacing = 0.2
   public defaultPassiveWidth = 1
   public defaultPassiveHeight = 0.2
@@ -55,6 +57,7 @@ export class CircuitBuilder {
     clone.autoLabelCounter = this.autoLabelCounter
     clone.defaultChipWidth = this.defaultChipWidth
     clone.defaultSingleSidedChipWidth = this.defaultSingleSidedChipWidth
+    clone.defaultLeftRightChipWidth = this.defaultLeftRightChipWidth
     clone.defaultPinSpacing = this.defaultPinSpacing
     clone.defaultPassiveWidth = this.defaultPassiveWidth
     clone.defaultPassiveHeight = this.defaultPassiveHeight
