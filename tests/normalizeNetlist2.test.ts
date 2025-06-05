@@ -221,6 +221,8 @@ test("normalizeNetlist should be invariant to box and connection order", () => {
       ],
       "nets": [
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 0,
         },
       ],

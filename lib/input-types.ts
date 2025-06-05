@@ -18,6 +18,10 @@ export interface Connection {
 
 export interface Net {
   netId: string
+  /** True if this net is a ground connection (e.g. GND, AGND) */
+  isGround?: boolean
+  /** True if this net is a positive power rail (e.g. VCC, VDD, V5) */
+  isPositivePower?: boolean
 }
 
 export interface InputNetlist {

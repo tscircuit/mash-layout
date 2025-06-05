@@ -14,6 +14,8 @@ export const convertNormalizedNetlistToInputNetlist = (
 
   const nets: InputNetlist["nets"] = normalizedNetlist.nets.map((n) => ({
     netId: `net${n.netIndex}`,
+    isGround: n.isGround,
+    isPositivePower: n.isPositivePower,
   }))
 
   const connections: InputNetlist["connections"] =

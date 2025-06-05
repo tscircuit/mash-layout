@@ -202,7 +202,13 @@ export class CircuitBuilder {
     }
     // c. For every netLabel
     for (const label of this.netLabels) {
-      nb.addNet({ netId: label.netId })
+      const upper = label.netId.toUpperCase()
+      const isGround = upper === "GND" || upper === "AGND"
+      const isPositivePower = /^V/i.test(label.netId)
+      const net: Net = { netId: label.netId }
+      if (isGround) net.isGround = true
+      if (isPositivePower) net.isPositivePower = true
+      nb.addNet(net)
       nb.connect(label.fromRef, {
         netId: label.netId,
         netLabelId: label.netLabelId,

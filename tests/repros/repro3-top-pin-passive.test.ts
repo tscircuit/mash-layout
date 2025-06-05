@@ -102,9 +102,11 @@ test("repro3-top-pin-passive", () => {
       ],
       "nets": [
         {
+          "isPositivePower": true,
           "netId": "VCC",
         },
         {
+          "isGround": true,
           "netId": "GND",
         },
       ],

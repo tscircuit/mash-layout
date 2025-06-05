@@ -162,12 +162,18 @@ test("areNetlistsCompatible with template4", () => {
       ],
       "nets": [
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 0,
         },
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 1,
         },
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 2,
         },
       ],
@@ -244,15 +250,23 @@ test("areNetlistsCompatible with template4", () => {
       ],
       "nets": [
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 0,
         },
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 1,
         },
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 2,
         },
         {
+          "isGround": undefined,
+          "isPositivePower": undefined,
           "netIndex": 3,
         },
       ],

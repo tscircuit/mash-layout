@@ -328,21 +328,33 @@ export default () => (
         ],
         "nets": [
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 0,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 1,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 2,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 3,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 4,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 5,
           },
         ],
@@ -522,18 +534,28 @@ export default () => (
         ],
         "nets": [
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 0,
           },
           {
+            "isGround": true,
+            "isPositivePower": undefined,
             "netIndex": 1,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 2,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": true,
             "netIndex": 3,
           },
           {
+            "isGround": undefined,
+            "isPositivePower": undefined,
             "netIndex": 4,
           },
         ],

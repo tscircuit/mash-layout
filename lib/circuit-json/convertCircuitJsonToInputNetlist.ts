@@ -136,12 +136,17 @@ export const convertCircuitJsonToInputNetlist = (
       }
     }
 
+    const upper = netId.toUpperCase()
+    const isGround = upper === "GND" || upper === "AGND"
+    const isPositivePower = /^V/i.test(netId)
+
     connection.connectedPorts.push({
       netId,
     })
-    nets.push({
-      netId,
-    })
+    const net: Net = { netId }
+    if (isGround) net.isGround = true
+    if (isPositivePower) net.isPositivePower = true
+    nets.push(net)
   }
 
   return {

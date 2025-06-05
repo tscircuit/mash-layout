@@ -12,6 +12,10 @@ export interface NormalizedNetlistConnection {
 }
 export interface NormalizedNetlistNet {
   netIndex: number
+  /** Whether the original net was a ground connection */
+  isGround?: boolean
+  /** Whether the original net was a positive power rail */
+  isPositivePower?: boolean
 }
 export interface NormalizedNetlist {
   boxes: Array<NormalizedNetlistBox>

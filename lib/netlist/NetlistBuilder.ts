@@ -25,7 +25,11 @@ export class NetlistBuilder {
   }
 
   addNet(net: Net): void {
-    if (!this.netlist.nets.find((n) => n.netId === net.netId)) {
+    const existing = this.netlist.nets.find((n) => n.netId === net.netId)
+    if (existing) {
+      if (net.isGround) existing.isGround = true
+      if (net.isPositivePower) existing.isPositivePower = true
+    } else {
       this.netlist.nets.push(net)
     }
   }
