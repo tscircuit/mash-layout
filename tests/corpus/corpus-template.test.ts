@@ -1,6 +1,7 @@
 import { test, expect } from "bun:test"
 import corpus from "lib/corpus-vfs"
-import { circuitBuilderFromLayoutJson, CORPUS_TEMPLATE_FNS } from "lib/corpus"
+import { CORPUS_TEMPLATE_FNS } from "lib/corpus"
+import { circuitBuilderFromLayoutJson } from "lib/utils/circuitBuilderFromLayoutJson"
 import { SchematicLayoutPipelineSolver } from "lib/solvers/SchematicLayoutPipelineSolver"
 
 const layout = corpus["corpus2025-05-03-abcd1234.json"] as any
