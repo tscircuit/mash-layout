@@ -1,7 +1,7 @@
 import corpus from "./corpus-vfs"
 import type { CircuitLayoutJson } from "./output-types"
 import { circuit, CircuitBuilder } from "./builder"
-import type { CircuitTemplateFn } from "templates"
+import type { CircuitTemplateFn } from "templates/index"
 import type { Side, PortReference } from "./input-types"
 
 const layouts: Record<string, CircuitLayoutJson> = corpus as any
@@ -50,11 +50,10 @@ export function circuitBuilderFromLayoutJson(
   for (const nl of layout.netLabels) {
     C.addNetLabel({
       netId: nl.netId,
-      netLabelId: nl.netLabelId,
       x: nl.x,
       y: nl.y,
       anchorSide: nl.anchorPosition as Side,
-      fromRef: labelRefMap[nl.netLabelId] ?? { netId: nl.netId },
+      fromRef: labelRefMap[nl.netLabelId]!,
     })
   }
 
