@@ -15,7 +15,8 @@
     "vercel-build": "bun run website:build",
     "website:build": "cosmos-export",
     "website:serve": "cosmos",
-    "start": "bun run website:serve"
+    "start": "bun run website:serve",
+    "generate-corpus": "bun x make-vfs --dir ./corpus --outfile lib/corpus-vfs.ts --content-format import-star --import-ext"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
@@ -38,7 +39,8 @@
     "schematic-symbols": "^0.0.139",
     "tscircuit": "^0.0.483",
     "tsup": "^8.5.0",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "make-vfs": "^1.0.16"
   },
   "peerDependencies": {
     "typescript": "^5"
