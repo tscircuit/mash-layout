@@ -90,7 +90,9 @@ export const convertCircuitJsonToInputNetlist = (
 
       const connectivityNetId = connMap.getNetConnectedToId(
         source_port.source_port_id,
-      )!
+      )
+
+      if (!connectivityNetId) continue
       let connection = connections.find(
         (c) => c._connectivityNetId === connectivityNetId,
       )
