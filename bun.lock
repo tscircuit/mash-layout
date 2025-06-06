@@ -3,9 +3,6 @@
   "workspaces": {
     "": {
       "name": "trait-layout",
-      "dependencies": {
-        "circuit-json": "^0.0.192",
-      },
       "devDependencies": {
         "@biomejs/biome": "^1.9.4",
         "@tscircuit/circuit-json-util": "^0.0.48",
@@ -15,11 +12,13 @@
         "@types/glob": "^8.1.0",
         "@vitejs/plugin-react": "^4.5.0",
         "bun-match-svg": "^0.0.11",
+        "circuit-json": "^0.0.192",
         "circuit-json-to-connectivity-map": "^0.0.22",
         "circuit-to-svg": "^0.0.132",
         "debug": "^4.4.1",
         "glob": "^11.0.2",
         "graphics-debug": "^0.0.46",
+        "make-vfs": "^1.0.16",
         "parse5": "^7.3.0",
         "react-cosmos": "7.0.0-beta.4",
         "react-cosmos-plugin-vite": "7.0.0-beta.0",
@@ -727,6 +726,8 @@
     "lucide-react": ["lucide-react@0.456.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc" } }, "sha512-DIIGJqTT5X05sbAsQ+OhA8OtJYyD4NsEMCA/HQW/Y6ToPQ7gwbtujIoeAaup4HpHzV35SQOarKAWH8LYglB6eA=="],
 
     "magic-string": ["magic-string@0.30.17", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0" } }, "sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA=="],
+
+    "make-vfs": ["make-vfs@1.0.16", "", { "bin": { "make-vfs": "dist/cli.js" } }, "sha512-l3R5jLG3N2aRZ50clM3rCCvBp09l+FKRHphWcMOUizlysttYPR7csjTRnPXt8D7aFz1LKMRTCdcMmvwz/GrEgw=="],
 
     "math-intrinsics": ["math-intrinsics@1.1.0", "", {}, "sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g=="],
 
