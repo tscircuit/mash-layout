@@ -95,11 +95,37 @@ export const applyCircuitLayoutToCircuitJson = (
       }
     }
 
-    // TODO Change schematic_component.symbol_name for passives to match the
-    // correct orientation. e.g. "boxresistor_down" -> "boxresistor_right"
-    // The direction "up", "down", "left", "right" can be determined by the
-    // relative position of pin1 and pin2, if pin1 is above pin2 the direction is
-    // "down", if pin1 is to the left of pin2 the direction is "right"
+    // Adjust symbol_name orientation based on the positions of the first two pins
+    if (
+      "symbol_name" in schematicComponent &&
+      schematicPorts.length >= 2 &&
+      schematicComponent.symbol_name
+    ) {
+      const port1 =
+        schematicPorts.find((p) => p.pin_number === 1 || p.true_ccw_index === 0) ||
+        schematicPorts[0]
+      const port2 =
+        schematicPorts.find((p) => p.pin_number === 2 || p.true_ccw_index === 1) ||
+        schematicPorts[1]
+
+      if (port1?.center && port2?.center) {
+        const dx = port2.center.x - port1.center.x
+        const dy = port2.center.y - port1.center.y
+        let orientation: "left" | "right" | "up" | "down"
+
+        if (Math.abs(dx) >= Math.abs(dy)) {
+          orientation = dx >= 0 ? "right" : "left"
+        } else {
+          orientation = dy >= 0 ? "up" : "down"
+        }
+
+        const base = schematicComponent.symbol_name.replace(
+          /_(left|right|up|down)$/,
+          "",
+        )
+        schematicComponent.symbol_name = `${base}_${orientation}`
+      }
+    }
   }
 
   // const netIndexToLayoutNetId = new Map<number, string>()
