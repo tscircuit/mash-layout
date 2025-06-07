@@ -1198,7 +1198,7 @@ export default () => (
           },
           "source_component_id": "source_component_1",
           "symbol_display_value": "22Ω",
-          "symbol_name": "boxresistor_right",
+          "symbol_name": "boxresistor_left",
           "type": "schematic_component",
         },
         {
@@ -1214,7 +1214,7 @@ export default () => (
           },
           "source_component_id": "source_component_2",
           "symbol_display_value": "22Ω",
-          "symbol_name": "boxresistor_right",
+          "symbol_name": "boxresistor_left",
           "type": "schematic_component",
         },
         {
@@ -1230,7 +1230,7 @@ export default () => (
           },
           "source_component_id": "source_component_3",
           "symbol_display_value": "5.1kΩ",
-          "symbol_name": "boxresistor_down",
+          "symbol_name": "boxresistor_up",
           "type": "schematic_component",
         },
         {
@@ -1246,7 +1246,7 @@ export default () => (
           },
           "source_component_id": "source_component_4",
           "symbol_display_value": "5.1kΩ",
-          "symbol_name": "boxresistor_down",
+          "symbol_name": "boxresistor_up",
           "type": "schematic_component",
         },
       ]
