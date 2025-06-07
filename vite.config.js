@@ -13,6 +13,7 @@ export default defineConfig({
       templates: resolve(import.meta.dirname, "templates"),
       tests: resolve(import.meta.dirname, "tests"),
       website: resolve(import.meta.dirname, "website"),
+      corpus: resolve(import.meta.dirname, "corpus"),
     },
   },
 })

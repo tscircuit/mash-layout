@@ -9,6 +9,9 @@ import { convertCircuitJsonToSchematicSvg } from "circuit-to-svg"
 import { convertCircuitJsonToInputNetlist } from "lib/circuit-json/convertCircuitJsonToInputNetlist"
 import { applyCircuitLayoutToCircuitJson } from "lib/circuit-json/applyCircuitLayoutToCircuitJson"
 import { reorderChipPinsToCcw } from "lib/circuit-json/reorderChipPinsToCcw"
+import { CircuitTemplateFn } from "templates/index"
+import { CircuitLayoutDebugger } from "./CircuitLayoutDebugger"
+import { CircuitLayoutJson } from "lib/output-types"
 /**
  * This component debugs the Schematic Layout Pipeline.
  *
@@ -18,6 +21,7 @@ import { reorderChipPinsToCcw } from "lib/circuit-json/reorderChipPinsToCcw"
  */
 export const PipelineDebugger = (props: {
   tscircuitCode: string
+  templateFns?: CircuitTemplateFn[]
 }) => {
   const [selectedSolver, setSelectedSolver] = useState<BaseSolver | null>(null)
   const [currentSolver, setCurrentSolver] =
@@ -35,6 +39,8 @@ export const PipelineDebugger = (props: {
   const [matchedTemplate, setMatchedTemplate] = useState<any>(null)
   const [adaptedTemplate, setAdaptedTemplate] = useState<any>(null)
   const [originalCircuitJson, setOriginalCircuitJson] = useState<any>(null)
+  const [laidOutCircuitLayout, setLaidOutCircuitLayout] =
+    useState<CircuitLayoutJson | null>(null)
 
   useEffect(() => {
     const executeTscircuitCode = async () => {
@@ -75,6 +81,7 @@ export const PipelineDebugger = (props: {
         setInputNetlist(inputNetlist)
         const solver = new SchematicLayoutPipelineSolver({
           inputNetlist: inputNetlist,
+          templateFns: props.templateFns,
         })
         solver.solve()
 
@@ -105,6 +112,8 @@ export const PipelineDebugger = (props: {
               },
             }),
           )
+
+          setLaidOutCircuitLayout(adaptedTemplate.getLayoutJson())
         }
 
         setCurrentSolver(solver)
@@ -355,6 +364,11 @@ export const PipelineDebugger = (props: {
                           />
                         </div>
                       </div>
+                    )}
+                    {laidOutCircuitLayout && (
+                      <CircuitLayoutDebugger
+                        circuitLayout={laidOutCircuitLayout}
+                      />
                     )}
                   </div>
                 </div>

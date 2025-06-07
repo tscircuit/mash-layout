@@ -89,7 +89,6 @@ export default () => (
     schLabel.schematic_net_label_id ??= `schematic_net_label_${schLabelIdCounter++}`
   }
 
-  console.log("Original circuit components:")
   expect([
     ...cju(circuitJson).schematic_component.list(),
     ...cju(circuitJson).schematic_port.list(),
@@ -131,6 +130,7 @@ export default () => (
         },
         "rotation": 0,
         "schematic_component_id": "schematic_component_0",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 1.6,
           "width": 1.5,
@@ -144,6 +144,7 @@ export default () => (
           "y": 1,
         },
         "schematic_component_id": "schematic_component_1",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 0.388910699999999,
           "width": 1.0583332999999997,
@@ -159,6 +160,7 @@ export default () => (
           "y": 0.2,
         },
         "schematic_component_id": "schematic_component_2",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 0.388910699999999,
           "width": 1.0583332999999997,
@@ -174,6 +176,7 @@ export default () => (
           "y": -2,
         },
         "schematic_component_id": "schematic_component_3",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 1.0583332999999997,
           "width": 0.3155856499999966,
@@ -189,6 +192,7 @@ export default () => (
           "y": -2,
         },
         "schematic_component_id": "schematic_component_4",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 1.0583332999999997,
           "width": 0.3155856499999966,
@@ -1173,6 +1177,7 @@ export default () => (
           },
           "rotation": 0,
           "schematic_component_id": "schematic_component_0",
+          "schematic_group_id": "schematic_group_0",
           "size": {
             "height": 1.8000000000000003,
             "width": 1.2,
@@ -1186,6 +1191,7 @@ export default () => (
             "y": 1.0000000000000004,
           },
           "schematic_component_id": "schematic_component_1",
+          "schematic_group_id": "schematic_group_0",
           "size": {
             "height": 1,
             "width": 1,
@@ -1201,6 +1207,7 @@ export default () => (
             "y": 1.6,
           },
           "schematic_component_id": "schematic_component_2",
+          "schematic_group_id": "schematic_group_0",
           "size": {
             "height": 1,
             "width": 1,
@@ -1216,6 +1223,7 @@ export default () => (
             "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_3",
+          "schematic_group_id": "schematic_group_0",
           "size": {
             "height": 1,
             "width": 1,
@@ -1231,6 +1239,7 @@ export default () => (
             "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_4",
+          "schematic_group_id": "schematic_group_0",
           "size": {
             "height": 1,
             "width": 1,

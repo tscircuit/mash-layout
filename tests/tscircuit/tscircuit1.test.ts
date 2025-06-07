@@ -57,6 +57,7 @@ export default () => (
         "port_labels": {},
         "rotation": 0,
         "schematic_component_id": "schematic_component_0",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 0.6000000000000001,
           "width": 0.4,
@@ -70,6 +71,7 @@ export default () => (
           "y": 0,
         },
         "schematic_component_id": "schematic_component_1",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 0.388910699999999,
           "width": 1.0583332999999997,
@@ -543,6 +545,7 @@ export default () => (
         "port_labels": {},
         "rotation": 0,
         "schematic_component_id": "schematic_component_0",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 0.8,
           "width": 1.9999999999999998,
@@ -556,6 +559,7 @@ export default () => (
           "y": 0.4,
         },
         "schematic_component_id": "schematic_component_1",
+        "schematic_group_id": "schematic_group_0",
         "size": {
           "height": 1,
           "width": 1,
