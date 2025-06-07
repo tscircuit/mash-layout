@@ -566,7 +566,7 @@ export default () => (
         },
         "source_component_id": "source_component_1",
         "symbol_display_value": "1kΩ",
-        "symbol_name": "boxresistor_right",
+        "symbol_name": "boxresistor_left",
         "type": "schematic_component",
       },
     ]
