@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "circuit-json": "^0.0.192",
+    "@react-hook/resize-observer": "^2.0.2",
     "@tscircuit/circuit-json-util": "^0.0.48",
     "@tscircuit/create-snippet-url": "^0.0.8",
     "@types/bun": "latest",
@@ -28,19 +28,20 @@
     "@types/glob": "^8.1.0",
     "@vitejs/plugin-react": "^4.5.0",
     "bun-match-svg": "^0.0.11",
+    "circuit-json": "^0.0.192",
     "circuit-json-to-connectivity-map": "^0.0.22",
     "circuit-to-svg": "^0.0.132",
     "debug": "^4.4.1",
     "glob": "^11.0.2",
     "graphics-debug": "^0.0.46",
+    "make-vfs": "^1.0.16",
     "parse5": "^7.3.0",
     "react-cosmos": "7.0.0-beta.4",
     "react-cosmos-plugin-vite": "7.0.0-beta.0",
     "schematic-symbols": "^0.0.139",
     "tscircuit": "^0.0.485",
     "tsup": "^8.5.0",
-    "vite": "^6.3.5",
-    "make-vfs": "^1.0.16"
+    "vite": "^6.3.5"
   },
   "peerDependencies": {
     "typescript": "^5"

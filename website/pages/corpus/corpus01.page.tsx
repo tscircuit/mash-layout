@@ -1,4 +1,6 @@
 import { PipelineDebugger } from "website/components/PipelineDebugger"
+import corpus1LayoutJson from "corpus/corpus2025-05-03-abcd1234.json"
+import { circuitBuilderFromLayoutJson } from "lib/index"
 
 export const corpus1Code = `
 export default () => (
@@ -23,4 +25,9 @@ export default () => (
 
 `
 
-export default () => <PipelineDebugger tscircuitCode={corpus1Code} />
+export default () => (
+  <PipelineDebugger
+    tscircuitCode={corpus1Code}
+    templateFns={[() => circuitBuilderFromLayoutJson(corpus1LayoutJson as any)]}
+  />
+)
