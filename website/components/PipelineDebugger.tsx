@@ -21,7 +21,7 @@ import { CircuitLayoutJson } from "lib/output-types"
  */
 export const PipelineDebugger = (props: {
   tscircuitCode: string
-  templateFns: CircuitTemplateFn[]
+  templateFns?: CircuitTemplateFn[]
 }) => {
   const [selectedSolver, setSelectedSolver] = useState<BaseSolver | null>(null)
   const [currentSolver, setCurrentSolver] =
