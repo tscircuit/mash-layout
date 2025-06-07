@@ -21,6 +21,11 @@ export function fixMatchedBoxPinShapes(params: {
     const targetBox = target.boxes.find((b) => b.boxId === targetChipId)
     if (!targetBox || !chip) continue
 
+    // Passive orientation mismatches are handled earlier when the target
+    // netlist is transformed for compatibility. Do not rotate the template
+    // passives here as it can override the desired orientation from the
+    // template layout.
+
     // Check each side for pin count mismatches
     const sides: Side[] = ["left", "right", "top", "bottom"]
     for (const side of sides) {
