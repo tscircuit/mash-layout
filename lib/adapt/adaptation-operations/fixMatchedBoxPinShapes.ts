@@ -4,6 +4,7 @@ import type { CircuitBuilder } from "lib/builder"
 import type { EditOperation } from "../EditOperation"
 import { applyEditOperation } from "../applyEditOperation"
 import type { PinBuilder } from "lib/builder"
+import { detectPassiveOrientation } from "../detectPassiveOrientation"
 
 export function fixMatchedBoxPinShapes(params: {
   template: CircuitBuilder
@@ -20,6 +21,27 @@ export function fixMatchedBoxPinShapes(params: {
     const chip = template.chips.find((c) => c.chipId === candidateChipId)
     const targetBox = target.boxes.find((b) => b.boxId === targetChipId)
     if (!targetBox || !chip) continue
+
+    // Special handling for passives: if orientation differs, rotate the passive
+    if (chip.isPassive) {
+      const templateOrientation = detectPassiveOrientation(chip)
+      const targetOrientation =
+        targetBox.leftPinCount > 0 || targetBox.rightPinCount > 0
+          ? "horizontal"
+          : "vertical"
+
+      if (templateOrientation !== targetOrientation) {
+        const op: EditOperation = {
+          type: "change_passive_orientation",
+          chipId: chip.chipId,
+          fromOrientation: templateOrientation,
+          toOrientation: targetOrientation,
+        }
+        applyEditOperation(template, op)
+        appliedOperations.push(op)
+        return { appliedOperations }
+      }
+    }
 
     // Check each side for pin count mismatches
     const sides: Side[] = ["left", "right", "top", "bottom"]
