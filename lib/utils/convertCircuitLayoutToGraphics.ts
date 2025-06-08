@@ -1,3 +1,4 @@
+import { GraphicsObject } from "graphics-debug"
 import { CircuitLayoutJson } from "lib/output-types"
 
 export const convertCircuitLayoutToGraphics = (
