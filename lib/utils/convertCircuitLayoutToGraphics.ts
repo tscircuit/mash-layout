@@ -15,18 +15,22 @@ export const convertCircuitLayoutToGraphics = (
   // Draw boxes as rectangles
   for (const box of circuitLayout.boxes) {
     // Detect if this is a passive component (total pins = 2)
-    const totalPins = box.leftPinCount + box.rightPinCount + box.topPinCount + box.bottomPinCount
+    const totalPins =
+      box.leftPinCount +
+      box.rightPinCount +
+      box.topPinCount +
+      box.bottomPinCount
     const isPassive = totalPins === 2
-    
+
     let width: number
     let height: number
-    
+
     if (isPassive) {
       // Use ChipBuilder's passive sizing logic
       const isHorizontal = box.leftPinCount > 0 || box.rightPinCount > 0
       const defaultPassiveWidth = 1
       const defaultPassiveHeight = 0.2
-      
+
       width = isHorizontal ? defaultPassiveWidth : defaultPassiveHeight
       height = isHorizontal ? defaultPassiveHeight : defaultPassiveWidth
     } else {
@@ -35,7 +39,7 @@ export const convertCircuitLayoutToGraphics = (
       const defaultSingleSidedChipWidth = 2
       const defaultLeftRightChipWidth = 2.8
       const defaultPinSpacing = 0.2
-      
+
       // Check if chip has pins on only one side
       const sideCount = [
         box.leftPinCount > 0 ? 1 : 0,
@@ -48,14 +52,20 @@ export const convertCircuitLayoutToGraphics = (
         width = defaultSingleSidedChipWidth
       } else {
         const hasLeftRightPins = box.leftPinCount > 0 && box.rightPinCount > 0
-        if (hasLeftRightPins && box.topPinCount === 0 && box.bottomPinCount === 0) {
+        if (
+          hasLeftRightPins &&
+          box.topPinCount === 0 &&
+          box.bottomPinCount === 0
+        ) {
           width = defaultLeftRightChipWidth
         } else {
           width = defaultChipWidth
         }
       }
-      
-      height = Math.max(box.leftPinCount, box.rightPinCount) * defaultPinSpacing + defaultPinSpacing * 2
+
+      height =
+        Math.max(box.leftPinCount, box.rightPinCount) * defaultPinSpacing +
+        defaultPinSpacing * 2
     }
 
     graphics.rects.push({
