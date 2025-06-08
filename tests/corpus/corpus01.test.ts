@@ -53,18 +53,18 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "bottomPinCount": 1,
           "boxId": "P1",
-          "centerX": -2.5000000000000004,
+          "centerX": -3.3000000000000003,
           "centerY": 1.2,
           "leftPinCount": 0,
           "pins": [
             {
               "pinNumber": 1,
-              "x": -2.5000000000000004,
+              "x": -3.3000000000000003,
               "y": 0.7,
             },
             {
               "pinNumber": 2,
-              "x": -2.5000000000000004,
+              "x": -3.3000000000000003,
               "y": 1.7,
             },
           ],
@@ -75,7 +75,7 @@ test("corpus01 - template matching and basic structure", async () => {
       "junctions": [
         {
           "junctionId": "XX1",
-          "x": -2.5,
+          "x": -3.5,
           "y": 0.5,
         },
       ],
@@ -84,14 +84,14 @@ test("corpus01 - template matching and basic structure", async () => {
           "anchorPosition": "left",
           "netId": "NET1",
           "netLabelId": "NL1",
-          "x": -2.4000000000000004,
-          "y": 0.6000000000000001,
+          "x": -3.2,
+          "y": 0.4,
         },
         {
           "anchorPosition": "left",
           "netId": "NET2",
           "netLabelId": "NL2",
-          "x": 1.2000000000000002,
+          "x": 1.8,
           "y": 2.6,
         },
       ],
@@ -103,48 +103,40 @@ test("corpus01 - template matching and basic structure", async () => {
           },
           "points": [
             {
-              "x": -2.4000000000000004,
+              "x": -3.2,
               "y": 2.2,
             },
             {
-              "x": -1.2000000000000002,
+              "x": -1.6,
               "y": 2.6,
             },
             {
-              "x": -1.2000000000000002,
+              "x": -1.6,
               "y": 2.6,
             },
             {
-              "x": -1,
+              "x": -1.5,
               "y": 2,
             },
             {
-              "x": -1,
+              "x": -1.5,
               "y": 2,
             },
             {
-              "x": -1,
+              "x": -1.5,
               "y": 1.5,
             },
             {
-              "x": -1,
+              "x": -1.5,
               "y": 1.5,
             },
             {
-              "x": -1,
+              "x": -1.5,
               "y": 1,
             },
             {
-              "x": -1,
+              "x": -1.5,
               "y": 1,
-            },
-            {
-              "x": -1,
-              "y": 0.5,
-            },
-            {
-              "x": -1,
-              "y": 0.5,
             },
             {
               "x": -1.5,
@@ -164,6 +156,22 @@ test("corpus01 - template matching and basic structure", async () => {
             },
             {
               "x": -2.5,
+              "y": 0.5,
+            },
+            {
+              "x": -2.5,
+              "y": 0.5,
+            },
+            {
+              "x": -3,
+              "y": 0.5,
+            },
+            {
+              "x": -3,
+              "y": 0.5,
+            },
+            {
+              "x": -3.5,
               "y": 0.5,
             },
           ],
@@ -179,33 +187,33 @@ test("corpus01 - template matching and basic structure", async () => {
           },
           "points": [
             {
-              "x": -2.4000000000000004,
+              "x": -3.2,
               "y": 1.2,
             },
             {
-              "x": -2.4000000000000004,
-              "y": 0.6000000000000001,
+              "x": -3.2,
+              "y": 0.4,
             },
             {
-              "x": -2.4000000000000004,
+              "x": -3.2,
               "y": 1.2,
             },
             {
-              "x": -2.4000000000000004,
+              "x": -3.2,
               "y": 0.5,
             },
             {
-              "x": -2.4000000000000004,
+              "x": -3.2,
               "y": 0.5,
             },
             {
-              "x": -2.5,
+              "x": -3.5,
               "y": 0.5,
             },
           ],
           "to": {
             "netId": "undefined",
-            "netLabelId": "loaded-nl-64033ad4-73e8-408b-9375-bd5e993f8bf4-0",
+            "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
           },
         },
       ],
