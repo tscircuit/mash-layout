@@ -14,15 +14,49 @@ export const convertCircuitLayoutToGraphics = (
 
   // Draw boxes as rectangles
   for (const box of circuitLayout.boxes) {
-    // Estimate box size based on pin counts
-    const width = Math.max(
-      2,
-      Math.max(box.leftPinCount, box.rightPinCount) * 0.5,
-    )
-    const height = Math.max(
-      1,
-      Math.max(box.topPinCount, box.bottomPinCount) * 0.5,
-    )
+    // Detect if this is a passive component (total pins = 2)
+    const totalPins = box.leftPinCount + box.rightPinCount + box.topPinCount + box.bottomPinCount
+    const isPassive = totalPins === 2
+    
+    let width: number
+    let height: number
+    
+    if (isPassive) {
+      // Use ChipBuilder's passive sizing logic
+      const isHorizontal = box.leftPinCount > 0 || box.rightPinCount > 0
+      const defaultPassiveWidth = 1
+      const defaultPassiveHeight = 0.2
+      
+      width = isHorizontal ? defaultPassiveWidth : defaultPassiveHeight
+      height = isHorizontal ? defaultPassiveHeight : defaultPassiveWidth
+    } else {
+      // Use ChipBuilder's non-passive sizing logic
+      const defaultChipWidth = 2
+      const defaultSingleSidedChipWidth = 2
+      const defaultLeftRightChipWidth = 2.8
+      const defaultPinSpacing = 0.2
+      
+      // Check if chip has pins on only one side
+      const sideCount = [
+        box.leftPinCount > 0 ? 1 : 0,
+        box.rightPinCount > 0 ? 1 : 0,
+        box.topPinCount > 0 ? 1 : 0,
+        box.bottomPinCount > 0 ? 1 : 0,
+      ].reduce((sum, count) => sum + count, 0)
+
+      if (sideCount === 1) {
+        width = defaultSingleSidedChipWidth
+      } else {
+        const hasLeftRightPins = box.leftPinCount > 0 && box.rightPinCount > 0
+        if (hasLeftRightPins && box.topPinCount === 0 && box.bottomPinCount === 0) {
+          width = defaultLeftRightChipWidth
+        } else {
+          width = defaultChipWidth
+        }
+      }
+      
+      height = Math.max(box.leftPinCount, box.rightPinCount) * defaultPinSpacing + defaultPinSpacing * 2
+    }
 
     graphics.rects.push({
       center: {

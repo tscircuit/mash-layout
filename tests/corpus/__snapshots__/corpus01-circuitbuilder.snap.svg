@@ -1,23 +1,23 @@
 <svg width="640" height="640" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg">
   <rect width="100%" height="100%" fill="white" />
   <g>
-    <circle data-type="point" data-label="NET1 (left)" data-x="-3.2" data-y="0.4" cx="140.98360655737713" cy="439.344262295082" r="3" fill="purple" /><text x="145.98360655737713" y="434.344262295082" font-family="sans-serif" font-size="12">NET1 (left)</text>
+    <circle data-type="point" data-label="NET1 (left)" data-x="-3.2" data-y="0.4" cx="50.98039215686276" cy="457.25490196078437" r="3" fill="purple" /><text x="55.98039215686276" y="452.25490196078437" font-family="sans-serif" font-size="12">NET1 (left)</text>
   </g>
   <g>
-    <circle data-type="point" data-label="NET2 (left)" data-x="1.8" data-y="2.6" cx="600" cy="237.3770491803279" r="3" fill="purple" /><text x="605" y="232.3770491803279" font-family="sans-serif" font-size="12">NET2 (left)</text>
+    <circle data-type="point" data-label="NET2 (left)" data-x="1.8" data-y="2.6" cx="600" cy="215.68627450980398" r="3" fill="purple" /><text x="605" y="210.68627450980398" font-family="sans-serif" font-size="12">NET2 (left)</text>
   </g>
   <g>
-    <rect data-type="rect" data-label="U1" data-x="-0.20000000000000018" data-y="2.5000000000000004" x="324.5901639344263" y="200.655737704918" width="183.60655737704917" height="91.80327868852464" fill="lightblue" stroke="black" stroke-width="0.010892857142857143" /><text x="329.5901639344263" y="195.655737704918" font-family="sans-serif" font-size="12" fill="black">U1</text>
+    <rect data-type="rect" data-label="U1" data-x="-0.20000000000000018" data-y="2.5000000000000004" x="226.66666666666669" y="182.74509803921575" width="307.45098039215685" height="87.84313725490193" fill="lightblue" stroke="black" stroke-width="0.009107142857142857" /><text x="231.66666666666669" y="177.74509803921575" font-family="sans-serif" font-size="12" fill="black">U1</text>
   </g>
   <g>
-    <rect data-type="rect" data-label="P1" data-x="-3.3000000000000003" data-y="1.2" x="40" y="320" width="183.60655737704923" height="91.80327868852464" fill="lightblue" stroke="black" stroke-width="0.010892857142857143" /><text x="45" y="315" font-family="sans-serif" font-size="12" fill="black">P1</text>
+    <rect data-type="rect" data-label="P1" data-x="-3.2" data-y="1.7" x="40" y="259.607843137255" width="21.960784313725526" height="109.80392156862746" fill="lightblue" stroke="black" stroke-width="0.009107142857142857" /><text x="45" y="254.60784313725497" font-family="sans-serif" font-size="12" fill="black">P1</text>
   </g>
-  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.6" cx="287.86885245901647" cy="237.3770491803279" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.4000000000000004" cx="287.86885245901647" cy="255.7377049180328" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="1.2000000000000002" data-y="2.6" cx="544.9180327868853" cy="237.3770491803279" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="1.2000000000000002" data-y="2.4000000000000004" cx="544.9180327868853" cy="255.7377049180328" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="-3.2" data-y="1.2" cx="140.98360655737713" cy="365.9016393442623" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="-3.2" data-y="2.2" cx="140.98360655737713" cy="274.0983606557377" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
+  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.6" cx="226.66666666666669" cy="215.68627450980398" r="10.980392156862745" fill="red" stroke="black" stroke-width="0.009107142857142857" />
+  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.4000000000000004" cx="226.66666666666669" cy="237.64705882352945" r="10.980392156862745" fill="red" stroke="black" stroke-width="0.009107142857142857" />
+  <circle data-type="circle" data-label="" data-x="1.2000000000000002" data-y="2.6" cx="534.1176470588235" cy="215.68627450980398" r="10.980392156862745" fill="red" stroke="black" stroke-width="0.009107142857142857" />
+  <circle data-type="circle" data-label="" data-x="1.2000000000000002" data-y="2.4000000000000004" cx="534.1176470588235" cy="237.64705882352945" r="10.980392156862745" fill="red" stroke="black" stroke-width="0.009107142857142857" />
+  <circle data-type="circle" data-label="" data-x="-3.2" data-y="1.2" cx="50.98039215686276" cy="369.41176470588243" r="10.980392156862745" fill="red" stroke="black" stroke-width="0.009107142857142857" />
+  <circle data-type="circle" data-label="" data-x="-3.2" data-y="2.2" cx="50.98039215686276" cy="259.607843137255" r="10.980392156862745" fill="red" stroke="black" stroke-width="0.009107142857142857" />
   <g id="crosshair" style="display: none">
     <line id="crosshair-h" y1="0" y2="640" stroke="#666" stroke-width="0.5" />
     <line id="crosshair-v" x1="0" x2="640" stroke="#666" stroke-width="0.5" /><text id="coordinates" font-family="monospace" font-size="12" fill="#666"></text>
@@ -46,12 +46,12 @@
 
       // Calculate real coordinates using inverse transformation
       const matrix = {
-        "a": 91.80327868852459,
+        "a": 109.80392156862744,
         "c": 0,
-        "e": 434.7540983606558,
+        "e": 402.3529411764706,
         "b": 0,
-        "d": -91.80327868852459,
-        "f": 476.0655737704918
+        "d": -109.80392156862744,
+        "f": 501.17647058823536
       };
       // Manually invert and apply the affine transform
       // Since we only use translate and scale, we can directly compute:

@@ -28,23 +28,23 @@ test("corpus01 - template matching and basic structure", async () => {
           "pins": [
             {
               "pinNumber": 1,
-              "x": -1.6,
-              "y": 2.5000000000000004,
+              "x": -3,
+              "y": 1,
             },
             {
               "pinNumber": 2,
               "x": -1.6,
-              "y": 2.3000000000000003,
+              "y": 2.4000000000000004,
             },
             {
               "pinNumber": 3,
-              "x": 1.1999999999999997,
-              "y": 2.3000000000000003,
+              "x": 1.2000000000000002,
+              "y": 2.6,
             },
             {
               "pinNumber": 4,
-              "x": 1.1999999999999997,
-              "y": 2.5000000000000004,
+              "x": 1.2000000000000002,
+              "y": 2.4000000000000004,
             },
           ],
           "rightPinCount": 2,
@@ -53,19 +53,19 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "bottomPinCount": 1,
           "boxId": "P1",
-          "centerX": -3.3000000000000003,
-          "centerY": 1.2,
+          "centerX": -3.2,
+          "centerY": 1.7,
           "leftPinCount": 0,
           "pins": [
             {
               "pinNumber": 1,
-              "x": -3.3000000000000003,
-              "y": 0.7,
+              "x": -3,
+              "y": 1,
             },
             {
               "pinNumber": 2,
-              "x": -3.3000000000000003,
-              "y": 1.7,
+              "x": -3.2,
+              "y": 2.2,
             },
           ],
           "rightPinCount": 0,
@@ -75,8 +75,8 @@ test("corpus01 - template matching and basic structure", async () => {
       "junctions": [
         {
           "junctionId": "XX1",
-          "x": -3.5,
-          "y": 0.5,
+          "x": -3,
+          "y": 1,
         },
       ],
       "netLabels": [
@@ -139,40 +139,24 @@ test("corpus01 - template matching and basic structure", async () => {
               "y": 1,
             },
             {
-              "x": -1.5,
-              "y": 0.5,
-            },
-            {
-              "x": -1.5,
-              "y": 0.5,
+              "x": -2,
+              "y": 1,
             },
             {
               "x": -2,
-              "y": 0.5,
-            },
-            {
-              "x": -2,
-              "y": 0.5,
+              "y": 1,
             },
             {
               "x": -2.5,
-              "y": 0.5,
+              "y": 1,
             },
             {
               "x": -2.5,
-              "y": 0.5,
+              "y": 1,
             },
             {
               "x": -3,
-              "y": 0.5,
-            },
-            {
-              "x": -3,
-              "y": 0.5,
-            },
-            {
-              "x": -3.5,
-              "y": 0.5,
+              "y": 1,
             },
           ],
           "to": {
@@ -200,15 +184,15 @@ test("corpus01 - template matching and basic structure", async () => {
             },
             {
               "x": -3.2,
-              "y": 0.5,
+              "y": 1,
             },
             {
               "x": -3.2,
-              "y": 0.5,
+              "y": 1,
             },
             {
-              "x": -3.5,
-              "y": 0.5,
+              "x": -3,
+              "y": 1,
             },
           ],
           "to": {

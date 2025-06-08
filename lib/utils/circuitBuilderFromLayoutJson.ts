@@ -20,10 +20,14 @@ export function circuitBuilderFromLayoutJson(
     if (box.bottomPinCount) chip.bottompins(box.bottomPinCount)
     if (box.rightPinCount) chip.rightpins(box.rightPinCount)
     if (box.topPinCount) chip.toppins(box.topPinCount)
-    chip.at(
-      box.centerX - chip.getWidth() / 2,
-      box.centerY - chip.getHeight() / 2,
-    )
+    if (isPassive) {
+      chip.at(box.centerX, box.centerY)
+    } else {
+      chip.at(
+        box.centerX - chip.getWidth() / 2,
+        box.centerY - chip.getHeight() / 2,
+      )
+    }
     for (const pin of box.pins) {
       const pb = chip.pin(pin.pinNumber)
       pb.x = pin.x
