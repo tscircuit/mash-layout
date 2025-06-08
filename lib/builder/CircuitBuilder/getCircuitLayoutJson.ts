@@ -58,12 +58,33 @@ export const getCircuitLayoutJson = (
 
   // Convert net labels
   for (const label of circuitBuilder.netLabels) {
+    // Determine orientation from the line segment that connects to this label
+    let anchor = label.anchorSide
+    const connectingLine = circuitBuilder.lines.find(
+      (l) =>
+        (l.end.ref as PortReference).netLabelId === label.netLabelId ||
+        (l.start.ref as PortReference).netLabelId === label.netLabelId,
+    )
+    if (connectingLine) {
+      let dx: number, dy: number
+      if (
+        (connectingLine.end.ref as PortReference).netLabelId ===
+        label.netLabelId
+      ) {
+        dx = connectingLine.end.x - connectingLine.start.x
+        dy = connectingLine.end.y - connectingLine.start.y
+      } else {
+        dx = connectingLine.start.x - connectingLine.end.x
+        dy = connectingLine.start.y - connectingLine.end.y
+      }
+      anchor = dx > 0 ? "left" : dx < 0 ? "right" : dy > 0 ? "bottom" : "top"
+    }
     netLabels.push({
       netLabelId: label.netLabelId,
       netId: label.netId,
       x: label.x,
       y: label.y,
-      anchorPosition: label.anchorSide,
+      anchorPosition: anchor,
     })
   }
 
