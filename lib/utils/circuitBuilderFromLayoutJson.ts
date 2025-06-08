@@ -15,20 +15,25 @@ export function circuitBuilderFromLayoutJson(
       box.bottomPinCount
     const isPassive = totalPins === 2
     const chip = isPassive ? C.passive(box.boxId) : C.chip(box.boxId)
+    // Pin creation order matters for CCW numbering: left, bottom, right, top
     if (box.leftPinCount) chip.leftpins(box.leftPinCount)
+    if (box.bottomPinCount) chip.bottompins(box.bottomPinCount)
     if (box.rightPinCount) chip.rightpins(box.rightPinCount)
     if (box.topPinCount) chip.toppins(box.topPinCount)
-    if (box.bottomPinCount) chip.bottompins(box.bottomPinCount)
-    chip.at(
-      box.centerX - chip.getWidth() / 2,
-      box.centerY - chip.getHeight() / 2,
-    )
-    chip.pinPositionsAreSet = true
+    if (isPassive) {
+      chip.at(box.centerX, box.centerY)
+    } else {
+      chip.at(
+        box.centerX - chip.getWidth() / 2,
+        box.centerY - chip.getHeight() / 2,
+      )
+    }
     for (const pin of box.pins) {
       const pb = chip.pin(pin.pinNumber)
       pb.x = pin.x
       pb.y = pin.y
     }
+    chip.pinPositionsAreSet = true
   }
 
   const labelRefMap: Record<string, PortReference> = {}

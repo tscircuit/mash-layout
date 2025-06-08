@@ -31,7 +31,11 @@ export const getCircuitLayoutJson = (
     ]
 
     for (const pin of allPins) {
-      const pinLocation = chip.getPinLocation(pin.pinNumber)
+      // Use manually set pin positions if they exist, otherwise calculate
+      const pinLocation =
+        pin.x !== undefined && pin.y !== undefined
+          ? { x: pin.x, y: pin.y }
+          : chip.getPinLocation(pin.pinNumber)
       pins.push({
         pinNumber: pin.pinNumber,
         x: pinLocation.x,
