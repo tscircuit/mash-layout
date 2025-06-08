@@ -12,12 +12,12 @@
   <g>
     <rect data-type="rect" data-label="P1" data-x="-3.3000000000000003" data-y="1.2" x="40" y="320" width="183.60655737704923" height="91.80327868852464" fill="lightblue" stroke="black" stroke-width="0.010892857142857143" /><text x="45" y="315" font-family="sans-serif" font-size="12" fill="black">P1</text>
   </g>
-  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.5000000000000004" cx="287.86885245901647" cy="246.55737704918033" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.3000000000000003" cx="287.86885245901647" cy="264.91803278688525" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="1.1999999999999997" data-y="2.3000000000000003" cx="544.9180327868853" cy="264.91803278688525" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="1.1999999999999997" data-y="2.5000000000000004" cx="544.9180327868853" cy="246.55737704918033" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="-3.3000000000000003" data-y="0.7" cx="131.80327868852464" cy="411.80327868852464" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
-  <circle data-type="circle" data-label="" data-x="-3.3000000000000003" data-y="0.7" cx="131.80327868852464" cy="411.80327868852464" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
+  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.6" cx="287.86885245901647" cy="237.3770491803279" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
+  <circle data-type="circle" data-label="" data-x="-1.6" data-y="2.4000000000000004" cx="287.86885245901647" cy="255.7377049180328" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
+  <circle data-type="circle" data-label="" data-x="1.2000000000000002" data-y="2.6" cx="544.9180327868853" cy="237.3770491803279" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
+  <circle data-type="circle" data-label="" data-x="1.2000000000000002" data-y="2.4000000000000004" cx="544.9180327868853" cy="255.7377049180328" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
+  <circle data-type="circle" data-label="" data-x="-3.2" data-y="1.2" cx="140.98360655737713" cy="365.9016393442623" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
+  <circle data-type="circle" data-label="" data-x="-3.2" data-y="2.2" cx="140.98360655737713" cy="274.0983606557377" r="9.180327868852459" fill="red" stroke="black" stroke-width="0.010892857142857143" />
   <g id="crosshair" style="display: none">
     <line id="crosshair-h" y1="0" y2="640" stroke="#666" stroke-width="0.5" />
     <line id="crosshair-v" x1="0" x2="640" stroke="#666" stroke-width="0.5" /><text id="coordinates" font-family="monospace" font-size="12" fill="#666"></text>

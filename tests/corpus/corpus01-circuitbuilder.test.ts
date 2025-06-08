@@ -20,7 +20,7 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "center": {
             "x": -1.6,
-            "y": 2.5000000000000004,
+            "y": 2.6,
           },
           "fill": "red",
           "label": "Pin 1",
@@ -29,7 +29,7 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "center": {
             "x": -1.6,
-            "y": 2.3000000000000003,
+            "y": 2.4000000000000004,
           },
           "fill": "red",
           "label": "Pin 2",
@@ -37,8 +37,8 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": 1.1999999999999997,
-            "y": 2.3000000000000003,
+            "x": 1.2000000000000002,
+            "y": 2.6,
           },
           "fill": "red",
           "label": "Pin 3",
@@ -46,8 +46,8 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": 1.1999999999999997,
-            "y": 2.5000000000000004,
+            "x": 1.2000000000000002,
+            "y": 2.4000000000000004,
           },
           "fill": "red",
           "label": "Pin 4",
@@ -55,8 +55,8 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": -3.3000000000000003,
-            "y": 0.7,
+            "x": -3.2,
+            "y": 1.2,
           },
           "fill": "red",
           "label": "Pin 1",
@@ -64,11 +64,11 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": -3.3000000000000003,
-            "y": 0.7,
+            "x": -3.2,
+            "y": 2.2,
           },
           "fill": "red",
-          "label": "Pin 1",
+          "label": "Pin 2",
           "radius": 0.1,
         },
       ],
