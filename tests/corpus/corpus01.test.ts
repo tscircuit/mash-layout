@@ -52,7 +52,7 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "bottomPinCount": 1,
-          "boxId": "P1",
+          "boxId": "R1",
           "centerX": -3.2,
           "centerY": 1.7,
           "leftPinCount": 0,
@@ -98,7 +98,7 @@ test("corpus01 - template matching and basic structure", async () => {
       "paths": [
         {
           "from": {
-            "boxId": "P1",
+            "boxId": "R1",
             "pinNumber": 2,
           },
           "points": [
@@ -166,7 +166,7 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "from": {
-            "boxId": "P1",
+            "boxId": "R1",
             "pinNumber": 1,
           },
           "points": [

@@ -1,5 +1,6 @@
 export * from "./input-types"
 export * from "./solvers/SchematicLayoutPipelineSolver"
+export * from "./solvers/RenameMatchedTemplateBoxIdsSolver"
 export * from "./output-types"
 export * from "./circuit-json/applyCircuitLayoutToCircuitJson"
 export * from "./circuit-json/convertCircuitJsonToInputNetlist"

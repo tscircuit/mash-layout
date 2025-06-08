@@ -127,7 +127,7 @@ export default () => {
   expect(`\n${adaptedTemplate.toString()}\n`).toMatchInlineSnapshot(`
     "
          0.0         5.0         10.0      
-     2.4 U1
+     2.4 USBC
      2.2 ┌────┐
      2.0 │  12├
      1.8 │  11├
@@ -135,7 +135,7 @@ export default () => {
      1.4 │   9├
      1.2 │   8├
      1.0 │   7├
-     0.8 │   6├              U2
+     0.8 │   6├              LED
      0.6 │   5├              ┌─────┐
      0.4 │   4├───── ────────┤1   2├
      0.2 │   3├              └─────┘

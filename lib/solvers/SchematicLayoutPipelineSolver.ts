@@ -3,6 +3,7 @@ import type { CircuitLayoutJson } from "lib/output-types"
 import { BaseSolver } from "./BaseSolver"
 import { AdaptPhaseSolver } from "./AdaptPhaseSolver"
 import { MatchPhaseSolver } from "./MatchPhaseSolver"
+import { RenameMatchedTemplateBoxIdsSolver } from "./RenameMatchedTemplateBoxIdsSolver"
 import { CircuitBuilder } from "lib/builder"
 import { CircuitTemplateFn } from "templates/index"
 
@@ -42,6 +43,7 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
   templateFnsOverride?: CircuitTemplateFn[]
 
   matchPhaseSolver?: MatchPhaseSolver
+  renameMatchedTemplateBoxIdsSolver?: RenameMatchedTemplateBoxIdsSolver
   adaptPhaseSolver?: AdaptPhaseSolver
 
   startTimeOfPhase: Record<string, number> = {}
@@ -56,9 +58,19 @@ export class SchematicLayoutPipelineSolver extends BaseSolver {
         templateFns: this.templateFnsOverride,
       },
     ]),
+    definePipelineStep(
+      "renameMatchedTemplateBoxIdsSolver",
+      RenameMatchedTemplateBoxIdsSolver,
+      () => [
+        {
+          matchedTemplates: this.matchPhaseSolver?.outputMatchedTemplates!,
+        },
+      ],
+    ),
     definePipelineStep("adaptPhaseSolver", AdaptPhaseSolver, () => [
       {
-        matchedTemplates: this.matchPhaseSolver?.outputMatchedTemplates!,
+        matchedTemplates:
+          this.renameMatchedTemplateBoxIdsSolver?.outputRenamedTemplates!,
       },
     ]),
     // TODO refine

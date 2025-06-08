@@ -1075,7 +1075,7 @@ export default () => (
        1.6 ┌────┐  │ ├───R9P
        1.4 │   7├──┘ │   │ │
        1.2 │   6├────┤   │ │
-       1.0 │   5├────┼───R0M
+       1.0 │   5├────┼───R1M
        0.8 │   4├────┼───┤
        0.6 │   3├────┤  ┌┤
        0.4 │   2├┐   │  ││
@@ -1114,7 +1114,7 @@ export default () => (
         {
           "fromChipId": "J1",
           "fromPinNumber": 4,
-          "toChipId": "R0",
+          "toChipId": "R10",
           "toPinNumber": 1,
           "type": "draw_line_between_pins",
         },
