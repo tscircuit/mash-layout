@@ -45,7 +45,7 @@ export const getCircuitLayoutJson = (
 
     const center = chip.getCenter()
     boxes.push({
-      boxId: chip.chipId,
+      boxId: chip.matchedChipId || chip.chipId,
       leftPinCount: chip.leftPinCount,
       rightPinCount: chip.rightPinCount,
       topPinCount: chip.topPinCount,

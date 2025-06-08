@@ -29,6 +29,7 @@ export class ChipBuilder {
     public readonly circuit: CircuitBuilder,
     public readonly chipId: string,
     public readonly isPassive: boolean = false,
+    public matchedChipId?: string,
   ) {}
 
   at(x: number, y: number): this {

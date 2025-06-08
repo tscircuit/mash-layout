@@ -179,7 +179,7 @@ export class PinBuilder {
 
   get ref(): PortReference {
     return {
-      boxId: this.chip.chipId,
+      boxId: this.chip.matchedChipId || this.chip.chipId,
       pinNumber: this.pinNumber,
     }
   }

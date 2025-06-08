@@ -45,6 +45,21 @@ export function removeUnmatchedChips(params: {
     ).find(([_, boxIndex]) => boxIndex === match.targetBoxIndex)?.[0],
   }))
 
+  // Set matchedChipId for matched chips
+  for (const match of matchedBoxes) {
+    if (match.candidateChipId && match.targetChipId) {
+      const chip = template.chips.find(
+        (c) => c.chipId === match.candidateChipId,
+      )
+      if (chip) {
+        const oldChipId = chip.chipId
+        chip.matchedChipId = match.targetChipId
+        // Update existing line references
+        template.updateLineReferencesForChip(oldChipId, match.targetChipId)
+      }
+    }
+  }
+
   // Remove chips that exist in template but not in target (one at a time)
   for (const chip of template.chips) {
     const wasMatched = matchedBoxes.some(

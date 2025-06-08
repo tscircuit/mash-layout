@@ -64,7 +64,12 @@ export class CircuitBuilder {
 
     /* 2.  chips ------------------------------------------------------- */
     for (const chip of this.chips) {
-      const c = new ChipBuilder(clone, chip.chipId, chip.isPassive)
+      const c = new ChipBuilder(
+        clone,
+        chip.chipId,
+        chip.isPassive,
+        chip.matchedChipId,
+      )
 
       // location and pin counts
       c.x = chip.x
@@ -333,5 +338,32 @@ export class CircuitBuilder {
 
   getLayoutJson(): CircuitLayoutJson {
     return getCircuitLayoutJson(this)
+  }
+
+  updateLineReferencesForChip(chipId: string, newMatchedChipId: string): void {
+    // Update all line references that point to the old chipId
+    for (const line of this.lines) {
+      if (
+        line.start.ref &&
+        "boxId" in line.start.ref &&
+        line.start.ref.boxId === chipId
+      ) {
+        line.start.ref.boxId = newMatchedChipId
+      }
+      if (
+        line.end.ref &&
+        "boxId" in line.end.ref &&
+        line.end.ref.boxId === chipId
+      ) {
+        line.end.ref.boxId = newMatchedChipId
+      }
+    }
+
+    // Update connection points
+    for (const cp of this.connectionPoints) {
+      if (cp.pinRef && "boxId" in cp.pinRef && cp.pinRef.boxId === chipId) {
+        cp.pinRef.boxId = newMatchedChipId
+      }
+    }
   }
 }
