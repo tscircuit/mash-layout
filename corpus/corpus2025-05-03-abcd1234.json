@@ -11,22 +11,22 @@
       "pins": [
         {
           "pinNumber": 1,
-          "x": -1.2000000000000002,
+          "x": -1.6,
           "y": 2.6
         },
         {
           "pinNumber": 2,
-          "x": -1.2000000000000002,
+          "x": -1.6,
           "y": 2.4000000000000004
         },
         {
           "pinNumber": 3,
-          "x": 0.8,
+          "x": 1.2000000000000002,
           "y": 2.6
         },
         {
           "pinNumber": 4,
-          "x": 0.8,
+          "x": 1.2000000000000002,
           "y": 2.4000000000000004
         }
       ]
@@ -56,16 +56,16 @@
   "netLabels": [
     {
       "netId": "NET1",
-      "netLabelId": "loaded-nl-64033ad4-73e8-408b-9375-bd5e993f8bf4-0",
+      "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
       "anchorPosition": "left",
       "x": -2.4000000000000004,
       "y": 0.6000000000000001
     },
     {
       "netId": "NET2",
-      "netLabelId": "loaded-nl-1c5a1acd-ac1b-4762-bd7a-4f1b1d546fec-1",
+      "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1",
       "anchorPosition": "left",
-      "x": 1.2000000000000002,
+      "x": 1.8,
       "y": 2.6
     }
   ],
@@ -81,7 +81,7 @@
           "y": 2.6
         },
         {
-          "x": -1.2000000000000002,
+          "x": -1.6,
           "y": 2.6
         }
       ],
@@ -110,26 +110,26 @@
         "pinNumber": 1
       },
       "to": {
-        "netLabelId": "loaded-nl-64033ad4-73e8-408b-9375-bd5e993f8bf4-0"
+        "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0"
       }
     },
     {
       "points": [
         {
-          "x": 0.8,
+          "x": -1.6,
           "y": 2.6
         },
         {
-          "x": 1.2000000000000002,
+          "x": 1.8,
           "y": 2.6
         }
       ],
       "from": {
         "boxId": "U1",
-        "pinNumber": 3
+        "pinNumber": 1
       },
       "to": {
-        "netLabelId": "loaded-nl-1c5a1acd-ac1b-4762-bd7a-4f1b1d546fec-1"
+        "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1"
       }
     }
   ],

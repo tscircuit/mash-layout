@@ -39,19 +39,25 @@ export function transformTargetForPassiveCompatibility(
 
   for (const templatePassive of templatePassives) {
     // Find the box index for this template passive
-    const templateBoxIndex = normalizedTemplateResult.transform.boxIdToBoxIndex[templatePassive.chipId]
+    const templateBoxIndex =
+      normalizedTemplateResult.transform.boxIdToBoxIndex[templatePassive.chipId]
     if (templateBoxIndex === undefined) continue
 
     // Find the matched target box
-    const match = matchedBoxes.find(m => m.candidateBoxIndex === templateBoxIndex)
+    const match = matchedBoxes.find(
+      (m) => m.candidateBoxIndex === templateBoxIndex,
+    )
     if (!match) continue // No matching box in target
 
     // Get the target box ID from the match
-    const targetBoxId = Object.entries(normalizedTargetResult.transform.boxIdToBoxIndex)
-      .find(([_, boxIndex]) => boxIndex === match.targetBoxIndex)?.[0]
+    const targetBoxId = Object.entries(
+      normalizedTargetResult.transform.boxIdToBoxIndex,
+    ).find(([_, boxIndex]) => boxIndex === match.targetBoxIndex)?.[0]
     if (!targetBoxId) continue
 
-    const targetBox = transformedTarget.boxes.find(box => box.boxId === targetBoxId)
+    const targetBox = transformedTarget.boxes.find(
+      (box) => box.boxId === targetBoxId,
+    )
     if (!targetBox) continue
 
     try {
