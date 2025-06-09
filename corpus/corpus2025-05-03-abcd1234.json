@@ -116,7 +116,11 @@
     {
       "points": [
         {
-          "x": -1.6,
+          "x": -3.2,
+          "y": 2.2
+        },
+        {
+          "x": -2.4000000000000004,
           "y": 2.6
         },
         {
@@ -125,8 +129,8 @@
         }
       ],
       "from": {
-        "boxId": "U1",
-        "pinNumber": 1
+        "boxId": "P1",
+        "pinNumber": 2
       },
       "to": {
         "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1"
