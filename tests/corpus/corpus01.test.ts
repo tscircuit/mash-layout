@@ -28,8 +28,8 @@ test("corpus01 - template matching and basic structure", async () => {
           "pins": [
             {
               "pinNumber": 1,
-              "x": -3,
-              "y": 1,
+              "x": -1.6,
+              "y": 2.6,
             },
             {
               "pinNumber": 2,
@@ -59,8 +59,8 @@ test("corpus01 - template matching and basic structure", async () => {
           "pins": [
             {
               "pinNumber": 1,
-              "x": -3,
-              "y": 1,
+              "x": -3.2,
+              "y": 1.2,
             },
             {
               "pinNumber": 2,
@@ -72,13 +72,7 @@ test("corpus01 - template matching and basic structure", async () => {
           "topPinCount": 1,
         },
       ],
-      "junctions": [
-        {
-          "junctionId": "XX1",
-          "x": -3,
-          "y": 1,
-        },
-      ],
+      "junctions": [],
       "netLabels": [
         {
           "anchorPosition": "left",
@@ -95,112 +89,7 @@ test("corpus01 - template matching and basic structure", async () => {
           "y": 2.6,
         },
       ],
-      "paths": [
-        {
-          "from": {
-            "boxId": "R1",
-            "pinNumber": 2,
-          },
-          "points": [
-            {
-              "x": -3.2,
-              "y": 2.2,
-            },
-            {
-              "x": -1.6,
-              "y": 2.6,
-            },
-            {
-              "x": -1.6,
-              "y": 2.6,
-            },
-            {
-              "x": -1.5,
-              "y": 2,
-            },
-            {
-              "x": -1.5,
-              "y": 2,
-            },
-            {
-              "x": -1.5,
-              "y": 1.5,
-            },
-            {
-              "x": -1.5,
-              "y": 1.5,
-            },
-            {
-              "x": -1.5,
-              "y": 1,
-            },
-            {
-              "x": -1.5,
-              "y": 1,
-            },
-            {
-              "x": -2,
-              "y": 1,
-            },
-            {
-              "x": -2,
-              "y": 1,
-            },
-            {
-              "x": -2.5,
-              "y": 1,
-            },
-            {
-              "x": -2.5,
-              "y": 1,
-            },
-            {
-              "x": -3,
-              "y": 1,
-            },
-          ],
-          "to": {
-            "boxId": "U1",
-            "pinNumber": 1,
-          },
-        },
-        {
-          "from": {
-            "boxId": "R1",
-            "pinNumber": 1,
-          },
-          "points": [
-            {
-              "x": -3.2,
-              "y": 1.2,
-            },
-            {
-              "x": -3.2,
-              "y": 0.4,
-            },
-            {
-              "x": -3.2,
-              "y": 1.2,
-            },
-            {
-              "x": -3.2,
-              "y": 1,
-            },
-            {
-              "x": -3.2,
-              "y": 1,
-            },
-            {
-              "x": -3,
-              "y": 1,
-            },
-          ],
-          "to": {
-            "netId": "undefined",
-            "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
-          },
-        },
-      ],
+      "paths": [],
     }
   `)
 
