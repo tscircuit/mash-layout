@@ -1,10 +1,22 @@
 import type { InputNetlist } from "lib/input-types"
 import type { CircuitBuilder } from "lib/builder"
+import type { ChipBuilder } from "lib/builder"
 import type { EditOperation } from "lib/adapt/EditOperation"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 import { applyEditOperation } from "lib/adapt/applyEditOperation"
 import type { MatchedBoxWithChipIds } from "./removeUnmatchedChips"
+
+function getPossiblePinNumbers(
+  chip: ChipBuilder | undefined,
+  pin: number,
+): number[] {
+  if (!chip?.isPassive) return [pin]
+  if (chip.totalPinCount === 2) {
+    return pin === 1 ? [1, 2] : pin === 2 ? [2, 1] : [pin]
+  }
+  return [pin]
+}
 
 export function drawMissingConnections(params: {
   template: CircuitBuilder
@@ -56,24 +68,35 @@ export function drawMissingConnections(params: {
     const templateNetlist = template.getNetlist()
     const templateConnections = templateNetlist.connections || []
 
+    const fromChip = template.chips.find(
+      (c) => c.chipId === templateFromChipId,
+    )
+    const toChip = template.chips.find((c) => c.chipId === templateToChipId)
+
+    const possibleFromPins = getPossiblePinNumbers(fromChip, fromPort.pinNumber)
+    const possibleToPins = getPossiblePinNumbers(toChip, toPort.pinNumber)
+
     const connectionExists = templateConnections.some((templateConnection) => {
       const templateBoxPorts = templateConnection.connectedPorts.filter(
         (port) => "boxId" in port,
       ) as Array<{ boxId: string; pinNumber: number }>
 
-      // Check if both chips/pins are present in this connection (regardless of how many total ports)
-      const hasFromChipPin = templateBoxPorts.some(
-        (port) =>
-          port.boxId === templateFromChipId &&
-          port.pinNumber === fromPort.pinNumber,
-      )
-      const hasToChipPin = templateBoxPorts.some(
-        (port) =>
-          port.boxId === templateToChipId &&
-          port.pinNumber === toPort.pinNumber,
-      )
+      for (const pf of possibleFromPins) {
+        for (const pt of possibleToPins) {
+          const hasFromChipPin = templateBoxPorts.some(
+            (port) => port.boxId === templateFromChipId && port.pinNumber === pf,
+          )
+          const hasToChipPin = templateBoxPorts.some(
+            (port) => port.boxId === templateToChipId && port.pinNumber === pt,
+          )
 
-      return hasFromChipPin && hasToChipPin
+          if (hasFromChipPin && hasToChipPin) {
+            return true
+          }
+        }
+      }
+
+      return false
     })
 
     if (!connectionExists) {
