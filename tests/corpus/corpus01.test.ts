@@ -89,7 +89,84 @@ test("corpus01 - template matching and basic structure", async () => {
           "y": 2.6,
         },
       ],
-      "paths": [],
+      "paths": [
+        {
+          "from": {
+            "boxId": "R1",
+            "pinNumber": 2,
+          },
+          "points": [
+            {
+              "x": -3.2,
+              "y": 2.2,
+            },
+            {
+              "x": -3.2,
+              "y": 2.6,
+            },
+            {
+              "x": -3.2,
+              "y": 2.6,
+            },
+            {
+              "x": -2.4000000000000004,
+              "y": 2.6,
+            },
+            {
+              "x": -2.4000000000000004,
+              "y": 2.6,
+            },
+            {
+              "x": -1.6,
+              "y": 2.6,
+            },
+          ],
+          "to": {
+            "boxId": "U1",
+            "pinNumber": 1,
+          },
+        },
+        {
+          "from": {
+            "boxId": "R1",
+            "pinNumber": 1,
+          },
+          "points": [
+            {
+              "x": -3.2,
+              "y": 1.2,
+            },
+            {
+              "x": -3.2,
+              "y": 0.4,
+            },
+          ],
+          "to": {
+            "netId": "undefined",
+            "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
+          },
+        },
+        {
+          "from": {
+            "boxId": "U1",
+            "pinNumber": 1,
+          },
+          "points": [
+            {
+              "x": -1.6,
+              "y": 2.6,
+            },
+            {
+              "x": 1.8000000000000003,
+              "y": 2.6,
+            },
+          ],
+          "to": {
+            "netId": "undefined",
+            "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1",
+          },
+        },
+      ],
     }
   `)
 
