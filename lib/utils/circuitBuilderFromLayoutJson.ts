@@ -39,9 +39,26 @@ export function circuitBuilderFromLayoutJson(
   }
 
   const labelRefMap: Record<string, PortReference> = {}
+  const netLabelIdToNetId: Record<string, string> = {}
+  for (const nl of layout.netLabels) {
+    netLabelIdToNetId[nl.netLabelId] = nl.netId
+  }
   for (const path of layout.paths) {
-    const fromRef = path.from as PortReference
-    const toRef = path.to as PortReference
+    const fromRef: PortReference =
+      "netLabelId" in path.from && !("netId" in path.from)
+        ? {
+            netLabelId: path.from.netLabelId,
+            netId: netLabelIdToNetId[path.from.netLabelId]!,
+          }
+        : (path.from as PortReference)
+    const toRef: PortReference =
+      "netLabelId" in path.to && !("netId" in path.to)
+        ? {
+            netLabelId: path.to.netLabelId,
+            netId: netLabelIdToNetId[path.to.netLabelId]!,
+          }
+        : (path.to as PortReference)
+
     if ("netLabelId" in path.to) {
       labelRefMap[path.to.netLabelId] = fromRef
     }
@@ -64,8 +81,22 @@ export function circuitBuilderFromLayoutJson(
     const points = path.points
     if (points.length < 2) continue
 
-    const fromIsPin =
-      "boxId" in path.from && "pinNumber" in path.from
+    const fromRef: PortReference =
+      "netLabelId" in path.from && !("netId" in path.from)
+        ? {
+            netLabelId: path.from.netLabelId,
+            netId: netLabelIdToNetId[path.from.netLabelId]!,
+          }
+        : (path.from as PortReference)
+    const toRef: PortReference =
+      "netLabelId" in path.to && !("netId" in path.to)
+        ? {
+            netLabelId: path.to.netLabelId,
+            netId: netLabelIdToNetId[path.to.netLabelId]!,
+          }
+        : (path.to as PortReference)
+
+    const fromIsPin = "boxId" in path.from && "pinNumber" in path.from
     const toIsPin = "boxId" in path.to && "pinNumber" in path.to
 
     let pb: any | null = null
@@ -76,13 +107,13 @@ export function circuitBuilderFromLayoutJson(
       const chip = chipMap[(path.from as any).boxId]!
       pb = new PinBuilder(chip, (path.from as any).pinNumber)
       pb.pathId = C.addPath().pathId
-      finalRef = path.to as PortReference
+      finalRef = toRef
     } else if (toIsPin) {
       const chip = chipMap[(path.to as any).boxId]!
       pb = new PinBuilder(chip, (path.to as any).pinNumber)
       pb.pathId = C.addPath().pathId
       segPoints = [...points].reverse()
-      finalRef = path.from as PortReference
+      finalRef = fromRef
     }
 
     if (pb) {
@@ -102,8 +133,8 @@ export function circuitBuilderFromLayoutJson(
         const start = points[i]!
         const end = points[i + 1]!
         C.lines.push({
-          start: { x: start.x, y: start.y, ref: path.from as PortReference },
-          end: { x: end.x, y: end.y, ref: path.to as PortReference },
+          start: { x: start.x, y: start.y, ref: fromRef },
+          end: { x: end.x, y: end.y, ref: toRef },
           pathId,
         })
       }

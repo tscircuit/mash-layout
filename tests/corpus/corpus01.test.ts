@@ -142,7 +142,7 @@ test("corpus01 - template matching and basic structure", async () => {
             },
           ],
           "to": {
-            "netId": "undefined",
+            "netId": "NET1",
             "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
           },
         },
@@ -162,7 +162,7 @@ test("corpus01 - template matching and basic structure", async () => {
             },
           ],
           "to": {
-            "netId": "undefined",
+            "netId": "NET2",
             "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1",
           },
         },
