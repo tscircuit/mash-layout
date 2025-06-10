@@ -10,6 +10,7 @@ export default () => (
       footprint="soic4"
       connections={{
         pin1: ".R1 .pin1",
+        pin4: "net.VCC"
       }}
     />
     <resistor
