@@ -73,7 +73,66 @@ test("corpus01 - template matching and basic structure", async () => {
         },
       ],
       "coordinateSystem": "cartesian",
-      "lines": [],
+      "lines": [
+        {
+          "points": [
+            {
+              "x": -3.2,
+              "y": 2.2,
+            },
+            {
+              "x": -3.2,
+              "y": 2.6,
+            },
+            {
+              "x": -3.2,
+              "y": 2.6,
+            },
+            {
+              "x": -2.4000000000000004,
+              "y": 2.6,
+            },
+            {
+              "x": -2.4000000000000004,
+              "y": 2.6,
+            },
+            {
+              "x": -1.6,
+              "y": 2.6,
+            },
+          ],
+          "strokeColor": "black",
+          "strokeWidth": 0.05,
+        },
+        {
+          "points": [
+            {
+              "x": -3.2,
+              "y": 1.2,
+            },
+            {
+              "x": -3.2,
+              "y": 0.4,
+            },
+          ],
+          "strokeColor": "black",
+          "strokeWidth": 0.05,
+        },
+        {
+          "points": [
+            {
+              "x": -1.6,
+              "y": 2.6,
+            },
+            {
+              "x": 1.8000000000000003,
+              "y": 2.6,
+            },
+          ],
+          "strokeColor": "black",
+          "strokeWidth": 0.05,
+        },
+      ],
       "points": [
         {
           "color": "purple",

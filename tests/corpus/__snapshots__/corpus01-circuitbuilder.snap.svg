@@ -7,6 +7,15 @@
     <circle data-type="point" data-label="NET2 (left)" data-x="1.8" data-y="2.6" cx="600" cy="215.68627450980398" r="3" fill="purple" /><text x="605" y="210.68627450980398" font-family="sans-serif" font-size="12">NET2 (left)</text>
   </g>
   <g>
+    <polyline data-points="-3.2,2.2 -3.2,2.6 -3.2,2.6 -2.4000000000000004,2.6 -2.4000000000000004,2.6 -1.6,2.6" data-type="line" data-label="" points="50.98039215686276,259.607843137255 50.98039215686276,215.68627450980398 50.98039215686276,215.68627450980398 138.8235294117647,215.68627450980398 138.8235294117647,215.68627450980398 226.66666666666669,215.68627450980398" fill="none" stroke="black" stroke-width="5.490196078431373" />
+  </g>
+  <g>
+    <polyline data-points="-3.2,1.2 -3.2,0.4" data-type="line" data-label="" points="50.98039215686276,369.41176470588243 50.98039215686276,457.25490196078437" fill="none" stroke="black" stroke-width="5.490196078431373" />
+  </g>
+  <g>
+    <polyline data-points="-1.6,2.6 1.8000000000000003,2.6" data-type="line" data-label="" points="226.66666666666669,215.68627450980398 600,215.68627450980398" fill="none" stroke="black" stroke-width="5.490196078431373" />
+  </g>
+  <g>
     <rect data-type="rect" data-label="U1" data-x="-0.20000000000000018" data-y="2.5000000000000004" x="226.66666666666669" y="182.74509803921575" width="307.45098039215685" height="87.84313725490193" fill="lightblue" stroke="black" stroke-width="0.009107142857142857" /><text x="231.66666666666669" y="177.74509803921575" font-family="sans-serif" font-size="12" fill="black">U1</text>
   </g>
   <g>

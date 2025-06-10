@@ -12,9 +12,14 @@ import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 export class RenameMatchedTemplateBoxIdsSolver extends BaseSolver {
   matchedTemplates: Array<{ template: CircuitBuilder; netlist: InputNetlist }>
 
-  outputRenamedTemplates: Array<{ template: CircuitBuilder; netlist: InputNetlist }> = []
+  outputRenamedTemplates: Array<{
+    template: CircuitBuilder
+    netlist: InputNetlist
+  }> = []
 
-  constructor(opts: { matchedTemplates: Array<{ template: CircuitBuilder; netlist: InputNetlist }> }) {
+  constructor(opts: {
+    matchedTemplates: Array<{ template: CircuitBuilder; netlist: InputNetlist }>
+  }) {
     super()
     this.matchedTemplates = opts.matchedTemplates
   }
@@ -24,7 +29,10 @@ export class RenameMatchedTemplateBoxIdsSolver extends BaseSolver {
   }
 
   /** Compute mapping from candidate chip ids to target ids */
-  private getChipIdMap(template: CircuitBuilder, target: InputNetlist): Record<string, string> {
+  private getChipIdMap(
+    template: CircuitBuilder,
+    target: InputNetlist,
+  ): Record<string, string> {
     const templateResult = normalizeNetlist(template.getNetlist())
     const targetResult = normalizeNetlist(target)
     const matched = getMatchedBoxes({
@@ -34,12 +42,12 @@ export class RenameMatchedTemplateBoxIdsSolver extends BaseSolver {
 
     const map: Record<string, string> = {}
     for (const m of matched) {
-      const candidateId = Object.entries(templateResult.transform.boxIdToBoxIndex).find(
-        ([, idx]) => idx === m.candidateBoxIndex,
-      )?.[0]
-      const targetId = Object.entries(targetResult.transform.boxIdToBoxIndex).find(
-        ([, idx]) => idx === m.targetBoxIndex,
-      )?.[0]
+      const candidateId = Object.entries(
+        templateResult.transform.boxIdToBoxIndex,
+      ).find(([, idx]) => idx === m.candidateBoxIndex)?.[0]
+      const targetId = Object.entries(
+        targetResult.transform.boxIdToBoxIndex,
+      ).find(([, idx]) => idx === m.targetBoxIndex)?.[0]
       if (candidateId && targetId) {
         map[candidateId] = targetId
       }
@@ -47,7 +55,10 @@ export class RenameMatchedTemplateBoxIdsSolver extends BaseSolver {
     return map
   }
 
-  private cloneAndRename(template: CircuitBuilder, idMap: Record<string, string>): CircuitBuilder {
+  private cloneAndRename(
+    template: CircuitBuilder,
+    idMap: Record<string, string>,
+  ): CircuitBuilder {
     const clone = template.clone()
 
     // Rename chips
@@ -87,7 +98,10 @@ export class RenameMatchedTemplateBoxIdsSolver extends BaseSolver {
     for (const match of this.matchedTemplates) {
       const idMap = this.getChipIdMap(match.template, match.netlist)
       const cloned = this.cloneAndRename(match.template, idMap)
-      this.outputRenamedTemplates.push({ template: cloned, netlist: match.netlist })
+      this.outputRenamedTemplates.push({
+        template: cloned,
+        netlist: match.netlist,
+      })
     }
     this.solved = true
   }

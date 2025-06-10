@@ -80,3 +80,8 @@ e.g. you could do `bun run debug_something.ts`
   complex logic inside the `*Solver` classes. Instead create helper methods
   inside the `lib/**/*` directory. For example, the `ScoreNetlistTemplatePairSolver`
   imports utility functions from `lib/matching/matching-utils/*`.
+
+## Before you're done
+
+- Run `bun run format` to format the code
+- Run `bunx tsc --noEmit` to check for type errors

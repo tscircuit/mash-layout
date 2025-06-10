@@ -68,9 +68,7 @@ export function drawMissingConnections(params: {
     const templateNetlist = template.getNetlist()
     const templateConnections = templateNetlist.connections || []
 
-    const fromChip = template.chips.find(
-      (c) => c.chipId === templateFromChipId,
-    )
+    const fromChip = template.chips.find((c) => c.chipId === templateFromChipId)
     const toChip = template.chips.find((c) => c.chipId === templateToChipId)
 
     const possibleFromPins = getPossiblePinNumbers(fromChip, fromPort.pinNumber)
@@ -84,7 +82,8 @@ export function drawMissingConnections(params: {
       for (const pf of possibleFromPins) {
         for (const pt of possibleToPins) {
           const hasFromChipPin = templateBoxPorts.some(
-            (port) => port.boxId === templateFromChipId && port.pinNumber === pf,
+            (port) =>
+              port.boxId === templateFromChipId && port.pinNumber === pf,
           )
           const hasToChipPin = templateBoxPorts.some(
             (port) => port.boxId === templateToChipId && port.pinNumber === pt,
