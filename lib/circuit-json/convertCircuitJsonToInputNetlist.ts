@@ -117,11 +117,11 @@ export const convertCircuitJsonToInputNetlist = (
   }
 
   const nets: Net[] = []
+  const netIds = new Set<string>()
 
   // For each connection, find the best name for the net and make it the
   // netId, then append it to the connection
   for (const connection of connections) {
-    if (connection.connectedPorts.length < 2) continue
     // The initial netId is just the connectivity_net_id, which is mostly
     // useless, we want to rename it to something the user specified in a
     // source_net or schematic_net_label
@@ -142,13 +142,38 @@ export const convertCircuitJsonToInputNetlist = (
     const isGround = upper === "GND" || upper === "AGND"
     const isPositivePower = /^V/i.test(netId)
 
+    // Only skip single-port connections if they're unnamed connectivity nets
+    if (
+      connection.connectedPorts.length < 2 &&
+      netId === connection._connectivityNetId
+    ) {
+      continue
+    }
+
     connection.connectedPorts.push({
       netId,
     })
-    const net: Net = { netId }
-    if (isGround) net.isGround = true
-    if (isPositivePower) net.isPositivePower = true
-    nets.push(net)
+
+    if (!netIds.has(netId)) {
+      const net: Net = { netId }
+      if (isGround) net.isGround = true
+      if (isPositivePower) net.isPositivePower = true
+      nets.push(net)
+      netIds.add(netId)
+    }
+  }
+
+  // Also add source_net elements that might not have connections
+  const sourceNets = items.filter((item) => item.type === "source_net") as any[]
+  for (const sourceNet of sourceNets) {
+    if (!netIds.has(sourceNet.name)) {
+      const net: Net = { netId: sourceNet.name }
+      const upper = sourceNet.name.toUpperCase()
+      if (upper === "GND" || upper === "AGND") net.isGround = true
+      if (/^V/i.test(sourceNet.name)) net.isPositivePower = true
+      nets.push(net)
+      netIds.add(sourceNet.name)
+    }
   }
 
   return {

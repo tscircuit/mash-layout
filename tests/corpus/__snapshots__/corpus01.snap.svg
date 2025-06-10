@@ -24,8 +24,8 @@
   " fill="rgba(255, 255, 255, 0.6)" stroke="rgb(132, 0, 0)" stroke-width="2.857142857142px"/><text class="net-label-text" x="157.14285714298" y="469.99999999999903" fill="rgb(132, 0, 0)" text-anchor="start" dominant-baseline="central" font-family="sans-serif" font-variant-numeric="tabular-nums" font-size="25.714285714278px" transform="rotate(90 157.14285714298 469.99999999999903)">connectivity_net0</text><path class="net-label" d="
     M 1042.8571428569999,142.85714285723998
     L 1050.5714285712834,127.42857142867318
-    L 1550.2095238092286,127.42857142867318
-    L 1550.2095238092286,158.28571428580676
+    L 1121.1047619045955,127.42857142867318
+    L 1121.1047619045955,158.28571428580676
     L 1050.5714285712834,158.28571428580676
     Z
-  " fill="rgba(255, 255, 255, 0.6)" stroke="rgb(132, 0, 0)" stroke-width="2.857142857142px"/><text class="net-label-text" x="1055.714285714139" y="142.85714285723998" fill="rgb(132, 0, 0)" text-anchor="start" dominant-baseline="central" font-family="sans-serif" font-variant-numeric="tabular-nums" font-size="25.714285714278px" transform="">ERROR: did not find netId using net index</text></svg>
+  " fill="rgba(255, 255, 255, 0.6)" stroke="rgb(132, 0, 0)" stroke-width="2.857142857142px"/><text class="net-label-text" x="1055.714285714139" y="142.85714285723998" fill="rgb(132, 0, 0)" text-anchor="start" dominant-baseline="central" font-family="sans-serif" font-variant-numeric="tabular-nums" font-size="25.714285714278px" transform="">GND</text></svg>
