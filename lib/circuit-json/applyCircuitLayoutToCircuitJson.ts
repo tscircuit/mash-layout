@@ -13,6 +13,7 @@ import type { CircuitBuilder } from "lib/builder"
 import type { InputNetlist } from "lib/input-types"
 import { cju } from "@tscircuit/circuit-json-util"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
+import { groupBy } from "lib/utils/groupBy"
 
 /**
  * Re-position/rotate schematic components in the circuit json to match the
@@ -177,28 +178,52 @@ export const applyCircuitLayoutToCircuitJson = (
     cj.push(...newSchematicNetLabels)
   }
 
-  // Create schematic_trace for each layout.lines
+  const linesByPath = groupBy(layout.lines, (ln) => ln.pathId!)
+
+  /* ------------------------------------------------------------------
+     2.  BUILD ONE schematic_trace PER PATH
+         – all segments that share a pathId form a single poly-line
+     ------------------------------------------------------------------ */
   const newSchematicTraces: SchematicTrace[] = []
-  for (const layoutLine of layout.lines) {
-    const newSchematicTrace: SchematicTrace = {
+
+  for (const [pathId, segments] of Object.entries(linesByPath)) {
+    /* Sort the segments so consecutive ones touch.
+       The serialiser already spits them out in order, but if you ever
+       allow re-ordering in the editor this keeps you safe.             */
+    segments.sort((a, b) => {
+      // quick & dirty: first compare start.x/y, then end.x/y
+      return (
+        a.start.x - b.start.x ||
+        a.start.y - b.start.y ||
+        a.end.x - b.end.x ||
+        a.end.y - b.end.y
+      )
+    })
+
+    const edges: SchematicTraceEdge[] = segments.map((seg) => ({
+      from: {
+        x: seg.start.x,
+        y: seg.start.y,
+        layer: "top", // or seg.layer if you later add it
+        route_type: "wire",
+        width: 0.1,
+      },
+      to: {
+        x: seg.end.x,
+        y: seg.end.y,
+        layer: "top",
+        route_type: "wire",
+        width: 0.1,
+      },
+    }))
+
+    newSchematicTraces.push({
       type: "schematic_trace",
-      edges: [
-        {
-          from: {
-            x: layoutLine.start.x,
-            y: layoutLine.start.y,
-          },
-          to: {
-            x: layoutLine.end.x,
-            y: layoutLine.end.y,
-          },
-        },
-      ],
-      schematic_trace_id: "asd",
-      source_trace_id: "asd",
+      schematic_trace_id: `sch_trace_${pathId}`, // ⇢ unique per path
+      source_trace_id: `source_trace_${pathId}`, // ⇢ no collisions
+      edges,
       junctions: [],
-    }
-    newSchematicTraces.push(newSchematicTrace)
+    })
   }
 
   cj = cj.filter((c) => c.type !== "schematic_trace")

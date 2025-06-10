@@ -13,6 +13,12 @@ export interface PinConnectionState {
   lastDy: number
 }
 
+export interface SerializedPinBuilder {
+  x: number
+  y: number
+  pinNumber: number
+}
+
 export class PinBuilder {
   /* location (absolute coords inside circuit grid) */
   x = 0
@@ -318,5 +324,13 @@ export class PinBuilder {
     this.lastDx = state.lastDx
     this.lastDy = state.lastDy
     this.pathId = this.circuit.addPath().pathId
+  }
+
+  serialize(): SerializedPinBuilder {
+    return {
+      x: this.x,
+      y: this.y,
+      pinNumber: this.pinNumber,
+    }
   }
 }
