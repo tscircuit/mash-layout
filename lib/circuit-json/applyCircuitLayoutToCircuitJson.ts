@@ -14,6 +14,8 @@ import type { InputNetlist } from "lib/input-types"
 import { cju } from "@tscircuit/circuit-json-util"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
 import { groupBy } from "lib/utils/groupBy"
+import { getFullConnectivityMapFromCircuitJson } from "circuit-json-to-connectivity-map"
+import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 
 /**
  * Re-position/rotate schematic components in the circuit json to match the
@@ -27,15 +29,24 @@ export const applyCircuitLayoutToCircuitJson = (
   // Work on a deep-clone so callers keep their original object intact
   let cj = structuredClone(circuitJson)
 
+  const connMap = getFullConnectivityMapFromCircuitJson(circuitJson)
   const layoutNetlist = layout.getNetlist()
   const layoutNorm = normalizeNetlist(layoutNetlist)
   const cjNorm = normalizeNetlist(circuitJsonNetlist)
 
+  const matchedBoxes = getMatchedBoxes({
+    candidateNetlist: layoutNorm.normalizedNetlist,
+    targetNetlist: cjNorm.normalizedNetlist,
+    candidateNormalizationTransform: layoutNorm.transform,
+    targetNormalizationTransform: cjNorm.transform,
+  })
+
   const layoutBoxIndexToBoxId = new Map<number, string>()
-  for (const [boxId, boxIndex] of Object.entries(
-    layoutNorm.transform.boxIdToBoxIndex,
-  )) {
-    layoutBoxIndexToBoxId.set(boxIndex, boxId)
+  for (const matchedBox of matchedBoxes) {
+    layoutBoxIndexToBoxId.set(
+      matchedBox.candidateBoxIndex,
+      matchedBox._targetBoxId!,
+    )
   }
 
   for (const schematicComponent of cju(cj).schematic_component.list()) {
