@@ -110,6 +110,10 @@ export function circuitBuilderFromLayoutJson(
     }
 
     if (pb) {
+      // Save the original pin position before drawing lines
+      const originalX = pb.x
+      const originalY = pb.y
+      
       for (let i = 1; i < segPoints.length; i++) {
         const p = segPoints[i]!
         pb.lineAt(p.x, p.y)
@@ -117,6 +121,10 @@ export function circuitBuilderFromLayoutJson(
       if (finalRef) {
         pb.lastCreatedLine!.end.ref = finalRef
       }
+      
+      // Restore the original pin position after drawing lines
+      pb.x = originalX
+      pb.y = originalY
     } else {
       throw new Error("Unimplemented handling of non-pin paths")
       // const pathId = C.addPath().pathId

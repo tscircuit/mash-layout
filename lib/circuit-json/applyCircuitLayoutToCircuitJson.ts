@@ -187,19 +187,6 @@ export const applyCircuitLayoutToCircuitJson = (
   const newSchematicTraces: SchematicTrace[] = []
 
   for (const [pathId, segments] of Object.entries(linesByPath)) {
-    /* Sort the segments so consecutive ones touch.
-       The serialiser already spits them out in order, but if you ever
-       allow re-ordering in the editor this keeps you safe.             */
-    segments.sort((a, b) => {
-      // quick & dirty: first compare start.x/y, then end.x/y
-      return (
-        a.start.x - b.start.x ||
-        a.start.y - b.start.y ||
-        a.end.x - b.end.x ||
-        a.end.y - b.end.y
-      )
-    })
-
     const edges: SchematicTraceEdge[] = segments.map((seg) => ({
       from: {
         x: seg.start.x,

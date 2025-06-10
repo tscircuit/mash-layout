@@ -16,7 +16,7 @@ test("corpus01 - template matching and basic structure", async () => {
 
   expect(circuitBuilder.toString()).toMatchInlineSnapshot(`
     "           0.0      
-     3.0    U1
+     3.0    U2
      2.8    ┌─────┐
      2.6 ┌──┤1   4├──N
      2.4 │  ┤2   3├
@@ -44,37 +44,30 @@ test("corpus01 - template matching and basic structure", async () => {
     [
       {
         "endX": -3.2,
-        "endY": 2.6,
-        "pathId": "PATH1",
-        "startX": -3.2,
-        "startY": 2.2,
-      },
-      {
-        "endX": -2.4000000000000004,
-        "endY": 2.6,
-        "pathId": "PATH1",
-        "startX": -3.2,
-        "startY": 2.6,
-      },
-      {
-        "endX": -1.6,
-        "endY": 2.6,
-        "pathId": "PATH1",
-        "startX": -2.4000000000000004,
-        "startY": 2.6,
-      },
-      {
-        "endX": -3.2,
         "endY": 0.4,
-        "pathId": "PATH2",
+        "pathId": "PATH1",
         "startX": -3.2,
         "startY": 1.2,
       },
       {
-        "endX": 2.9999999999999996,
+        "endX": 3,
+        "endY": 2.6,
+        "pathId": "PATH2",
+        "startX": 1.4000000000000001,
+        "startY": 2.6,
+      },
+      {
+        "endX": -3.2,
         "endY": 2.6,
         "pathId": "PATH3",
-        "startX": -1.6,
+        "startX": -1.4000000000000001,
+        "startY": 2.6,
+      },
+      {
+        "endX": -3.2,
+        "endY": 2.2,
+        "pathId": "PATH3",
+        "startX": -3.2,
         "startY": 2.6,
       },
     ]
@@ -85,91 +78,61 @@ test("corpus01 - template matching and basic structure", async () => {
       "circles": [
         {
           "center": {
-            "x": 2.9999999999999996,
-            "y": 2.6,
+            "x": -3.2,
+            "y": 1.2,
           },
-          "fill": "red",
+          "fill": "rgba(255,0,0,0.8)",
           "label": "Pin 1",
-          "radius": 0.1,
-        },
-        {
-          "center": {
-            "x": -1.6,
-            "y": 2.4000000000000004,
-          },
-          "fill": "red",
-          "label": "Pin 2",
-          "radius": 0.1,
-        },
-        {
-          "center": {
-            "x": 1.2000000000000002,
-            "y": 2.6,
-          },
-          "fill": "red",
-          "label": "Pin 3",
-          "radius": 0.1,
-        },
-        {
-          "center": {
-            "x": 1.2000000000000002,
-            "y": 2.4000000000000004,
-          },
-          "fill": "red",
-          "label": "Pin 4",
           "radius": 0.1,
         },
         {
           "center": {
             "x": -3.2,
-            "y": 0.4,
+            "y": 2.2,
           },
-          "fill": "red",
+          "fill": "rgba(255,0,0,0.8)",
+          "label": "Pin 2",
+          "radius": 0.1,
+        },
+        {
+          "center": {
+            "x": -1.4000000000000001,
+            "y": 2.6,
+          },
+          "fill": "rgba(255,0,0,0.8)",
           "label": "Pin 1",
           "radius": 0.1,
         },
         {
           "center": {
-            "x": -1.6,
+            "x": -1.4000000000000001,
+            "y": 2.4000000000000004,
+          },
+          "fill": "rgba(255,0,0,0.8)",
+          "label": "Pin 2",
+          "radius": 0.1,
+        },
+        {
+          "center": {
+            "x": 1.4000000000000001,
             "y": 2.6,
           },
-          "fill": "red",
-          "label": "Pin 2",
+          "fill": "rgba(255,0,0,0.8)",
+          "label": "Pin 3",
+          "radius": 0.1,
+        },
+        {
+          "center": {
+            "x": 1.4000000000000001,
+            "y": 2.4000000000000004,
+          },
+          "fill": "rgba(255,0,0,0.8)",
+          "label": "Pin 4",
           "radius": 0.1,
         },
       ],
       "coordinateSystem": "cartesian",
       "lines": [
-        {
-          "points": [
-            {
-              "x": -3.2,
-              "y": 2.2,
-            },
-            {
-              "x": -3.2,
-              "y": 2.6,
-            },
-            {
-              "x": -3.2,
-              "y": 2.6,
-            },
-            {
-              "x": -2.4000000000000004,
-              "y": 2.6,
-            },
-            {
-              "x": -2.4000000000000004,
-              "y": 2.6,
-            },
-            {
-              "x": -1.6,
-              "y": 2.6,
-            },
-          ],
-          "strokeColor": "black",
-          "strokeWidth": 0.05,
-        },
         {
           "points": [
             {
@@ -181,33 +144,55 @@ test("corpus01 - template matching and basic structure", async () => {
               "y": 0.4,
             },
           ],
-          "strokeColor": "black",
+          "strokeColor": "rgba(0,0,0,0.8)",
           "strokeWidth": 0.05,
         },
         {
           "points": [
             {
-              "x": -1.6,
+              "x": 1.4000000000000001,
               "y": 2.6,
             },
             {
-              "x": 2.9999999999999996,
+              "x": 3,
               "y": 2.6,
             },
           ],
-          "strokeColor": "black",
+          "strokeColor": "rgba(0,0,0,0.8)",
+          "strokeWidth": 0.05,
+        },
+        {
+          "points": [
+            {
+              "x": -1.4000000000000001,
+              "y": 2.6,
+            },
+            {
+              "x": -3.2,
+              "y": 2.6,
+            },
+            {
+              "x": -3.2,
+              "y": 2.6,
+            },
+            {
+              "x": -3.2,
+              "y": 2.2,
+            },
+          ],
+          "strokeColor": "rgba(0,0,0,0.8)",
           "strokeWidth": 0.05,
         },
       ],
       "points": [
         {
-          "color": "purple",
+          "color": "rgba(128,0,128,0.8)",
           "label": "NET1 (top)",
           "x": -3.2,
           "y": 0.4,
         },
         {
-          "color": "purple",
+          "color": "rgba(128,0,128,0.8)",
           "label": "NET2 (left)",
           "x": 3,
           "y": 2.6,
@@ -216,23 +201,23 @@ test("corpus01 - template matching and basic structure", async () => {
       "rects": [
         {
           "center": {
-            "x": -0.20000000000000018,
-            "y": 2.5000000000000004,
-          },
-          "fill": "lightblue",
-          "height": 0.8,
-          "label": "U1",
-          "width": 2.8,
-        },
-        {
-          "center": {
             "x": -3.2,
             "y": 1.7,
           },
-          "fill": "lightblue",
+          "fill": "rgba(173,216,230,0.8)",
           "height": 1,
           "label": "P1",
           "width": 0.2,
+        },
+        {
+          "center": {
+            "x": -0.0000000000000002220446049250313,
+            "y": 2.5,
+          },
+          "fill": "rgba(173,216,230,0.8)",
+          "height": 0.8,
+          "label": "U2",
+          "width": 2.8,
         },
       ],
       "title": "Circuit Layout Visualization",
@@ -248,7 +233,7 @@ test("corpus01 - template matching and basic structure", async () => {
 
   expect(circuitBuilder.toString()).toMatchInlineSnapshot(`
     "           0.0      
-     3.0    U1
+     3.0    U2
      2.8    ┌─────┐
      2.6 ┌──┤1   4├──N
      2.4 │  ┤2   3├

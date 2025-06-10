@@ -14,7 +14,7 @@ test("corpus01 - apply circuit operations", async () => {
 
   expect(circuitBuilder.toString()).toMatchInlineSnapshot(`
     "           0.0      
-     3.0    U1
+     3.0    U2
      2.8    ┌─────┐
      2.6 ┌──┤1   4├──N
      2.4 │  ┤2   3├
@@ -42,47 +42,12 @@ test("corpus01 - apply circuit operations", async () => {
     {
       "chips": [
         {
-          "bottomPinCount": 0,
-          "bottomPins": [],
-          "leftPinCount": 2,
-          "leftPins": [
-            {
-              "pinNumber": 1,
-              "x": 2.9999999999999996,
-              "y": 2.6,
-            },
-            {
-              "pinNumber": 2,
-              "x": -1.6,
-              "y": 2.4000000000000004,
-            },
-          ],
-          "marks": {},
-          "rightPinCount": 2,
-          "rightPins": [
-            {
-              "pinNumber": 3,
-              "x": 1.2000000000000002,
-              "y": 2.6,
-            },
-            {
-              "pinNumber": 4,
-              "x": 1.2000000000000002,
-              "y": 2.4000000000000004,
-            },
-          ],
-          "topPinCount": 0,
-          "topPins": [],
-          "x": -1.6,
-          "y": 2.1000000000000005,
-        },
-        {
           "bottomPinCount": 1,
           "bottomPins": [
             {
               "pinNumber": 1,
               "x": -3.2,
-              "y": 0.4,
+              "y": 1.2,
             },
           ],
           "leftPinCount": 0,
@@ -94,12 +59,47 @@ test("corpus01 - apply circuit operations", async () => {
           "topPins": [
             {
               "pinNumber": 2,
-              "x": -1.6,
-              "y": 2.6,
+              "x": -3.2,
+              "y": 2.2,
             },
           ],
           "x": -3.2,
           "y": 1.7,
+        },
+        {
+          "bottomPinCount": 0,
+          "bottomPins": [],
+          "leftPinCount": 2,
+          "leftPins": [
+            {
+              "pinNumber": 1,
+              "x": -1.4000000000000001,
+              "y": 2.6,
+            },
+            {
+              "pinNumber": 2,
+              "x": -1.4000000000000001,
+              "y": 2.4000000000000004,
+            },
+          ],
+          "marks": {},
+          "rightPinCount": 2,
+          "rightPins": [
+            {
+              "pinNumber": 3,
+              "x": 1.4000000000000001,
+              "y": 2.6,
+            },
+            {
+              "pinNumber": 4,
+              "x": 1.4000000000000001,
+              "y": 2.4000000000000004,
+            },
+          ],
+          "topPinCount": 0,
+          "topPins": [],
+          "x": -1.4000000000000001,
+          "y": 2.1,
         },
       ],
       "connectionPoints": [],
@@ -107,70 +107,13 @@ test("corpus01 - apply circuit operations", async () => {
         {
           "end": {
             "ref": {
-              "boxId": "P1",
-              "pinNumber": 2,
-            },
-            "x": -3.2,
-            "y": 2.6,
-          },
-          "pathId": "PATH1",
-          "start": {
-            "ref": {
-              "boxId": "P1",
-              "pinNumber": 2,
-            },
-            "x": -3.2,
-            "y": 2.2,
-          },
-        },
-        {
-          "end": {
-            "ref": {
-              "boxId": "P1",
-              "pinNumber": 2,
-            },
-            "x": -2.4000000000000004,
-            "y": 2.6,
-          },
-          "pathId": "PATH1",
-          "start": {
-            "ref": {
-              "boxId": "P1",
-              "pinNumber": 2,
-            },
-            "x": -3.2,
-            "y": 2.6,
-          },
-        },
-        {
-          "end": {
-            "ref": {
-              "boxId": "U1",
-              "pinNumber": 1,
-            },
-            "x": -1.6,
-            "y": 2.6,
-          },
-          "pathId": "PATH1",
-          "start": {
-            "ref": {
-              "boxId": "P1",
-              "pinNumber": 2,
-            },
-            "x": -2.4000000000000004,
-            "y": 2.6,
-          },
-        },
-        {
-          "end": {
-            "ref": {
               "netId": "NET1",
-              "netLabelId": "loaded-nl-f5fbca2d-46d4-4d7d-8fb2-4a3fe91f25b2-0",
+              "netLabelId": "loaded-nl-f52e651d-5a7a-4fc5-beb7-f94e64093efa-0",
             },
             "x": -3.2,
             "y": 0.4,
           },
-          "pathId": "PATH2",
+          "pathId": "PATH1",
           "start": {
             "ref": {
               "boxId": "P1",
@@ -184,18 +127,56 @@ test("corpus01 - apply circuit operations", async () => {
           "end": {
             "ref": {
               "netId": "NET2",
-              "netLabelId": "loaded-nl-94bc260e-ce15-4095-b4d5-91d9e73ef6a7-1",
+              "netLabelId": "loaded-nl-42be119e-1250-46ea-a62d-61f14a37ba8d-1",
             },
-            "x": 2.9999999999999996,
+            "x": 3,
+            "y": 2.6,
+          },
+          "pathId": "PATH2",
+          "start": {
+            "ref": {
+              "boxId": "U2",
+              "pinNumber": 3,
+            },
+            "x": 1.4000000000000001,
+            "y": 2.6,
+          },
+        },
+        {
+          "end": {
+            "ref": {
+              "boxId": "U2",
+              "pinNumber": 1,
+            },
+            "x": -3.2,
             "y": 2.6,
           },
           "pathId": "PATH3",
           "start": {
             "ref": {
-              "boxId": "U1",
+              "boxId": "U2",
               "pinNumber": 1,
             },
-            "x": -1.6,
+            "x": -1.4000000000000001,
+            "y": 2.6,
+          },
+        },
+        {
+          "end": {
+            "ref": {
+              "boxId": "P1",
+              "pinNumber": 2,
+            },
+            "x": -3.2,
+            "y": 2.2,
+          },
+          "pathId": "PATH3",
+          "start": {
+            "ref": {
+              "boxId": "U2",
+              "pinNumber": 1,
+            },
+            "x": -3.2,
             "y": 2.6,
           },
         },
@@ -215,8 +196,8 @@ test("corpus01 - apply circuit operations", async () => {
         {
           "anchorSide": "left",
           "fromRef": {
-            "boxId": "U1",
-            "pinNumber": 1,
+            "boxId": "U2",
+            "pinNumber": 3,
           },
           "netId": "NET2",
           "netLabelId": "NL2",
@@ -405,8 +386,8 @@ test("corpus01 - apply circuit operations", async () => {
       },
       {
         "center": {
-          "x": -0.20000000000000018,
-          "y": 2.5000000000000004,
+          "x": -0.0000000000000002220446049250313,
+          "y": 2.5,
         },
         "pin_spacing": 0.2,
         "pin_styles": undefined,
@@ -455,7 +436,7 @@ test("corpus01 - apply circuit operations", async () => {
       },
       {
         "center": {
-          "x": -1.6,
+          "x": -1.4000000000000001,
           "y": 2.5000000000000004,
         },
         "display_pin_label": undefined,
@@ -471,7 +452,7 @@ test("corpus01 - apply circuit operations", async () => {
       },
       {
         "center": {
-          "x": -1.6,
+          "x": -1.4000000000000001,
           "y": 2.3000000000000003,
         },
         "display_pin_label": undefined,
@@ -487,7 +468,7 @@ test("corpus01 - apply circuit operations", async () => {
       },
       {
         "center": {
-          "x": 1.1999999999999997,
+          "x": 1.3999999999999997,
           "y": 2.3000000000000003,
         },
         "display_pin_label": undefined,
@@ -503,7 +484,7 @@ test("corpus01 - apply circuit operations", async () => {
       },
       {
         "center": {
-          "x": 1.1999999999999997,
+          "x": 1.3999999999999997,
           "y": 2.5000000000000004,
         },
         "display_pin_label": undefined,
@@ -1035,9 +1016,9 @@ test("corpus01 - apply circuit operations", async () => {
           "x": -3.2,
           "y": 0.4,
         },
-        "schematic_net_label_id": "ERROR: did not find netId using net index",
+        "schematic_net_label_id": "connectivity_net0",
         "source_net_id": "NET1",
-        "text": "ERROR: did not find netId using net index",
+        "text": "connectivity_net0",
         "type": "schematic_net_label",
       },
       {
@@ -1050,66 +1031,10 @@ test("corpus01 - apply circuit operations", async () => {
           "x": 3,
           "y": 2.6,
         },
-        "schematic_net_label_id": "connectivity_net0",
+        "schematic_net_label_id": "ERROR: did not find netId using net index",
         "source_net_id": "NET2",
-        "text": "connectivity_net0",
+        "text": "ERROR: did not find netId using net index",
         "type": "schematic_net_label",
-      },
-      {
-        "edges": [
-          {
-            "from": {
-              "layer": "top",
-              "route_type": "wire",
-              "width": 0.1,
-              "x": -3.2,
-              "y": 2.2,
-            },
-            "to": {
-              "layer": "top",
-              "route_type": "wire",
-              "width": 0.1,
-              "x": -3.2,
-              "y": 2.6,
-            },
-          },
-          {
-            "from": {
-              "layer": "top",
-              "route_type": "wire",
-              "width": 0.1,
-              "x": -3.2,
-              "y": 2.6,
-            },
-            "to": {
-              "layer": "top",
-              "route_type": "wire",
-              "width": 0.1,
-              "x": -2.4000000000000004,
-              "y": 2.6,
-            },
-          },
-          {
-            "from": {
-              "layer": "top",
-              "route_type": "wire",
-              "width": 0.1,
-              "x": -2.4000000000000004,
-              "y": 2.6,
-            },
-            "to": {
-              "layer": "top",
-              "route_type": "wire",
-              "width": 0.1,
-              "x": -1.6,
-              "y": 2.6,
-            },
-          },
-        ],
-        "junctions": [],
-        "schematic_trace_id": "sch_trace_PATH1",
-        "source_trace_id": "source_trace_PATH1",
-        "type": "schematic_trace",
       },
       {
         "edges": [
@@ -1131,6 +1056,30 @@ test("corpus01 - apply circuit operations", async () => {
           },
         ],
         "junctions": [],
+        "schematic_trace_id": "sch_trace_PATH1",
+        "source_trace_id": "source_trace_PATH1",
+        "type": "schematic_trace",
+      },
+      {
+        "edges": [
+          {
+            "from": {
+              "layer": "top",
+              "route_type": "wire",
+              "width": 0.1,
+              "x": 1.4000000000000001,
+              "y": 2.6,
+            },
+            "to": {
+              "layer": "top",
+              "route_type": "wire",
+              "width": 0.1,
+              "x": 3,
+              "y": 2.6,
+            },
+          },
+        ],
+        "junctions": [],
         "schematic_trace_id": "sch_trace_PATH2",
         "source_trace_id": "source_trace_PATH2",
         "type": "schematic_trace",
@@ -1142,14 +1091,30 @@ test("corpus01 - apply circuit operations", async () => {
               "layer": "top",
               "route_type": "wire",
               "width": 0.1,
-              "x": -1.6,
+              "x": -3.2,
               "y": 2.6,
             },
             "to": {
               "layer": "top",
               "route_type": "wire",
               "width": 0.1,
-              "x": 2.9999999999999996,
+              "x": -3.2,
+              "y": 2.2,
+            },
+          },
+          {
+            "from": {
+              "layer": "top",
+              "route_type": "wire",
+              "width": 0.1,
+              "x": -1.4000000000000001,
+              "y": 2.6,
+            },
+            "to": {
+              "layer": "top",
+              "route_type": "wire",
+              "width": 0.1,
+              "x": -3.2,
               "y": 2.6,
             },
           },
