@@ -9,12 +9,12 @@ test("corpus01 - template matching and basic structure", async () => {
   const templateFn = () =>
     circuitBuilderFromLayoutJson(corpus1LayoutJson as any)
 
-  const { solver, laidOutCircuitJson } = await testTscircuitCodeForLayout(
-    corpus1Code,
-    {
+  const { solver, laidOutCircuitJson, adaptedOperations } =
+    await testTscircuitCodeForLayout(corpus1Code, {
       templateFns: [templateFn],
-    },
-  )
+    })
+
+  expect(adaptedOperations).toMatchInlineSnapshot(`[]`)
 
   expect(solver.getLayout()).toMatchInlineSnapshot(`
     {
@@ -28,7 +28,7 @@ test("corpus01 - template matching and basic structure", async () => {
           "pins": [
             {
               "pinNumber": 1,
-              "x": -1.6,
+              "x": 2.9999999999999996,
               "y": 2.6,
             },
             {
@@ -60,12 +60,12 @@ test("corpus01 - template matching and basic structure", async () => {
             {
               "pinNumber": 1,
               "x": -3.2,
-              "y": 1.2,
+              "y": 0.4,
             },
             {
               "pinNumber": 2,
-              "x": -3.2,
-              "y": 2.2,
+              "x": -1.6,
+              "y": 2.6,
             },
           ],
           "rightPinCount": 0,
@@ -75,7 +75,7 @@ test("corpus01 - template matching and basic structure", async () => {
       "junctions": [],
       "netLabels": [
         {
-          "anchorPosition": "left",
+          "anchorPosition": "top",
           "netId": "NET1",
           "netLabelId": "NL1",
           "x": -3.2,
@@ -85,7 +85,7 @@ test("corpus01 - template matching and basic structure", async () => {
           "anchorPosition": "left",
           "netId": "NET2",
           "netLabelId": "NL2",
-          "x": 1.8,
+          "x": 3,
           "y": 2.6,
         },
       ],
@@ -143,7 +143,7 @@ test("corpus01 - template matching and basic structure", async () => {
           ],
           "to": {
             "netId": "NET1",
-            "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
+            "netLabelId": "loaded-nl-f5fbca2d-46d4-4d7d-8fb2-4a3fe91f25b2-0",
           },
         },
         {
@@ -157,13 +157,13 @@ test("corpus01 - template matching and basic structure", async () => {
               "y": 2.6,
             },
             {
-              "x": 1.8000000000000003,
+              "x": 2.9999999999999996,
               "y": 2.6,
             },
           ],
           "to": {
             "netId": "NET2",
-            "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1",
+            "netLabelId": "loaded-nl-94bc260e-ce15-4095-b4d5-91d9e73ef6a7-1",
           },
         },
       ],

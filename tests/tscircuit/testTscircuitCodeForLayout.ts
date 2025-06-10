@@ -21,6 +21,7 @@ export const testTscircuitCodeForLayout = async (
   readableNetlist: string
   matchedTemplate: CircuitBuilder
   adaptedTemplate: CircuitBuilder
+  adaptedOperations: any[]
   originalSchematicSvg: string
   laidOutSchematicSvg: string
   solver: SchematicLayoutPipelineSolver
@@ -82,6 +83,8 @@ export const testTscircuitCodeForLayout = async (
     adaptedTemplate,
     originalSchematicSvg,
     laidOutSchematicSvg,
+    adaptedOperations:
+      solver.adaptPhaseSolver!.outputAdaptedTemplates[0]!.appliedOperations,
     solver,
   }
 }

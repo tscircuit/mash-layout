@@ -56,16 +56,16 @@
   "netLabels": [
     {
       "netId": "NET1",
-      "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
-      "anchorPosition": "left",
+      "netLabelId": "loaded-nl-f5fbca2d-46d4-4d7d-8fb2-4a3fe91f25b2-0",
+      "anchorPosition": "top",
       "x": -3.2,
       "y": 0.4
     },
     {
       "netId": "NET2",
-      "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1",
+      "netLabelId": "loaded-nl-94bc260e-ce15-4095-b4d5-91d9e73ef6a7-1",
       "anchorPosition": "left",
-      "x": 1.8,
+      "x": 3,
       "y": 2.6
     }
   ],
@@ -110,7 +110,7 @@
         "pinNumber": 1
       },
       "to": {
-        "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0"
+        "netLabelId": "loaded-nl-f5fbca2d-46d4-4d7d-8fb2-4a3fe91f25b2-0"
       }
     },
     {
@@ -120,7 +120,7 @@
           "y": 2.6
         },
         {
-          "x": 1.8,
+          "x": 3,
           "y": 2.6
         }
       ],
@@ -129,7 +129,7 @@
         "pinNumber": 1
       },
       "to": {
-        "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1"
+        "netLabelId": "loaded-nl-94bc260e-ce15-4095-b4d5-91d9e73ef6a7-1"
       }
     }
   ],

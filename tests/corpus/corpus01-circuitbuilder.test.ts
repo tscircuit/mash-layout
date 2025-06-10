@@ -14,12 +14,78 @@ test("corpus01 - template matching and basic structure", async () => {
     circuitBuilder.getLayoutJson(),
   )
 
+  expect(circuitBuilder.toString()).toMatchInlineSnapshot(`
+    "           0.0      
+     3.0    U1
+     2.8    ┌─────┐
+     2.6 ┌──┤1   4├──N
+     2.4 │  ┤2   3├
+     2.2 ┴  └─────┘
+     2.0
+     1.8 P1
+     1.6
+     1.4
+     1.2 ┬
+     1.0 │
+     0.8 │
+     0.6 │
+     0.4 N"
+  `)
+
+  expect(
+    circuitBuilder.lines.map((l) => ({
+      startX: l.start.x,
+      startY: l.start.y,
+      endX: l.end.x,
+      endY: l.end.y,
+      pathId: l.pathId,
+    })),
+  ).toMatchInlineSnapshot(`
+    [
+      {
+        "endX": -3.2,
+        "endY": 2.6,
+        "pathId": "PATH1",
+        "startX": -3.2,
+        "startY": 2.2,
+      },
+      {
+        "endX": -2.4000000000000004,
+        "endY": 2.6,
+        "pathId": "PATH1",
+        "startX": -3.2,
+        "startY": 2.6,
+      },
+      {
+        "endX": -1.6,
+        "endY": 2.6,
+        "pathId": "PATH1",
+        "startX": -2.4000000000000004,
+        "startY": 2.6,
+      },
+      {
+        "endX": -3.2,
+        "endY": 0.4,
+        "pathId": "PATH2",
+        "startX": -3.2,
+        "startY": 1.2,
+      },
+      {
+        "endX": 2.9999999999999996,
+        "endY": 2.6,
+        "pathId": "PATH3",
+        "startX": -1.6,
+        "startY": 2.6,
+      },
+    ]
+  `)
+
   expect(graphics).toMatchInlineSnapshot(`
     {
       "circles": [
         {
           "center": {
-            "x": -1.6,
+            "x": 2.9999999999999996,
             "y": 2.6,
           },
           "fill": "red",
@@ -56,7 +122,7 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "center": {
             "x": -3.2,
-            "y": 1.2,
+            "y": 0.4,
           },
           "fill": "red",
           "label": "Pin 1",
@@ -64,8 +130,8 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": -3.2,
-            "y": 2.2,
+            "x": -1.6,
+            "y": 2.6,
           },
           "fill": "red",
           "label": "Pin 2",
@@ -125,7 +191,7 @@ test("corpus01 - template matching and basic structure", async () => {
               "y": 2.6,
             },
             {
-              "x": 1.8000000000000003,
+              "x": 2.9999999999999996,
               "y": 2.6,
             },
           ],
@@ -136,14 +202,14 @@ test("corpus01 - template matching and basic structure", async () => {
       "points": [
         {
           "color": "purple",
-          "label": "NET1 (left)",
+          "label": "NET1 (top)",
           "x": -3.2,
           "y": 0.4,
         },
         {
           "color": "purple",
           "label": "NET2 (left)",
-          "x": 1.8,
+          "x": 3,
           "y": 2.6,
         },
       ],
@@ -179,4 +245,22 @@ test("corpus01 - template matching and basic structure", async () => {
       includeTextLabels: true,
     }),
   ).toMatchSvgSnapshot(import.meta.path)
+
+  expect(circuitBuilder.toString()).toMatchInlineSnapshot(`
+    "           0.0      
+     3.0    U1
+     2.8    ┌─────┐
+     2.6 ┌──┤1   4├──N
+     2.4 │  ┤2   3├
+     2.2 ┴  └─────┘
+     2.0
+     1.8 P1
+     1.6
+     1.4
+     1.2 ┬
+     1.0 │
+     0.8 │
+     0.6 │
+     0.4 N"
+  `)
 })

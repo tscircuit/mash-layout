@@ -1,4 +1,4 @@
-import { CircuitBuilder, circuit, PinBuilder } from "../builder"
+import { CircuitBuilder, circuit, PinBuilder, ChipBuilder } from "../builder"
 import type { PortReference, Side } from "../input-types"
 import type { CircuitLayoutJson } from "../output-types"
 
@@ -89,27 +89,27 @@ export function circuitBuilderFromLayoutJson(
     const fromIsPin = "boxId" in path.from && "pinNumber" in path.from
     const toIsPin = "boxId" in path.to && "pinNumber" in path.to
 
-    let pb: any | null = null
+    let pb: PinBuilder | null = null
     let segPoints = points
     let finalRef: PortReference | null = null
 
+    let chip: ChipBuilder
     if (fromIsPin) {
-      const chip = chipMap[(path.from as any).boxId]!
-      pb = new PinBuilder(chip, (path.from as any).pinNumber)
-      pb.pathId = C.addPath().pathId
+      chip = chipMap[(path.from as any).boxId]!
+      pb = chip.pin((path.from as any).pinNumber)
+      console.log("fromIsPin", path.from)
       finalRef = toRef
     } else if (toIsPin) {
-      const chip = chipMap[(path.to as any).boxId]!
-      pb = new PinBuilder(chip, (path.to as any).pinNumber)
-      pb.pathId = C.addPath().pathId
+      chip = chipMap[(path.to as any).boxId]!
+      console.log("toIsPin", path.to)
+      pb = chip.pin((path.to as any).pinNumber)
       segPoints = [...points].reverse()
       finalRef = fromRef
+    } else {
+      throw new Error("Unimplemented handling of non-pin paths")
     }
 
     if (pb) {
-      pb.x = segPoints[0]!.x
-      pb.y = segPoints[0]!.y
-
       for (let i = 1; i < segPoints.length; i++) {
         const p = segPoints[i]!
         pb.lineAt(p.x, p.y)
@@ -118,16 +118,17 @@ export function circuitBuilderFromLayoutJson(
         pb.lastCreatedLine!.end.ref = finalRef
       }
     } else {
-      const pathId = C.addPath().pathId
-      for (let i = 0; i < points.length - 1; i++) {
-        const start = points[i]!
-        const end = points[i + 1]!
-        C.lines.push({
-          start: { x: start.x, y: start.y, ref: fromRef },
-          end: { x: end.x, y: end.y, ref: toRef },
-          pathId,
-        })
-      }
+      throw new Error("Unimplemented handling of non-pin paths")
+      // const pathId = C.addPath().pathId
+      // for (let i = 0; i < points.length - 1; i++) {
+      //   const start = points[i]!
+      //   const end = points[i + 1]!
+      //   C.lines.push({
+      //     start: { x: start.x, y: start.y, ref: fromRef },
+      //     end: { x: end.x, y: end.y, ref: toRef },
+      //     pathId,
+      //   })
+      // }
     }
   }
 
