@@ -22,7 +22,7 @@ test("corpus template is used by solver", () => {
                0.0    
      3.0    U1
      2.8    ┌─────┐
-     2.6    ┤1   4├N
+     2.6  ──┤1   4├N
      2.4    ┤2   3├
      2.2 ┴  └─────┘
      2.0

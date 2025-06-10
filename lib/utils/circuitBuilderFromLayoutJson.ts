@@ -60,13 +60,17 @@ export function circuitBuilderFromLayoutJson(
 
   let pathCounter = 1
   for (const path of layout.paths) {
-    const start = path.points[0]!
-    const end = path.points[path.points.length - 1]!
-    C.lines.push({
-      start: { x: start.x, y: start.y, ref: path.from as PortReference },
-      end: { x: end.x, y: end.y, ref: path.to as PortReference },
-      pathId: `PATH${pathCounter++}`,
-    })
+    const points = path.points
+    for (let i = 0; i < points.length - 1; i++) {
+      const start = points[i]!
+      const end = points[i + 1]!
+      C.lines.push({
+        start: { x: start.x, y: start.y, ref: path.from as PortReference },
+        end: { x: end.x, y: end.y, ref: path.to as PortReference },
+        pathId: `PATH${pathCounter}`,
+      })
+    }
+    pathCounter++
   }
 
   return C
