@@ -44,20 +44,15 @@ export function circuitBuilderFromLayoutJson(
     netLabelIdToNetId[nl.netLabelId] = nl.netId
   }
   for (const path of layout.paths) {
-    const fromRef: PortReference =
-      "netLabelId" in path.from && !("netId" in path.from)
-        ? {
-            netLabelId: path.from.netLabelId,
-            netId: netLabelIdToNetId[path.from.netLabelId]!,
-          }
-        : (path.from as PortReference)
-    const toRef: PortReference =
-      "netLabelId" in path.to && !("netId" in path.to)
-        ? {
-            netLabelId: path.to.netLabelId,
-            netId: netLabelIdToNetId[path.to.netLabelId]!,
-          }
-        : (path.to as PortReference)
+    const fromRef: PortReference = path.from
+    const toRef: PortReference = path.to
+
+    if ("netLabelId" in fromRef) {
+      fromRef.netId ??= netLabelIdToNetId[fromRef.netLabelId]!
+    }
+    if ("netLabelId" in toRef) {
+      toRef.netId ??= netLabelIdToNetId[toRef.netLabelId]!
+    }
 
     if ("netLabelId" in path.to) {
       labelRefMap[path.to.netLabelId] = fromRef
@@ -81,20 +76,15 @@ export function circuitBuilderFromLayoutJson(
     const points = path.points
     if (points.length < 2) continue
 
-    const fromRef: PortReference =
-      "netLabelId" in path.from && !("netId" in path.from)
-        ? {
-            netLabelId: path.from.netLabelId,
-            netId: netLabelIdToNetId[path.from.netLabelId]!,
-          }
-        : (path.from as PortReference)
-    const toRef: PortReference =
-      "netLabelId" in path.to && !("netId" in path.to)
-        ? {
-            netLabelId: path.to.netLabelId,
-            netId: netLabelIdToNetId[path.to.netLabelId]!,
-          }
-        : (path.to as PortReference)
+    const fromRef: PortReference = path.from
+    const toRef: PortReference = path.to
+
+    if ("netLabelId" in fromRef) {
+      fromRef.netId ??= netLabelIdToNetId[fromRef.netLabelId]!
+    }
+    if ("netLabelId" in toRef) {
+      toRef.netId ??= netLabelIdToNetId[toRef.netLabelId]!
+    }
 
     const fromIsPin = "boxId" in path.from && "pinNumber" in path.from
     const toIsPin = "boxId" in path.to && "pinNumber" in path.to
