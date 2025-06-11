@@ -4,6 +4,7 @@ import { computeSimilarityDistanceFromIssues } from "./computeSimilarityDistance
 import { getIssuesForMatchedBoxes } from "./getIssuesForMatchedBoxes"
 import { findAllMissingConnectionBetweenBoxes } from "./matched-box-issue-finders/findAllMissingConnectionBetweenBoxes"
 import { getNetlistVariationWithPassiveRotation } from "./getNetlistVariationWithPassiveRotation"
+import { NormalizationTransform } from "lib/scoring/normalizeNetlist"
 
 export interface MatchedBox {
   targetBoxIndex: number
@@ -18,8 +19,15 @@ export interface MatchedBox {
 export function getMatchedBoxes(params: {
   candidateNetlist: NormalizedNetlist
   targetNetlist: NormalizedNetlist
+  candidateNormalizationTransform?: NormalizationTransform
+  targetNormalizationTransform?: NormalizationTransform
 }): MatchedBox[] {
-  const { candidateNetlist, targetNetlist } = params
+  const {
+    candidateNetlist,
+    targetNetlist,
+    candidateNormalizationTransform,
+    targetNormalizationTransform,
+  } = params
   const matchedBoxes: MatchedBox[] = []
 
   const usedCandidateBoxes = new Set<number>()
@@ -130,6 +138,17 @@ export function getMatchedBoxes(params: {
         score,
         targetBoxRotationCcw: rotation,
       })
+    }
+  }
+
+  if (candidateNormalizationTransform && targetNormalizationTransform) {
+    for (const matchedBox of matchedBoxes) {
+      matchedBox._targetBoxId =
+        targetNormalizationTransform.boxIndexToBoxId[matchedBox.targetBoxIndex]
+      matchedBox._candidateBoxId =
+        candidateNormalizationTransform.boxIndexToBoxId[
+          matchedBox.candidateBoxIndex
+        ]
     }
   }
 

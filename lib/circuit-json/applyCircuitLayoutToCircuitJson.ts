@@ -13,6 +13,9 @@ import type { CircuitBuilder } from "lib/builder"
 import type { InputNetlist } from "lib/input-types"
 import { cju } from "@tscircuit/circuit-json-util"
 import { normalizeNetlist } from "lib/scoring/normalizeNetlist"
+import { groupBy } from "lib/utils/groupBy"
+import { getFullConnectivityMapFromCircuitJson } from "circuit-json-to-connectivity-map"
+import { getMatchedBoxes } from "lib/matching/getMatchedBoxes"
 
 /**
  * Re-position/rotate schematic components in the circuit json to match the
@@ -26,15 +29,24 @@ export const applyCircuitLayoutToCircuitJson = (
   // Work on a deep-clone so callers keep their original object intact
   let cj = structuredClone(circuitJson)
 
+  const connMap = getFullConnectivityMapFromCircuitJson(circuitJson)
   const layoutNetlist = layout.getNetlist()
   const layoutNorm = normalizeNetlist(layoutNetlist)
   const cjNorm = normalizeNetlist(circuitJsonNetlist)
 
+  const matchedBoxes = getMatchedBoxes({
+    candidateNetlist: layoutNorm.normalizedNetlist,
+    targetNetlist: cjNorm.normalizedNetlist,
+    candidateNormalizationTransform: layoutNorm.transform,
+    targetNormalizationTransform: cjNorm.transform,
+  })
+
   const layoutBoxIndexToBoxId = new Map<number, string>()
-  for (const [boxId, boxIndex] of Object.entries(
-    layoutNorm.transform.boxIdToBoxIndex,
-  )) {
-    layoutBoxIndexToBoxId.set(boxIndex, boxId)
+  for (const matchedBox of matchedBoxes) {
+    layoutBoxIndexToBoxId.set(
+      matchedBox.candidateBoxIndex,
+      matchedBox._targetBoxId!,
+    )
   }
 
   for (const schematicComponent of cju(cj).schematic_component.list()) {
@@ -51,14 +63,15 @@ export const applyCircuitLayoutToCircuitJson = (
     const layoutBoxId = layoutBoxIndexToBoxId.get(boxIndex)!
 
     if (!layoutBoxId) {
-      console.warn(`${sourceComponent.name} was not laid out`)
+      // console.warn(`${sourceComponent.name} was not laid out`)
       continue
     }
 
     const layoutChip = layout.chips.find((c) => c.chipId === layoutBoxId)!
 
     if (!layoutChip) {
-      throw new Error(`Layout chip ${layoutBoxId} not found in layout.chips`)
+      continue
+      // throw new Error(`Layout chip ${layoutBoxId} not found in layout.chips`)
     }
 
     let cjChipWidth = layoutChip.getWidth() - 0.8
@@ -134,41 +147,62 @@ export const applyCircuitLayoutToCircuitJson = (
     }
   }
 
-  // const netIndexToLayoutNetId = new Map<number, string>()
-  // for (const [netId, netIndex] of Object.entries(
-  //   layoutNorm.transform.netIdToNetIndex,
-  // )) {
-  //   netIndexToLayoutNetId.set(netIndex, netId)
-  // }
-
-  const netIndexToCompositeNetId = new Map<number, string>()
-  for (const [netId, netIndex] of Object.entries(
-    cjNorm.transform.netIdToNetIndex,
-  )) {
-    netIndexToCompositeNetId.set(netIndex, netId)
-  }
-
   // Filter all existing schematic_net_label items
   cj = cj.filter((elm) => elm.type !== "schematic_net_label")
 
   // Create new schematic_net_label items from layout.netLabels
   const newSchematicNetLabels: SchematicNetLabel[] = []
   for (const layoutLabel of layout.netLabels) {
-    const netIndex = layoutNorm.transform.netIdToNetIndex[layoutLabel.netId]
-    const compositeNetId =
-      netIndexToCompositeNetId.get(netIndex!)! ??
-      "ERROR: did not find netId using net index"
+    // What pins does this layoutLabel connect to?
+
+    const fromRef = layoutLabel.fromRef
+    // e.g. { boxId: "R1", pinNumber: 1 }
+    // or { boxId: "U1", pinNumber: 3 }
+
+    if (!("boxId" in fromRef)) {
+      throw new Error("boxId not found in fromRef for label")
+    }
+
+    const matchedBox = matchedBoxes.find(
+      (mb) => mb._candidateBoxId === fromRef.boxId,
+    )
+    if (!matchedBox) {
+      throw new Error(
+        `${fromRef.boxId} was not laid out for net label ${layoutLabel.netLabelId}/${layoutLabel.netId}`,
+      )
+    }
+
+    // Find the connectivity net for this label on the target (the circuit json)
+    const cjChipId = matchedBox._targetBoxId
+
+    // Find the source_port_id for this pin in the circuit json
+    const source_component = cju(cj).source_component.getWhere({
+      name: cjChipId,
+    })
+    if (!source_component) continue
+
+    const source_port = cju(cj).source_port.getWhere({
+      source_component_id: source_component!.source_component_id,
+      pin_number: fromRef.pinNumber,
+    })
+    if (!source_port) continue
+
+    const source_net = cju(cj).source_net.getWhere({
+      subcircuit_connectivity_map_key:
+        source_port!.subcircuit_connectivity_map_key,
+    })
+    if (!source_net) continue
+
     const newLabel: SchematicNetLabel = {
       type: "schematic_net_label",
-      schematic_net_label_id: compositeNetId,
-      source_net_id: layoutLabel.netId, // Assumes layoutLabel.labelId is the source_net identifier
-      text:
-        compositeNetId.split(",").find((n) => !n.includes(".")) ??
-        compositeNetId, // The text to be displayed
+      schematic_net_label_id: layoutLabel.netLabelId,
+      source_net_id: source_net!.source_net_id,
+      text: source_net!.name,
       center: { x: layoutLabel.x, y: layoutLabel.y },
       anchor_position: { x: layoutLabel.x, y: layoutLabel.y }, // Typically same as center for labels
       anchor_side: layoutLabel.anchorSide,
     }
+
     newSchematicNetLabels.push(newLabel)
   }
 
@@ -177,28 +211,39 @@ export const applyCircuitLayoutToCircuitJson = (
     cj.push(...newSchematicNetLabels)
   }
 
-  // Create schematic_trace for each layout.lines
+  const linesByPath = groupBy(layout.lines, (ln) => ln.pathId!)
+
+  /* ------------------------------------------------------------------
+     2.  BUILD ONE schematic_trace PER PATH
+         – all segments that share a pathId form a single poly-line
+     ------------------------------------------------------------------ */
   const newSchematicTraces: SchematicTrace[] = []
-  for (const layoutLine of layout.lines) {
-    const newSchematicTrace: SchematicTrace = {
+
+  for (const [pathId, segments] of Object.entries(linesByPath)) {
+    const edges: SchematicTraceEdge[] = segments.map((seg) => ({
+      from: {
+        x: seg.start.x,
+        y: seg.start.y,
+        layer: "top", // or seg.layer if you later add it
+        route_type: "wire",
+        width: 0.1,
+      },
+      to: {
+        x: seg.end.x,
+        y: seg.end.y,
+        layer: "top",
+        route_type: "wire",
+        width: 0.1,
+      },
+    }))
+
+    newSchematicTraces.push({
       type: "schematic_trace",
-      edges: [
-        {
-          from: {
-            x: layoutLine.start.x,
-            y: layoutLine.start.y,
-          },
-          to: {
-            x: layoutLine.end.x,
-            y: layoutLine.end.y,
-          },
-        },
-      ],
-      schematic_trace_id: "asd",
-      source_trace_id: "asd",
+      schematic_trace_id: `sch_trace_${pathId}`, // ⇢ unique per path
+      source_trace_id: `source_trace_${pathId}`, // ⇢ no collisions
+      edges,
       junctions: [],
-    }
-    newSchematicTraces.push(newSchematicTrace)
+    })
   }
 
   cj = cj.filter((c) => c.type !== "schematic_trace")

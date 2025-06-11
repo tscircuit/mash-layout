@@ -599,6 +599,9 @@ export default () => (
               "boxId": "J1",
               "pinNumber": 7,
             },
+            {
+              "netId": "VUSB",
+            },
           ],
         },
         {
@@ -696,6 +699,9 @@ export default () => (
               "boxId": "R9",
               "pinNumber": 2,
             },
+            {
+              "netId": "DP",
+            },
           ],
         },
         {
@@ -705,10 +711,17 @@ export default () => (
               "boxId": "R10",
               "pinNumber": 2,
             },
+            {
+              "netId": "DM",
+            },
           ],
         },
       ],
       "nets": [
+        {
+          "isPositivePower": true,
+          "netId": "VUSB",
+        },
         {
           "netId": "connectivity_net8",
         },
@@ -725,6 +738,12 @@ export default () => (
           "isGround": true,
           "netId": "GND",
         },
+        {
+          "netId": "DP",
+        },
+        {
+          "netId": "DM",
+        },
       ],
     }
   `)
@@ -735,7 +754,7 @@ export default () => (
 
 
                           ┌────────────────┐
-                          │                │7                   
+                          │                │7  ── VUSB          
                           │                │6  ── R9.1,connecti…
                           │                │5  ── R10.1,connect…
                           │       J1       │4  ── R2.1,connecti…
@@ -746,12 +765,12 @@ export default () => (
 
 
                           ┌────────────────┐
-      J1.6,connecti… ──  1│       R9       │2                   
+      J1.6,connecti… ──  1│       R9       │2  ── DP            
                           └────────────────┘
 
 
                           ┌────────────────┐
-      J1.5,connecti… ──  1│      R10       │2                   
+      J1.5,connecti… ──  1│      R10       │2  ── DM            
                           └────────────────┘
 
 
@@ -922,7 +941,7 @@ export default () => (
                 "pinNumber": 1,
               },
               {
-                "netIndex": 4,
+                "netIndex": 5,
               },
             ],
           },
@@ -932,6 +951,9 @@ export default () => (
                 "boxIndex": 0,
                 "pinNumber": 7,
               },
+              {
+                "netIndex": 7,
+              },
             ],
           },
           {
@@ -940,6 +962,9 @@ export default () => (
                 "boxIndex": 3,
                 "pinNumber": 2,
               },
+              {
+                "netIndex": 4,
+              },
             ],
           },
           {
@@ -947,6 +972,9 @@ export default () => (
               {
                 "boxIndex": 4,
                 "pinNumber": 2,
+              },
+              {
+                "netIndex": 6,
               },
             ],
           },
@@ -977,6 +1005,21 @@ export default () => (
             "isPositivePower": undefined,
             "netIndex": 4,
           },
+          {
+            "isGround": undefined,
+            "isPositivePower": undefined,
+            "netIndex": 5,
+          },
+          {
+            "isGround": undefined,
+            "isPositivePower": undefined,
+            "netIndex": 6,
+          },
+          {
+            "isGround": undefined,
+            "isPositivePower": true,
+            "netIndex": 7,
+          },
         ],
       },
       "transform": {
@@ -995,18 +1038,24 @@ export default () => (
           "4": "R9",
         },
         "netIdToNetIndex": {
+          "DM": 4,
+          "DP": 6,
           "GND": 0,
+          "VUSB": 7,
           "connectivity_net14": 3,
           "connectivity_net22": 2,
           "connectivity_net25": 1,
-          "connectivity_net8": 4,
+          "connectivity_net8": 5,
         },
         "netIndexToNetId": {
           "0": "GND",
           "1": "connectivity_net25",
           "2": "connectivity_net22",
           "3": "connectivity_net14",
-          "4": "connectivity_net8",
+          "4": "DM",
+          "5": "connectivity_net8",
+          "6": "DP",
+          "7": "VUSB",
         },
       },
     }
@@ -1068,16 +1117,16 @@ export default () => (
       solver.adaptPhaseSolver.outputAdaptedTemplates[0].template.toString(),
     ).toMatchInlineSnapshot(`
       "     0.0         5.0      
-       2.4         V ┌───┬─┐
-       2.2         │ │   │ │
-       2.0         │ │   │ │
-       1.8 J1      │ │   │ │
-       1.6 ┌────┐  │ ├───R9P
-       1.4 │   7├──┘ │   │ │
-       1.2 │   6├────┤   │ │
-       1.0 │   5├────┼───R1M
-       0.8 │   4├────┼───┤
-       0.6 │   3├────┤  ┌┤
+       2.4     ┌───V───────┐
+       2.2     │   │       │
+       2.0     │   │       │
+       1.8 J1  │   │       │
+       1.6 ┌────┐  │ ┌───R9P
+       1.4 │   7├──┘ │     │
+       1.2 │   6├────┤     │
+       1.0 │   5├────┼──┬R1M
+       0.8 │   4├────┼──┼┐
+       0.6 │   3├────┤  ││
        0.4 │   2├┐   │  ││
        0.2 │   1├●   ┴  │┴
        0.0 └────┘│   │  │
@@ -1188,7 +1237,7 @@ export default () => (
         {
           "center": {
             "x": 7.5,
-            "y": 1.0000000000000004,
+            "y": 1.6,
           },
           "schematic_component_id": "schematic_component_1",
           "schematic_group_id": "schematic_group_0",
@@ -1204,7 +1253,7 @@ export default () => (
         {
           "center": {
             "x": 7.5,
-            "y": 1.6,
+            "y": 1.0000000000000004,
           },
           "schematic_component_id": "schematic_component_2",
           "schematic_group_id": "schematic_group_0",
@@ -1219,7 +1268,7 @@ export default () => (
         },
         {
           "center": {
-            "x": 7,
+            "x": 5,
             "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_3",
@@ -1235,7 +1284,7 @@ export default () => (
         },
         {
           "center": {
-            "x": 5,
+            "x": 7,
             "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_4",

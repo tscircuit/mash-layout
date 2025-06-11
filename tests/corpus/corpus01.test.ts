@@ -9,12 +9,12 @@ test("corpus01 - template matching and basic structure", async () => {
   const templateFn = () =>
     circuitBuilderFromLayoutJson(corpus1LayoutJson as any)
 
-  const { solver, laidOutCircuitJson } = await testTscircuitCodeForLayout(
-    corpus1Code,
-    {
+  const { solver, laidOutCircuitJson, adaptedTemplate, adaptedOperations } =
+    await testTscircuitCodeForLayout(corpus1Code, {
       templateFns: [templateFn],
-    },
-  )
+    })
+
+  expect(adaptedOperations).toMatchInlineSnapshot(`[]`)
 
   expect(solver.getLayout()).toMatchInlineSnapshot(`
     {
@@ -22,29 +22,29 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "bottomPinCount": 0,
           "boxId": "U1",
-          "centerX": -0.20000000000000018,
-          "centerY": 2.5000000000000004,
+          "centerX": 1.5999999999999999,
+          "centerY": 0.9000000000000001,
           "leftPinCount": 2,
           "pins": [
             {
               "pinNumber": 1,
-              "x": -1.6,
-              "y": 2.6,
+              "x": 0.2,
+              "y": 1,
             },
             {
               "pinNumber": 2,
-              "x": -1.6,
-              "y": 2.4000000000000004,
+              "x": 0.2,
+              "y": 0.8,
             },
             {
               "pinNumber": 3,
-              "x": 1.2000000000000002,
-              "y": 2.6,
+              "x": 3,
+              "y": 0.8,
             },
             {
               "pinNumber": 4,
-              "x": 1.2000000000000002,
-              "y": 2.4000000000000004,
+              "x": 3,
+              "y": 1,
             },
           ],
           "rightPinCount": 2,
@@ -53,19 +53,19 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "bottomPinCount": 1,
           "boxId": "R1",
-          "centerX": -3.2,
-          "centerY": 1.7,
+          "centerX": -1.2000000000000002,
+          "centerY": -0.30000000000000004,
           "leftPinCount": 0,
           "pins": [
             {
               "pinNumber": 1,
-              "x": -3.2,
-              "y": 1.2,
+              "x": -1.2000000000000002,
+              "y": -0.8,
             },
             {
               "pinNumber": 2,
-              "x": -3.2,
-              "y": 2.2,
+              "x": -1.2000000000000002,
+              "y": 0.19999999999999996,
             },
           ],
           "rightPinCount": 0,
@@ -75,21 +75,90 @@ test("corpus01 - template matching and basic structure", async () => {
       "junctions": [],
       "netLabels": [
         {
-          "anchorPosition": "left",
+          "anchorPosition": "top",
           "netId": "NET1",
           "netLabelId": "NL1",
-          "x": -3.2,
-          "y": 0.4,
+          "x": -1.2000000000000002,
+          "y": -1.2000000000000002,
         },
         {
           "anchorPosition": "left",
           "netId": "NET2",
           "netLabelId": "NL2",
-          "x": 1.8,
-          "y": 2.6,
+          "x": 3.8000000000000003,
+          "y": 1,
         },
       ],
-      "paths": [],
+      "paths": [
+        {
+          "from": {
+            "boxId": "R1",
+            "pinNumber": 2,
+          },
+          "points": [
+            {
+              "x": -1.2000000000000002,
+              "y": 0.19999999999999996,
+            },
+            {
+              "x": -1.2000000000000002,
+              "y": 1,
+            },
+            {
+              "x": -1.2000000000000002,
+              "y": 1,
+            },
+            {
+              "x": 0.19999999999999996,
+              "y": 1,
+            },
+          ],
+          "to": {
+            "boxId": "U1",
+            "pinNumber": 1,
+          },
+        },
+        {
+          "from": {
+            "boxId": "R1",
+            "pinNumber": 1,
+          },
+          "points": [
+            {
+              "x": -1.2000000000000002,
+              "y": -0.8,
+            },
+            {
+              "x": -1.2000000000000002,
+              "y": -1.2000000000000002,
+            },
+          ],
+          "to": {
+            "netId": "NET1",
+            "netLabelId": "netlabel-eaa8b88f-f9f9-452b-bbf6-c9318eb72225",
+          },
+        },
+        {
+          "from": {
+            "boxId": "U1",
+            "pinNumber": 4,
+          },
+          "points": [
+            {
+              "x": 3,
+              "y": 1,
+            },
+            {
+              "x": 3.8000000000000003,
+              "y": 1,
+            },
+          ],
+          "to": {
+            "netId": "NET2",
+            "netLabelId": "netlabel-1e260b94-3c7d-45f9-93fd-65f547ad4c1b",
+          },
+        },
+      ],
     }
   `)
 

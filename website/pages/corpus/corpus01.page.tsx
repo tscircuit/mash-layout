@@ -4,20 +4,23 @@ import { circuitBuilderFromLayoutJson } from "lib/index"
 
 export const corpus1Code = `
 export default () => (
-  <board width="10mm" height="10mm">
+  <board width="10mm" height="10mm" pcbDisabled routingDisabled>
     <chip
       name="U1"
       footprint="soic4"
       connections={{
-        pin1: ".R1 .pin1",
+        pin1: ".R1 .pin2",
+        pin4: "net.VCC"
       }}
     />
     <resistor
       resistance="1k"
       footprint="0402"
       name="R1"
+      schRotation="90deg"
+      schX={-2}
       connections={{
-        pin2: "net.GND",
+        pin1: "net.GND",
       }}
     />
   </board>

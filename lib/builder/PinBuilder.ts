@@ -13,6 +13,12 @@ export interface PinConnectionState {
   lastDy: number
 }
 
+export interface SerializedPinBuilder {
+  x: number
+  y: number
+  pinNumber: number
+}
+
 export class PinBuilder {
   /* location (absolute coords inside circuit grid) */
   x = 0
@@ -35,14 +41,34 @@ export class PinBuilder {
     return this.chip["circuit"]
   }
 
+  get lastLineEnd(): { x: number; y: number } {
+    if (this.lastCreatedLine) {
+      return { x: this.lastCreatedLine.end.x, y: this.lastCreatedLine.end.y }
+    }
+    if (this.fromJunctionId) {
+      const junction = this.circuit.connectionPoints.find(
+        (c) => c.junctionId === this.fromJunctionId,
+      )
+      if (!junction) {
+        throw new Error(`Junction ${this.fromJunctionId} not found`)
+      }
+      return {
+        x: junction!.x,
+        y: junction!.y,
+      }
+    }
+    return {
+      x: this.x,
+      y: this.y,
+    }
+  }
+
   line(dx: number, dy: number): this {
     if (!this.pathId) {
       this.pathId = this.circuit.addPath().pathId
     }
-    const start: Line["start"] = { x: this.x, y: this.y, ref: this.ref }
-    this.x += dx
-    this.y += dy
-    const end: Line["end"] = { x: this.x, y: this.y, ref: this.ref }
+    const start: Line["start"] = { ...this.lastLineEnd, ref: this.ref }
+    const end: Line["end"] = { x: start.x + dx, y: start.y + dy, ref: this.ref }
     if (this.fromJunctionId) {
       start.fromJunctionId = this.fromJunctionId
       end.fromJunctionId = this.fromJunctionId
@@ -56,8 +82,8 @@ export class PinBuilder {
   }
 
   lineAt(targetX: number, targetY: number): this {
-    const deltaX = targetX - this.x
-    const deltaY = targetY - this.y
+    const deltaX = targetX - this.lastLineEnd.x
+    const deltaY = targetY - this.lastLineEnd.y
 
     // If already at target, do nothing
     if (deltaX === 0 && deltaY === 0) {
@@ -99,7 +125,7 @@ export class PinBuilder {
   }
 
   pathTo(targetX: number, targetY: number): this {
-    const currentPos = { x: this.x, y: this.y }
+    const currentPos = this.lastLineEnd
     const targetPos = { x: targetX, y: targetY }
 
     // If already at target, do nothing
@@ -144,8 +170,8 @@ export class PinBuilder {
         // Draw lines along the calculated path
         for (let i = 1; i < path.length; i++) {
           const point = path[i]!
-          const deltaX = point.x - this.x
-          const deltaY = point.y - this.y
+          const deltaX = point.x - this.lastLineEnd.x
+          const deltaY = point.y - this.lastLineEnd.y
           this.line(deltaX, deltaY)
         }
         return this
@@ -154,8 +180,8 @@ export class PinBuilder {
 
     // Fall back to smart heuristic routing
     const waypoint = findClearWaypoint(
-      this.x,
-      this.y,
+      this.lastLineEnd.x,
+      this.lastLineEnd.y,
       targetX,
       targetY,
       this.circuit,
@@ -200,10 +226,10 @@ export class PinBuilder {
     const halfHeight = passive.getHeight() / 2
     // Project by the dimension aligned with the movement direction
     const centerX =
-      this.x +
+      this.lastLineEnd.x +
       Math.sign(this.lastDx) * (Math.abs(this.lastDx) > 0 ? halfWidth : 0)
     const centerY =
-      this.y +
+      this.lastLineEnd.y +
       Math.sign(this.lastDy) * (Math.abs(this.lastDy) > 0 ? halfHeight : 0)
     passive.at(centerX, centerY)
 
@@ -231,8 +257,8 @@ export class PinBuilder {
     const netId = text ?? this.circuit.generateAutoLabel()
     const netLabel = this.circuit.addNetLabel({
       netId: netId,
-      x: this.x,
-      y: this.y,
+      x: this.lastLineEnd.x,
+      y: this.lastLineEnd.y,
       anchorSide:
         this.lastDx > 0
           ? "left"
@@ -257,8 +283,8 @@ export class PinBuilder {
   connect(): this {
     this.circuit.addJunction({
       pinRef: this.ref,
-      x: this.x,
-      y: this.y,
+      x: this.lastLineEnd.x,
+      y: this.lastLineEnd.y,
     })
     return this
   }
@@ -266,8 +292,8 @@ export class PinBuilder {
   intersect(): this {
     const junction = this.circuit.addJunction({
       pinRef: this.ref,
-      x: this.x,
-      y: this.y,
+      x: this.lastLineEnd.x,
+      y: this.lastLineEnd.y,
       showAsIntersection: true,
     })
     this.lastCreatedLine!.end.fromJunctionId = junction.junctionId
@@ -302,8 +328,8 @@ export class PinBuilder {
   getMarkableState(): PinConnectionState {
     // TODO: Implement getMarkableState
     return {
-      x: this.x,
-      y: this.y,
+      x: this.lastLineEnd.x,
+      y: this.lastLineEnd.y,
       lastConnected: this.lastConnected,
       lastDx: this.lastDx,
       lastDy: this.lastDy,
@@ -311,12 +337,18 @@ export class PinBuilder {
   }
 
   applyMarkableState(state: PinConnectionState): void {
-    // TODO: Implement applyMarkableState
-    this.x = state.x
-    this.y = state.y
     this.lastConnected = state.lastConnected
     this.lastDx = state.lastDx
     this.lastDy = state.lastDy
     this.pathId = this.circuit.addPath().pathId
+    this.lastCreatedLine = null
+  }
+
+  serialize(): SerializedPinBuilder {
+    return {
+      x: this.x,
+      y: this.y,
+      pinNumber: this.pinNumber,
+    }
   }
 }

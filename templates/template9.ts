@@ -48,6 +48,7 @@ export default () => {
   U3.pin(10).line(3, 0).label()
   U3.pin(11).line(3, 0).label()
   U3.pin(12).line(1, 0).mark("rightOfNCS").line(2, 0).label()
+  console.log("OK START")
   U3.fromMark("rightOfNCS")
     .line(0, 0.2)
     .passive("R11")

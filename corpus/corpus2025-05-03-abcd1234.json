@@ -6,28 +6,28 @@
       "rightPinCount": 2,
       "topPinCount": 0,
       "bottomPinCount": 0,
-      "centerX": -0.20000000000000018,
-      "centerY": 2.5000000000000004,
+      "centerX": 1.5999999999999999,
+      "centerY": 0.9000000000000001,
       "pins": [
         {
           "pinNumber": 1,
-          "x": -1.6,
-          "y": 2.6
-        },
-        {
-          "pinNumber": 2,
-          "x": -1.6,
-          "y": 2.4000000000000004
-        },
-        {
-          "pinNumber": 3,
-          "x": 1.2000000000000002,
-          "y": 2.6
+          "x": 0.2,
+          "y": 1
         },
         {
           "pinNumber": 4,
-          "x": 1.2000000000000002,
-          "y": 2.4000000000000004
+          "x": 3,
+          "y": 1
+        },
+        {
+          "pinNumber": 2,
+          "x": 0.2,
+          "y": 0.8
+        },
+        {
+          "pinNumber": 3,
+          "x": 3,
+          "y": 0.8
         }
       ]
     },
@@ -37,18 +37,18 @@
       "rightPinCount": 0,
       "topPinCount": 1,
       "bottomPinCount": 1,
-      "centerX": -3.2,
-      "centerY": 1.7,
+      "centerX": -1.2000000000000002,
+      "centerY": -0.30000000000000004,
       "pins": [
         {
           "pinNumber": 2,
-          "x": -3.2,
-          "y": 2.2
+          "x": -1.2000000000000002,
+          "y": 0.19999999999999996
         },
         {
           "pinNumber": 1,
-          "x": -3.2,
-          "y": 1.2
+          "x": -1.2000000000000002,
+          "y": -0.8
         }
       ]
     }
@@ -56,33 +56,33 @@
   "netLabels": [
     {
       "netId": "NET1",
-      "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0",
-      "anchorPosition": "left",
-      "x": -3.2,
-      "y": 0.4
+      "netLabelId": "netlabel-eaa8b88f-f9f9-452b-bbf6-c9318eb72225",
+      "anchorPosition": "top",
+      "x": -1.2000000000000002,
+      "y": -1.2000000000000002
     },
     {
       "netId": "NET2",
-      "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1",
+      "netLabelId": "netlabel-1e260b94-3c7d-45f9-93fd-65f547ad4c1b",
       "anchorPosition": "left",
-      "x": 1.8,
-      "y": 2.6
+      "x": 3.8000000000000003,
+      "y": 1
     }
   ],
   "paths": [
     {
       "points": [
         {
-          "x": -3.2,
-          "y": 2.2
+          "x": -1.2000000000000002,
+          "y": 0.19999999999999996
         },
         {
-          "x": -2.4000000000000004,
-          "y": 2.6
+          "x": -1.2000000000000002,
+          "y": 1
         },
         {
-          "x": -1.6,
-          "y": 2.6
+          "x": 0.2,
+          "y": 1
         }
       ],
       "from": {
@@ -97,12 +97,12 @@
     {
       "points": [
         {
-          "x": -3.2,
-          "y": 1.2
+          "x": -1.2000000000000002,
+          "y": -0.8
         },
         {
-          "x": -3.2,
-          "y": 0.4
+          "x": -1.2000000000000002,
+          "y": -1.2000000000000002
         }
       ],
       "from": {
@@ -110,26 +110,26 @@
         "pinNumber": 1
       },
       "to": {
-        "netLabelId": "loaded-nl-e89d34ed-c264-4102-a8d1-c9610c6261a7-0"
+        "netLabelId": "netlabel-eaa8b88f-f9f9-452b-bbf6-c9318eb72225"
       }
     },
     {
       "points": [
         {
-          "x": -1.6,
-          "y": 2.6
+          "x": 3,
+          "y": 1
         },
         {
-          "x": 1.8,
-          "y": 2.6
+          "x": 3.8000000000000003,
+          "y": 1
         }
       ],
       "from": {
         "boxId": "U1",
-        "pinNumber": 1
+        "pinNumber": 4
       },
       "to": {
-        "netLabelId": "loaded-nl-ec21e938-ff10-44b0-9667-1b414aff2a1e-1"
+        "netLabelId": "netlabel-1e260b94-3c7d-45f9-93fd-65f547ad4c1b"
       }
     }
   ],

@@ -1,6 +1,27 @@
 import { GraphicsObject } from "graphics-debug"
 import { CircuitLayoutJson } from "lib/output-types"
 
+// Helper to convert color names to rgba with 0.8 opacity
+const colorToRgba = (color: string): string => {
+  switch (color) {
+    case "orange":
+      return "rgba(255,165,0,0.8)"
+    case "lightblue":
+      return "rgba(173,216,230,0.8)"
+    case "red":
+      return "rgba(255,0,0,0.8)"
+    case "black":
+      return "rgba(0,0,0,0.8)"
+    case "green":
+      return "rgba(0,128,0,0.8)"
+    case "purple":
+      return "rgba(128,0,128,0.8)"
+    default:
+      // fallback: just return the color as-is (could be already rgba)
+      return color
+  }
+}
+
 export const convertCircuitLayoutToGraphics = (
   circuitLayout: CircuitLayoutJson,
 ) => {
@@ -80,8 +101,8 @@ export const convertCircuitLayoutToGraphics = (
         box.boxId.startsWith("R") ||
         box.boxId.startsWith("C") ||
         box.boxId.startsWith("L")
-          ? "orange"
-          : "lightblue",
+          ? colorToRgba("orange")
+          : colorToRgba("lightblue"),
       label: box.boxId,
     })
 
@@ -93,7 +114,7 @@ export const convertCircuitLayoutToGraphics = (
           y: pin.y,
         },
         radius: 0.1,
-        fill: "red",
+        fill: colorToRgba("red"),
         label: `Pin ${pin.pinNumber}`,
       })
     }
@@ -104,7 +125,7 @@ export const convertCircuitLayoutToGraphics = (
     if (path.points.length >= 2) {
       graphics.lines.push({
         points: path.points,
-        strokeColor: "black",
+        strokeColor: colorToRgba("black"),
         strokeWidth: 0.05,
       })
     }
@@ -118,7 +139,7 @@ export const convertCircuitLayoutToGraphics = (
         y: junction.y,
       },
       radius: 0.15,
-      fill: "green",
+      fill: colorToRgba("green"),
       label: junction.junctionId,
     })
   }
@@ -128,7 +149,7 @@ export const convertCircuitLayoutToGraphics = (
     graphics.points.push({
       x: netLabel.x,
       y: netLabel.y,
-      color: "purple",
+      color: colorToRgba("purple"),
       label: `${netLabel.netId} (${netLabel.anchorPosition})`,
     })
   }

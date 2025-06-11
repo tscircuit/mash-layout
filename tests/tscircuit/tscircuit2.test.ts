@@ -78,7 +78,7 @@ export default () => (
                           ┌────────────────┐
       R1.1,connecti… ──  1│                │8  ── R2.2,R3.2,VCC 
       R2.1,connecti… ──  2│       U1       │7  ── R3.1,D1       
-                         3│                │6                   
+                         3│                │6  ── D0            
                          4│                │5  ── R1.2,GND      
                           └────────────────┘
 
@@ -495,6 +495,9 @@ export default () => (
                 "boxIndex": 0,
                 "pinNumber": 6,
               },
+              {
+                "netIndex": 5,
+              },
             ],
           },
           {
@@ -558,6 +561,11 @@ export default () => (
             "isPositivePower": undefined,
             "netIndex": 4,
           },
+          {
+            "isGround": undefined,
+            "isPositivePower": undefined,
+            "netIndex": 5,
+          },
         ],
       },
       "transform": {
@@ -574,6 +582,7 @@ export default () => (
           "3": "R3",
         },
         "netIdToNetIndex": {
+          "D0": 5,
           "D1": 4,
           "GND": 1,
           "VCC": 3,
@@ -586,6 +595,7 @@ export default () => (
           "2": "connectivity_net19",
           "3": "VCC",
           "4": "D1",
+          "5": "D0",
         },
       },
     }

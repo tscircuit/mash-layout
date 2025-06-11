@@ -1,4 +1,4 @@
-import { CircuitBuilder, circuit } from "../builder"
+import { CircuitBuilder, circuit, PinBuilder, ChipBuilder } from "../builder"
 import type { PortReference, Side } from "../input-types"
 import type { CircuitLayoutJson } from "../output-types"
 
@@ -7,6 +7,7 @@ export function circuitBuilderFromLayoutJson(
 ): CircuitBuilder {
   const C = circuit({ name: "corpus" })
 
+  const chipMap: Record<string, ReturnType<CircuitBuilder["chip"]>> = {}
   for (const box of layout.boxes) {
     const totalPins =
       box.leftPinCount +
@@ -15,6 +16,7 @@ export function circuitBuilderFromLayoutJson(
       box.bottomPinCount
     const isPassive = totalPins === 2
     const chip = isPassive ? C.passive(box.boxId) : C.chip(box.boxId)
+    chipMap[box.boxId] = chip
     // Pin creation order matters for CCW numbering: left, bottom, right, top
     if (box.leftPinCount) chip.leftpins(box.leftPinCount)
     if (box.bottomPinCount) chip.bottompins(box.bottomPinCount)
@@ -37,9 +39,21 @@ export function circuitBuilderFromLayoutJson(
   }
 
   const labelRefMap: Record<string, PortReference> = {}
+  const netLabelIdToNetId: Record<string, string> = {}
+  for (const nl of layout.netLabels) {
+    netLabelIdToNetId[nl.netLabelId] = nl.netId
+  }
   for (const path of layout.paths) {
-    const fromRef = path.from as PortReference
-    const toRef = path.to as PortReference
+    const fromRef: PortReference = path.from
+    const toRef: PortReference = path.to
+
+    if ("netLabelId" in fromRef) {
+      fromRef.netId ??= netLabelIdToNetId[fromRef.netLabelId]!
+    }
+    if ("netLabelId" in toRef) {
+      toRef.netId ??= netLabelIdToNetId[toRef.netLabelId]!
+    }
+
     if ("netLabelId" in path.to) {
       labelRefMap[path.to.netLabelId] = fromRef
     }
@@ -58,15 +72,62 @@ export function circuitBuilderFromLayoutJson(
     })
   }
 
-  let pathCounter = 1
   for (const path of layout.paths) {
-    const start = path.points[0]!
-    const end = path.points[path.points.length - 1]!
-    C.lines.push({
-      start: { x: start.x, y: start.y, ref: path.from as PortReference },
-      end: { x: end.x, y: end.y, ref: path.to as PortReference },
-      pathId: `PATH${pathCounter++}`,
-    })
+    const points = path.points
+    if (points.length < 2) continue
+
+    const fromRef: PortReference = path.from
+    const toRef: PortReference = path.to
+
+    if ("netLabelId" in fromRef) {
+      fromRef.netId ??= netLabelIdToNetId[fromRef.netLabelId]!
+    }
+    if ("netLabelId" in toRef) {
+      toRef.netId ??= netLabelIdToNetId[toRef.netLabelId]!
+    }
+
+    const fromIsPin = "boxId" in path.from && "pinNumber" in path.from
+    const toIsPin = "boxId" in path.to && "pinNumber" in path.to
+
+    let pb: PinBuilder | null = null
+    let segPoints = points
+    let finalRef: PortReference | null = null
+
+    let chip: ChipBuilder
+    if (fromIsPin) {
+      chip = chipMap[(path.from as any).boxId]!
+      pb = chip.pin((path.from as any).pinNumber)
+      finalRef = toRef
+    } else if (toIsPin) {
+      chip = chipMap[(path.to as any).boxId]!
+      pb = chip.pin((path.to as any).pinNumber)
+      segPoints = [...points].reverse()
+      finalRef = fromRef
+    } else {
+      throw new Error("Unimplemented handling of non-pin paths")
+    }
+
+    if (pb) {
+      for (let i = 1; i < segPoints.length; i++) {
+        const p = segPoints[i]!
+        pb.lineAt(p.x, p.y)
+      }
+      if (finalRef) {
+        pb.lastCreatedLine!.end.ref = finalRef
+      }
+    } else {
+      throw new Error("Unimplemented handling of non-pin paths")
+      // const pathId = C.addPath().pathId
+      // for (let i = 0; i < points.length - 1; i++) {
+      //   const start = points[i]!
+      //   const end = points[i + 1]!
+      //   C.lines.push({
+      //     start: { x: start.x, y: start.y, ref: fromRef },
+      //     end: { x: end.x, y: end.y, ref: toRef },
+      //     pathId,
+      //   })
+      // }
+    }
   }
 
   return C

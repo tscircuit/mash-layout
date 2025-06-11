@@ -1,4 +1,4 @@
-import type { Side } from "."
+import type { SerializedPinBuilder, Side } from "."
 import { PinBuilder } from "./PinBuilder"
 import type { CircuitBuilder } from "./CircuitBuilder/CircuitBuilder"
 import { getPinSideIndex } from "./getPinSideIndex"
@@ -7,6 +7,21 @@ interface MakePinParams {
   side: Side
   indexOnSide: number
   ccwPinNumber: number
+}
+
+export interface SerializedChipBuilder {
+  x: number
+  y: number
+  leftPinCount: number
+  rightPinCount: number
+  topPinCount: number
+  bottomPinCount: number
+
+  leftPins: SerializedPinBuilder[]
+  rightPins: SerializedPinBuilder[]
+  topPins: SerializedPinBuilder[]
+  bottomPins: SerializedPinBuilder[]
+  marks: Record<string, { pinBuilder: SerializedPinBuilder; state: any }>
 }
 
 export class ChipBuilder {
@@ -343,5 +358,26 @@ export class ChipBuilder {
     pinNumber += indexOnSide
 
     return pinNumber
+  }
+
+  serialize(): SerializedChipBuilder {
+    return {
+      x: this.x,
+      y: this.y,
+      leftPinCount: this.leftPinCount,
+      rightPinCount: this.rightPinCount,
+      topPinCount: this.topPinCount,
+      bottomPinCount: this.bottomPinCount,
+      leftPins: this.leftPins.map((p) => p.serialize()),
+      rightPins: this.rightPins.map((p) => p.serialize()),
+      topPins: this.topPins.map((p) => p.serialize()),
+      bottomPins: this.bottomPins.map((p) => p.serialize()),
+      marks: Object.fromEntries(
+        Object.entries(this.marks).map(([name, { pinBuilder, state }]) => [
+          name,
+          { pinBuilder: pinBuilder.serialize(), state },
+        ]),
+      ),
+    }
   }
 }

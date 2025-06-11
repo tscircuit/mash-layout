@@ -261,6 +261,9 @@ export default () => (
               "boxId": "U1",
               "pinNumber": 3,
             },
+            {
+              "netId": "GND1",
+            },
           ],
         },
         {
@@ -279,12 +282,21 @@ export default () => (
               "boxId": "R1",
               "pinNumber": 2,
             },
+            {
+              "netId": "GND2",
+            },
           ],
         },
       ],
       "nets": [
         {
           "netId": "connectivity_net0",
+        },
+        {
+          "netId": "GND1",
+        },
+        {
+          "netId": "GND2",
         },
       ],
     }
@@ -298,12 +310,12 @@ export default () => (
 
                           ┌────────────────┐
       R1.1,connecti… ──  1│       U1       │4                   
-                         2│                │3                   
+                         2│                │3  ── GND1          
                           └────────────────┘
 
 
                           ┌────────────────┐
-      U1.1,connecti… ──  1│       R1       │2                   
+      U1.1,connecti… ──  1│       R1       │2  ── GND2          
                           └────────────────┘
 
     Complex Connections (more than 2 points):
@@ -391,6 +403,9 @@ export default () => (
                 "boxIndex": 0,
                 "pinNumber": 3,
               },
+              {
+                "netIndex": 2,
+              },
             ],
           },
           {
@@ -407,6 +422,9 @@ export default () => (
                 "boxIndex": 1,
                 "pinNumber": 2,
               },
+              {
+                "netIndex": 1,
+              },
             ],
           },
         ],
@@ -415,6 +433,16 @@ export default () => (
             "isGround": undefined,
             "isPositivePower": undefined,
             "netIndex": 0,
+          },
+          {
+            "isGround": undefined,
+            "isPositivePower": undefined,
+            "netIndex": 1,
+          },
+          {
+            "isGround": undefined,
+            "isPositivePower": undefined,
+            "netIndex": 2,
           },
         ],
       },
@@ -428,10 +456,14 @@ export default () => (
           "1": "R1",
         },
         "netIdToNetIndex": {
+          "GND1": 2,
+          "GND2": 1,
           "connectivity_net0": 0,
         },
         "netIndexToNetId": {
           "0": "connectivity_net0",
+          "1": "GND2",
+          "2": "GND1",
         },
       },
     }
@@ -555,18 +587,18 @@ export default () => (
       },
       {
         "center": {
-          "x": -1.5,
-          "y": 0.4,
+          "x": -3,
+          "y": 0,
         },
         "schematic_component_id": "schematic_component_1",
         "schematic_group_id": "schematic_group_0",
         "size": {
-          "height": 1,
-          "width": 1,
+          "height": 0.388910699999999,
+          "width": 1.0583332999999997,
         },
         "source_component_id": "source_component_1",
         "symbol_display_value": "1kΩ",
-        "symbol_name": "boxresistor_left",
+        "symbol_name": "boxresistor_right",
         "type": "schematic_component",
       },
     ]

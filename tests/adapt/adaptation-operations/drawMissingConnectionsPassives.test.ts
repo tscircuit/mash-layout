@@ -10,14 +10,31 @@ test("drawMissingConnections skips drawing lines when passive pins are swapped",
 
   const target: InputNetlist = {
     boxes: [
-      { boxId: "U1", leftPinCount: 1, rightPinCount: 1, topPinCount: 0, bottomPinCount: 0 },
-      { boxId: "R1", leftPinCount: 1, rightPinCount: 1, topPinCount: 0, bottomPinCount: 0 },
+      {
+        boxId: "U1",
+        leftPinCount: 1,
+        rightPinCount: 1,
+        topPinCount: 0,
+        bottomPinCount: 0,
+      },
+      {
+        boxId: "R1",
+        leftPinCount: 1,
+        rightPinCount: 1,
+        topPinCount: 0,
+        bottomPinCount: 0,
+      },
     ],
     connections: [
-      { connectedPorts: [ { boxId: "U1", pinNumber: 1 }, { boxId: "R1", pinNumber: 1 } ] },
-      { connectedPorts: [ { boxId: "R1", pinNumber: 2 }, { netId: "N1" } ] },
+      {
+        connectedPorts: [
+          { boxId: "U1", pinNumber: 1 },
+          { boxId: "R1", pinNumber: 1 },
+        ],
+      },
+      { connectedPorts: [{ boxId: "R1", pinNumber: 2 }, { netId: "N1" }] },
     ],
-    nets: [ { netId: "N1" } ],
+    nets: [{ netId: "N1" }],
   }
 
   const { appliedOperations } = adaptTemplateToTarget({ template, target })

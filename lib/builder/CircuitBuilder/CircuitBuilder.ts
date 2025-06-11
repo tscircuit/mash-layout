@@ -1,6 +1,6 @@
 import type { InputNetlist, Box, Net, Connection } from "../../input-types"
 import { getReadableNetlist } from "../../netlist/getReadableNetlist"
-import { ChipBuilder } from "../ChipBuilder"
+import { ChipBuilder, SerializedChipBuilder } from "../ChipBuilder"
 import { PinBuilder } from "../PinBuilder"
 import type {
   Line,
@@ -17,6 +17,14 @@ import { CircuitLayoutJson } from "lib/output-types"
 import { getCircuitLayoutJson } from "./getCircuitLayoutJson"
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+export interface SerializedCircuitBuilder {
+  chips: SerializedChipBuilder[]
+  netLabels: NetLabel[]
+  lines: Line[]
+  paths: Path[]
+  connectionPoints: ConnectionPoint[]
+}
 
 export class CircuitBuilder {
   chips: ChipBuilder[] = []
@@ -333,5 +341,15 @@ export class CircuitBuilder {
 
   getLayoutJson(): CircuitLayoutJson {
     return getCircuitLayoutJson(this)
+  }
+
+  serialize(): SerializedCircuitBuilder {
+    return {
+      chips: this.chips.map((c) => c.serialize()),
+      netLabels: this.netLabels,
+      lines: this.lines,
+      paths: this.paths,
+      connectionPoints: this.connectionPoints,
+    }
   }
 }
