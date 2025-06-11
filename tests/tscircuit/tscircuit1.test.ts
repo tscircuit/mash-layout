@@ -587,18 +587,18 @@ export default () => (
       },
       {
         "center": {
-          "x": -3,
-          "y": 0,
+          "x": -1.5,
+          "y": 0.4,
         },
         "schematic_component_id": "schematic_component_1",
         "schematic_group_id": "schematic_group_0",
         "size": {
-          "height": 0.388910699999999,
-          "width": 1.0583332999999997,
+          "height": 1,
+          "width": 1,
         },
         "source_component_id": "source_component_1",
         "symbol_display_value": "1kΩ",
-        "symbol_name": "boxresistor_right",
+        "symbol_name": "boxresistor_left",
         "type": "schematic_component",
       },
     ]

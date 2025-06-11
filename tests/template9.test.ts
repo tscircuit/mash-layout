@@ -204,10 +204,10 @@ test("template9", () => {
         {
           "junctionId": "XX2",
           "pinRef": {
-            "boxId": "U3",
-            "pinNumber": 6,
+            "boxId": "C20",
+            "pinNumber": 1,
           },
-          "showAsIntersection": true,
+          "showAsIntersection": false,
           "x": -1,
           "y": 0.1980000000000003,
         },
@@ -215,9 +215,9 @@ test("template9", () => {
           "junctionId": "XX3",
           "pinRef": {
             "boxId": "U3",
-            "pinNumber": 8,
+            "pinNumber": 7,
           },
-          "showAsIntersection": true,
+          "showAsIntersection": false,
           "x": 4.8,
           "y": 0.4000000000000001,
         },
@@ -262,8 +262,9 @@ test("template9", () => {
             "x": -1,
             "y": 1.1990000000000003,
           },
-          "pathId": "PATH1",
+          "pathId": "PATH2",
           "start": {
+            "fromJunctionId": "XX1",
             "ref": {
               "boxId": "U3",
               "pinNumber": 1,
@@ -281,7 +282,7 @@ test("template9", () => {
             "x": -1,
             "y": 0.1980000000000003,
           },
-          "pathId": "PATH2",
+          "pathId": "PATH3",
           "start": {
             "ref": {
               "boxId": "C20",
@@ -301,8 +302,9 @@ test("template9", () => {
             "x": -1,
             "y": -0.0019999999999997242,
           },
-          "pathId": "PATH2",
+          "pathId": "PATH4",
           "start": {
+            "fromJunctionId": "XX2",
             "ref": {
               "boxId": "C20",
               "pinNumber": 1,
@@ -321,7 +323,7 @@ test("template9", () => {
             "x": -1,
             "y": 1.4000000000000001,
           },
-          "pathId": "PATH3",
+          "pathId": "PATH5",
           "start": {
             "fromJunctionId": "XX1",
             "ref": {
@@ -341,7 +343,7 @@ test("template9", () => {
             "x": -1,
             "y": 0.20000000000000007,
           },
-          "pathId": "PATH4",
+          "pathId": "PATH6",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -361,7 +363,7 @@ test("template9", () => {
             "x": -1,
             "y": 0.1980000000000003,
           },
-          "pathId": "PATH4",
+          "pathId": "PATH6",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -380,7 +382,7 @@ test("template9", () => {
             "x": 4.8,
             "y": 0.20000000000000007,
           },
-          "pathId": "PATH5",
+          "pathId": "PATH7",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -399,7 +401,7 @@ test("template9", () => {
             "x": 4.8,
             "y": 0.4000000000000001,
           },
-          "pathId": "PATH5",
+          "pathId": "PATH7",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -419,8 +421,9 @@ test("template9", () => {
             "x": 4.8,
             "y": 2.4,
           },
-          "pathId": "PATH5",
+          "pathId": "PATH8",
           "start": {
+            "fromJunctionId": "XX3",
             "ref": {
               "boxId": "U3",
               "pinNumber": 7,
@@ -438,7 +441,7 @@ test("template9", () => {
             "x": 4.8,
             "y": 0.4,
           },
-          "pathId": "PATH6",
+          "pathId": "PATH9",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -458,7 +461,7 @@ test("template9", () => {
             "x": 4.8,
             "y": 0.4000000000000001,
           },
-          "pathId": "PATH6",
+          "pathId": "PATH9",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -478,7 +481,7 @@ test("template9", () => {
             "x": 5.8,
             "y": 0.6,
           },
-          "pathId": "PATH7",
+          "pathId": "PATH10",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -498,7 +501,7 @@ test("template9", () => {
             "x": 5.8,
             "y": 0.8000000000000002,
           },
-          "pathId": "PATH8",
+          "pathId": "PATH11",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -518,7 +521,7 @@ test("template9", () => {
             "x": 5.8,
             "y": 1,
           },
-          "pathId": "PATH9",
+          "pathId": "PATH12",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -537,7 +540,7 @@ test("template9", () => {
             "x": 3.8,
             "y": 1.2000000000000002,
           },
-          "pathId": "PATH10",
+          "pathId": "PATH13",
           "start": {
             "ref": {
               "boxId": "U3",
@@ -557,8 +560,9 @@ test("template9", () => {
             "x": 5.8,
             "y": 1.2000000000000002,
           },
-          "pathId": "PATH10",
+          "pathId": "PATH14",
           "start": {
+            "fromJunctionId": "XX4",
             "ref": {
               "boxId": "U3",
               "pinNumber": 12,
@@ -577,7 +581,7 @@ test("template9", () => {
             "x": 3.8,
             "y": 1.4000000000000001,
           },
-          "pathId": "PATH11",
+          "pathId": "PATH15",
           "start": {
             "fromJunctionId": "XX4",
             "ref": {
@@ -598,7 +602,7 @@ test("template9", () => {
             "x": 3.8,
             "y": 2.6000000000000005,
           },
-          "pathId": "PATH12",
+          "pathId": "PATH16",
           "start": {
             "ref": {
               "boxId": "R11",
@@ -736,6 +740,18 @@ test("template9", () => {
         {
           "pathId": "PATH12",
         },
+        {
+          "pathId": "PATH13",
+        },
+        {
+          "pathId": "PATH14",
+        },
+        {
+          "pathId": "PATH15",
+        },
+        {
+          "pathId": "PATH16",
+        },
       ],
     }
   `)
@@ -783,7 +799,7 @@ test("template9", () => {
      1.0   ┤2  11├───┼─C
      0.8   ┤3  10├───┼─B
      0.6 C2┤4   9├───┼─A
-     0.4   ┤5   8├───●
+     0.4   ┤5   8├───┤
      0.2 ┬─┤6   7├───┘
      0.0 G └─────┘
     "

@@ -54,7 +54,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
      1.2                   │
      1.0 U1                │
      0.8 ┌────┐            │
-     0.6 │   3├──────●─────┤
+     0.6 │   3├──────┼─────┤
      0.4 │   2├──┐   │     │
      0.2 │   1├┐ │   │     │
      0.0 └────┘│ │   │     │

@@ -202,8 +202,8 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
 
 
                           ┌────────────────┐
-                          │       U1       │2                   
-                          │                │1                   
+                          │       U1       │2  ── U1.1          
+                          │                │1  ── U1.2          
                           └────────────────┘
 
     Complex Connections (more than 2 points):
@@ -215,12 +215,15 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
 
 
                           ┌────────────────┐
-                          │       U1       │2                   
-                          │                │1  ── A             
+                          │       U1       │2  ── U1.1,A        
+                          │                │1  ── A,U1.2        
                           └────────────────┘
 
     Complex Connections (more than 2 points):
-      (none)"
+      - complex connection[0]:
+        - U1.1
+        - A
+        - U1.2"
   `)
 
   expect(inputCircuit.getNetlist()).toMatchInlineSnapshot(`
@@ -234,7 +237,20 @@ test("areNetlistsCompatible2: input connection satisfied by a larger template co
           "topPinCount": 0,
         },
       ],
-      "connections": [],
+      "connections": [
+        {
+          "connectedPorts": [
+            {
+              "boxId": "U1",
+              "pinNumber": 2,
+            },
+            {
+              "boxId": "U1",
+              "pinNumber": 1,
+            },
+          ],
+        },
+      ],
       "nets": [],
     }
   `)
