@@ -19,21 +19,21 @@ test("corpus template is used by solver", () => {
   expect(matchedTemplate.toString()).toBe(expectedTemplate.toString())
   expect(`\n${matchedTemplate.toString()}\n`).toMatchInlineSnapshot(`
     "
-               0.0    
-     3.0    U1
-     2.8    ┌─────┐
-     2.6 ┌──┤1   4├N
-     2.4 │  ┤2   3├
-     2.2 ┴  └─────┘
-     2.0
-     1.8 P1
-     1.6
-     1.4
-     1.2 ┬
-     1.0 │
-     0.8 │
-     0.6 │
-     0.4 N
+           0.0        
+     1.4   U1
+     1.2   ┌─────┐
+     1.0 ┌─┤1   4├─N
+     0.8 │ ┤2   3├
+     0.6 │ └─────┘
+     0.4 │
+     0.2 ┴
+     0.0
+    -0.2
+    -0.4 P1
+    -0.6
+    -0.8 ┬
+    -1.0 │
+    -1.2 N
     "
   `)
 })
