@@ -22,7 +22,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
          0.0         5.0         10.0
      1.0 U1
      0.8 ┌────┐
-     0.6 │   3├────────┐
+     0.6 │   3├────────B──────
      0.4 │   2├──C     │
      0.2 │   1├        │
      0.0 └────┘        │
@@ -32,7 +32,7 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
     -0.8               │
     -1.0               │
     -1.2               │
-    -1.4               ┴─────B
+    -1.4               ┴
     -1.6
     -1.8               R2
     -2.0
@@ -54,17 +54,17 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
      1.2                   │
      1.0 U1                │
      0.8 ┌────┐            │
-     0.6 │   3├──────●─────┤
+     0.6 │   3├──────●─────┴
      0.4 │   2├──┐   │     │
      0.2 │   1├┐ │   │     │
-     0.0 └────┘│ │   │     │
+     0.0 └────┘│ │   │     R2
     -0.2       │ │   │     │
-    -0.4       │ │   │     ┴
-    -0.6       │ │   │
-    -0.8       │ │   │     R2
-    -1.0       │ │   │
-    -1.2       │ │   │
-    -1.4       │ │   ┴     ┬
+    -0.4       │ │   │     ┬
+    -0.6       │ │   │     │
+    -0.8       │ │   │     │
+    -1.0       │ │   │     │
+    -1.2       │ │   │     │
+    -1.4       │ │   ┴     │
     -1.6       │ │         │
     -1.8       │ │         │
     -2.0       │ │   R3    │
@@ -74,12 +74,8 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
     -2.8       C │   │     │
     -3.0         │   │     │
     -3.2         │   │     │
-    -3.4         │   │     │
-    -3.6         └───┘     │
-    -3.8                   │
-    -4.0                   │
-    -4.2                   │
-    -4.4                   B
+    -3.4         │   │     B
+    -3.6         └───┘
     "
   `)
 
@@ -136,10 +132,10 @@ test("findBestMatch should find a compatible template and snapshot it", () => {
      1.0 U1          │
      0.8 ┌────┐      │
      0.6 │   3├──────┴
-     0.4 │   2├──C
-     0.2 │   1├┐     R2
-     0.0 └────┘│
-    -0.2       │
+     0.4 │   2├──C   │
+     0.2 │   1├┐     │
+     0.0 └────┘│     R2
+    -0.2       │     │
     -0.4       │     ┬
     -0.6       │     │
     -0.8       │     │

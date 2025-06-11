@@ -24,7 +24,7 @@ test("areNetlistsCompatible2: input connection not satisfiable by template's con
      1.0         │
      0.8 U1      │
      0.6 ┌────┐  │
-     0.4 │   2├──┼───A
+     0.4 │   2├──A────
      0.2 │   1├──┘
      0.0 └────┘
     "

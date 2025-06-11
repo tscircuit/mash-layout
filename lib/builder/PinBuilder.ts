@@ -30,6 +30,7 @@ export class PinBuilder {
   lastDx = 0
   lastDy = 0
 
+  _lastMarkableState: PinConnectionState | null = null
   fromJunctionId: string | null = null
 
   constructor(
@@ -44,6 +45,12 @@ export class PinBuilder {
   get lastLineEnd(): { x: number; y: number } {
     if (!this.lastCreatedLine) {
       return { x: this.x, y: this.y }
+    }
+    if (this._lastMarkableState) {
+      return {
+        x: this._lastMarkableState.x,
+        y: this._lastMarkableState.y,
+      }
     }
     return {
       x: this.lastCreatedLine.end.x,
@@ -325,10 +332,8 @@ export class PinBuilder {
   }
 
   applyMarkableState(state: PinConnectionState): void {
-    // TODO: Implement applyMarkableState
-    this.lastLineEnd.x = state.x
-    this.lastLineEnd.y = state.y
     this.lastConnected = state.lastConnected
+    this._lastMarkableState = state
     this.lastDx = state.lastDx
     this.lastDy = state.lastDy
     this.pathId = this.circuit.addPath().pathId
