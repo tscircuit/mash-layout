@@ -224,9 +224,6 @@ export class PinBuilder {
     // Position passive center by projecting half the passive dimension in the line direction
     const halfWidth = passive.getWidth() / 2
     const halfHeight = passive.getHeight() / 2
-    console.log("junction", this.fromJunctionId)
-    console.log("all connection points", this.circuit.connectionPoints)
-    console.log("making passive", this.lastLineEnd)
     // Project by the dimension aligned with the movement direction
     const centerX =
       this.lastLineEnd.x +
