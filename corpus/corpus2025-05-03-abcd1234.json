@@ -1,54 +1,54 @@
 {
   "boxes": [
     {
+      "boxId": "U1",
+      "leftPinCount": 2,
+      "rightPinCount": 2,
+      "topPinCount": 0,
+      "bottomPinCount": 0,
+      "centerX": 1.5999999999999999,
+      "centerY": 0.9000000000000001,
+      "pins": [
+        {
+          "pinNumber": 1,
+          "x": 0.2,
+          "y": 1
+        },
+        {
+          "pinNumber": 4,
+          "x": 3,
+          "y": 1
+        },
+        {
+          "pinNumber": 2,
+          "x": 0.2,
+          "y": 0.8
+        },
+        {
+          "pinNumber": 3,
+          "x": 3,
+          "y": 0.8
+        }
+      ]
+    },
+    {
       "boxId": "P1",
       "leftPinCount": 0,
       "rightPinCount": 0,
       "topPinCount": 1,
       "bottomPinCount": 1,
-      "centerX": -3.2,
-      "centerY": 1.7,
+      "centerX": -1.2000000000000002,
+      "centerY": -0.30000000000000004,
       "pins": [
         {
           "pinNumber": 2,
-          "x": -3.2,
-          "y": 2.2
+          "x": -1.2000000000000002,
+          "y": 0.19999999999999996
         },
         {
           "pinNumber": 1,
-          "x": -3.2,
-          "y": 1.2
-        }
-      ]
-    },
-    {
-      "boxId": "U2",
-      "leftPinCount": 2,
-      "rightPinCount": 2,
-      "topPinCount": 0,
-      "bottomPinCount": 0,
-      "centerX": -2.220446049250313e-16,
-      "centerY": 2.5,
-      "pins": [
-        {
-          "pinNumber": 1,
-          "x": -1.4000000000000001,
-          "y": 2.6
-        },
-        {
-          "pinNumber": 3,
-          "x": 1.4000000000000001,
-          "y": 2.6
-        },
-        {
-          "pinNumber": 2,
-          "x": -1.4000000000000001,
-          "y": 2.4000000000000004
-        },
-        {
-          "pinNumber": 4,
-          "x": 1.4000000000000001,
-          "y": 2.4000000000000004
+          "x": -1.2000000000000002,
+          "y": -0.8
         }
       ]
     }
@@ -56,80 +56,80 @@
   "netLabels": [
     {
       "netId": "NET1",
-      "netLabelId": "loaded-nl-f52e651d-5a7a-4fc5-beb7-f94e64093efa-0",
+      "netLabelId": "netlabel-eaa8b88f-f9f9-452b-bbf6-c9318eb72225",
       "anchorPosition": "top",
-      "x": -3.2,
-      "y": 0.4
+      "x": -1.2000000000000002,
+      "y": -1.2000000000000002
     },
     {
       "netId": "NET2",
-      "netLabelId": "loaded-nl-42be119e-1250-46ea-a62d-61f14a37ba8d-1",
+      "netLabelId": "netlabel-1e260b94-3c7d-45f9-93fd-65f547ad4c1b",
       "anchorPosition": "left",
-      "x": 3,
-      "y": 2.6
+      "x": 3.8000000000000003,
+      "y": 1
     }
   ],
   "paths": [
     {
       "points": [
         {
-          "x": -3.2,
-          "y": 1.2
+          "x": -1.2000000000000002,
+          "y": 0.19999999999999996
         },
         {
-          "x": -3.2,
-          "y": 0.4
+          "x": -1.2000000000000002,
+          "y": 1
+        },
+        {
+          "x": 0.2,
+          "y": 1
         }
       ],
       "from": {
-        "boxId": "P1",
-        "pinNumber": 1
-      },
-      "to": {
-        "netLabelId": "loaded-nl-f52e651d-5a7a-4fc5-beb7-f94e64093efa-0"
-      }
-    },
-    {
-      "points": [
-        {
-          "x": 1.4000000000000001,
-          "y": 2.6
-        },
-        {
-          "x": 3,
-          "y": 2.6
-        }
-      ],
-      "from": {
-        "boxId": "U2",
-        "pinNumber": 3
-      },
-      "to": {
-        "netLabelId": "loaded-nl-42be119e-1250-46ea-a62d-61f14a37ba8d-1"
-      }
-    },
-    {
-      "points": [
-        {
-          "x": -1.4000000000000001,
-          "y": 2.6
-        },
-        {
-          "x": -3.2,
-          "y": 2.6
-        },
-        {
-          "x": -3.2,
-          "y": 2.2
-        }
-      ],
-      "from": {
-        "boxId": "U2",
-        "pinNumber": 1
-      },
-      "to": {
         "boxId": "P1",
         "pinNumber": 2
+      },
+      "to": {
+        "boxId": "U1",
+        "pinNumber": 1
+      }
+    },
+    {
+      "points": [
+        {
+          "x": -1.2000000000000002,
+          "y": -0.8
+        },
+        {
+          "x": -1.2000000000000002,
+          "y": -1.2000000000000002
+        }
+      ],
+      "from": {
+        "boxId": "P1",
+        "pinNumber": 1
+      },
+      "to": {
+        "netLabelId": "netlabel-eaa8b88f-f9f9-452b-bbf6-c9318eb72225"
+      }
+    },
+    {
+      "points": [
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3.8000000000000003,
+          "y": 1
+        }
+      ],
+      "from": {
+        "boxId": "U1",
+        "pinNumber": 4
+      },
+      "to": {
+        "netLabelId": "netlabel-1e260b94-3c7d-45f9-93fd-65f547ad4c1b"
       }
     }
   ],

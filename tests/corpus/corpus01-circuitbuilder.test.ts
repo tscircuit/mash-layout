@@ -15,21 +15,21 @@ test("corpus01 - template matching and basic structure", async () => {
   )
 
   expect(circuitBuilder.toString()).toMatchInlineSnapshot(`
-    "           0.0      
-     3.0    U2
-     2.8    ┌─────┐
-     2.6 ┌──┤1   4├──N
-     2.4 │  ┤2   3├
-     2.2 ┴  └─────┘
-     2.0
-     1.8 P1
-     1.6
-     1.4
-     1.2 ┬
-     1.0 │
-     0.8 │
-     0.6 │
-     0.4 N"
+    "       0.0        
+     1.4   U1
+     1.2   ┌─────┐
+     1.0 ┌─┤1   4├─N
+     0.8 │ ┤2   3├
+     0.6 │ └─────┘
+     0.4 │
+     0.2 ┴
+     0.0
+    -0.2
+    -0.4 P1
+    -0.6
+    -0.8 ┬
+    -1.0 │
+    -1.2 N"
   `)
 
   expect(
@@ -43,32 +43,32 @@ test("corpus01 - template matching and basic structure", async () => {
   ).toMatchInlineSnapshot(`
     [
       {
-        "endX": -3.2,
-        "endY": 0.4,
+        "endX": -1.2000000000000002,
+        "endY": 1,
         "pathId": "PATH1",
-        "startX": -3.2,
-        "startY": 1.2,
+        "startX": -1.2000000000000002,
+        "startY": 0.19999999999999996,
       },
       {
-        "endX": 3,
-        "endY": 2.6,
+        "endX": 0.19999999999999996,
+        "endY": 1,
+        "pathId": "PATH1",
+        "startX": -1.2000000000000002,
+        "startY": 1,
+      },
+      {
+        "endX": -1.2000000000000002,
+        "endY": -1.2000000000000002,
         "pathId": "PATH2",
-        "startX": 1.4000000000000001,
-        "startY": 2.6,
+        "startX": -1.2000000000000002,
+        "startY": -0.8,
       },
       {
-        "endX": -3.2,
-        "endY": 2.6,
+        "endX": 3.8000000000000003,
+        "endY": 1,
         "pathId": "PATH3",
-        "startX": -1.4000000000000001,
-        "startY": 2.6,
-      },
-      {
-        "endX": -3.2,
-        "endY": 2.2,
-        "pathId": "PATH3",
-        "startX": -3.2,
-        "startY": 2.6,
+        "startX": 3,
+        "startY": 1,
       },
     ]
   `)
@@ -78,8 +78,8 @@ test("corpus01 - template matching and basic structure", async () => {
       "circles": [
         {
           "center": {
-            "x": -3.2,
-            "y": 1.2,
+            "x": 0.2,
+            "y": 1,
           },
           "fill": "rgba(255,0,0,0.8)",
           "label": "Pin 1",
@@ -87,8 +87,8 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": -3.2,
-            "y": 2.2,
+            "x": 0.2,
+            "y": 0.8,
           },
           "fill": "rgba(255,0,0,0.8)",
           "label": "Pin 2",
@@ -96,26 +96,8 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": -1.4000000000000001,
-            "y": 2.6,
-          },
-          "fill": "rgba(255,0,0,0.8)",
-          "label": "Pin 1",
-          "radius": 0.1,
-        },
-        {
-          "center": {
-            "x": -1.4000000000000001,
-            "y": 2.4000000000000004,
-          },
-          "fill": "rgba(255,0,0,0.8)",
-          "label": "Pin 2",
-          "radius": 0.1,
-        },
-        {
-          "center": {
-            "x": 1.4000000000000001,
-            "y": 2.6,
+            "x": 3,
+            "y": 0.8,
           },
           "fill": "rgba(255,0,0,0.8)",
           "label": "Pin 3",
@@ -123,11 +105,29 @@ test("corpus01 - template matching and basic structure", async () => {
         },
         {
           "center": {
-            "x": 1.4000000000000001,
-            "y": 2.4000000000000004,
+            "x": 3,
+            "y": 1,
           },
           "fill": "rgba(255,0,0,0.8)",
           "label": "Pin 4",
+          "radius": 0.1,
+        },
+        {
+          "center": {
+            "x": -1.2000000000000002,
+            "y": -0.8,
+          },
+          "fill": "rgba(255,0,0,0.8)",
+          "label": "Pin 1",
+          "radius": 0.1,
+        },
+        {
+          "center": {
+            "x": -1.2000000000000002,
+            "y": 0.19999999999999996,
+          },
+          "fill": "rgba(255,0,0,0.8)",
+          "label": "Pin 2",
           "radius": 0.1,
         },
       ],
@@ -136,12 +136,20 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "points": [
             {
-              "x": -3.2,
-              "y": 1.2,
+              "x": -1.2000000000000002,
+              "y": 0.19999999999999996,
             },
             {
-              "x": -3.2,
-              "y": 0.4,
+              "x": -1.2000000000000002,
+              "y": 1,
+            },
+            {
+              "x": -1.2000000000000002,
+              "y": 1,
+            },
+            {
+              "x": 0.19999999999999996,
+              "y": 1,
             },
           ],
           "strokeColor": "rgba(0,0,0,0.8)",
@@ -150,34 +158,26 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "points": [
             {
-              "x": 1.4000000000000001,
-              "y": 2.6,
+              "x": -1.2000000000000002,
+              "y": -0.8,
             },
+            {
+              "x": -1.2000000000000002,
+              "y": -1.2000000000000002,
+            },
+          ],
+          "strokeColor": "rgba(0,0,0,0.8)",
+          "strokeWidth": 0.05,
+        },
+        {
+          "points": [
             {
               "x": 3,
-              "y": 2.6,
-            },
-          ],
-          "strokeColor": "rgba(0,0,0,0.8)",
-          "strokeWidth": 0.05,
-        },
-        {
-          "points": [
-            {
-              "x": -1.4000000000000001,
-              "y": 2.6,
+              "y": 1,
             },
             {
-              "x": -3.2,
-              "y": 2.6,
-            },
-            {
-              "x": -3.2,
-              "y": 2.6,
-            },
-            {
-              "x": -3.2,
-              "y": 2.2,
+              "x": 3.8000000000000003,
+              "y": 1,
             },
           ],
           "strokeColor": "rgba(0,0,0,0.8)",
@@ -188,36 +188,36 @@ test("corpus01 - template matching and basic structure", async () => {
         {
           "color": "rgba(128,0,128,0.8)",
           "label": "NET1 (top)",
-          "x": -3.2,
-          "y": 0.4,
+          "x": -1.2000000000000002,
+          "y": -1.2000000000000002,
         },
         {
           "color": "rgba(128,0,128,0.8)",
           "label": "NET2 (left)",
-          "x": 3,
-          "y": 2.6,
+          "x": 3.8000000000000003,
+          "y": 1,
         },
       ],
       "rects": [
         {
           "center": {
-            "x": -3.2,
-            "y": 1.7,
+            "x": 1.5999999999999999,
+            "y": 0.9000000000000001,
+          },
+          "fill": "rgba(173,216,230,0.8)",
+          "height": 0.8,
+          "label": "U1",
+          "width": 2.8,
+        },
+        {
+          "center": {
+            "x": -1.2000000000000002,
+            "y": -0.30000000000000004,
           },
           "fill": "rgba(173,216,230,0.8)",
           "height": 1,
           "label": "P1",
           "width": 0.2,
-        },
-        {
-          "center": {
-            "x": -0.0000000000000002220446049250313,
-            "y": 2.5,
-          },
-          "fill": "rgba(173,216,230,0.8)",
-          "height": 0.8,
-          "label": "U2",
-          "width": 2.8,
         },
       ],
       "title": "Circuit Layout Visualization",
@@ -232,20 +232,20 @@ test("corpus01 - template matching and basic structure", async () => {
   ).toMatchSvgSnapshot(import.meta.path)
 
   expect(circuitBuilder.toString()).toMatchInlineSnapshot(`
-    "           0.0      
-     3.0    U2
-     2.8    ┌─────┐
-     2.6 ┌──┤1   4├──N
-     2.4 │  ┤2   3├
-     2.2 ┴  └─────┘
-     2.0
-     1.8 P1
-     1.6
-     1.4
-     1.2 ┬
-     1.0 │
-     0.8 │
-     0.6 │
-     0.4 N"
+    "       0.0        
+     1.4   U1
+     1.2   ┌─────┐
+     1.0 ┌─┤1   4├─N
+     0.8 │ ┤2   3├
+     0.6 │ └─────┘
+     0.4 │
+     0.2 ┴
+     0.0
+    -0.2
+    -0.4 P1
+    -0.6
+    -0.8 ┬
+    -1.0 │
+    -1.2 N"
   `)
 })

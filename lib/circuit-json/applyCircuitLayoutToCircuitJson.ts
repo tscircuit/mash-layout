@@ -146,41 +146,62 @@ export const applyCircuitLayoutToCircuitJson = (
     }
   }
 
-  // const netIndexToLayoutNetId = new Map<number, string>()
-  // for (const [netId, netIndex] of Object.entries(
-  //   layoutNorm.transform.netIdToNetIndex,
-  // )) {
-  //   netIndexToLayoutNetId.set(netIndex, netId)
-  // }
-
-  const netIndexToCompositeNetId = new Map<number, string>()
-  for (const [netId, netIndex] of Object.entries(
-    cjNorm.transform.netIdToNetIndex,
-  )) {
-    netIndexToCompositeNetId.set(netIndex, netId)
-  }
-
   // Filter all existing schematic_net_label items
   cj = cj.filter((elm) => elm.type !== "schematic_net_label")
 
   // Create new schematic_net_label items from layout.netLabels
   const newSchematicNetLabels: SchematicNetLabel[] = []
   for (const layoutLabel of layout.netLabels) {
-    const netIndex = layoutNorm.transform.netIdToNetIndex[layoutLabel.netId]
-    const compositeNetId =
-      netIndexToCompositeNetId.get(netIndex!)! ??
-      "ERROR: did not find netId using net index"
+    // What pins does this layoutLabel connect to?
+
+    const fromRef = layoutLabel.fromRef
+    // e.g. { boxId: "R1", pinNumber: 1 }
+    // or { boxId: "U1", pinNumber: 3 }
+
+    if (!("boxId" in fromRef)) {
+      throw new Error("boxId not found in fromRef for label")
+    }
+
+    const matchedBox = matchedBoxes.find(
+      (mb) => mb._candidateBoxId === fromRef.boxId,
+    )
+    if (!matchedBox) {
+      throw new Error(
+        `${fromRef.boxId} was not laid out for net label ${layoutLabel.netLabelId}/${layoutLabel.netId}`,
+      )
+    }
+
+    // Find the connectivity net for this label on the target (the circuit json)
+    const cjChipId = matchedBox._targetBoxId
+
+    // Find the source_port_id for this pin in the circuit json
+    const source_component = cju(cj).source_component.getWhere({
+      name: cjChipId,
+    })
+    if (!source_component) continue
+
+    const source_port = cju(cj).source_port.getWhere({
+      source_component_id: source_component!.source_component_id,
+      pin_number: fromRef.pinNumber,
+    })
+    if (!source_port) continue
+
+    const source_net = cju(cj).source_net.getWhere({
+      subcircuit_connectivity_map_key:
+        source_port!.subcircuit_connectivity_map_key,
+    })
+    if (!source_net) continue
+
     const newLabel: SchematicNetLabel = {
       type: "schematic_net_label",
-      schematic_net_label_id: compositeNetId,
-      source_net_id: layoutLabel.netId, // Assumes layoutLabel.labelId is the source_net identifier
-      text:
-        compositeNetId.split(",").find((n) => !n.includes(".")) ??
-        compositeNetId, // The text to be displayed
+      schematic_net_label_id: layoutLabel.netLabelId,
+      source_net_id: source_net!.source_net_id,
+      text: source_net!.name,
       center: { x: layoutLabel.x, y: layoutLabel.y },
       anchor_position: { x: layoutLabel.x, y: layoutLabel.y }, // Typically same as center for labels
       anchor_side: layoutLabel.anchorSide,
     }
+
     newSchematicNetLabels.push(newLabel)
   }
 

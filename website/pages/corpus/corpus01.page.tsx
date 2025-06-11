@@ -9,7 +9,7 @@ export default () => (
       name="U1"
       footprint="soic4"
       connections={{
-        pin1: ".R1 .pin1",
+        pin1: ".R1 .pin2",
         pin4: "net.VCC"
       }}
     />
@@ -17,10 +17,10 @@ export default () => (
       resistance="1k"
       footprint="0402"
       name="R1"
-      schRotation="-90deg"
+      schRotation="90deg"
       schX={-2}
       connections={{
-        pin2: "net.GND",
+        pin1: "net.GND",
       }}
     />
   </board>

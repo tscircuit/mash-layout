@@ -28,7 +28,7 @@
     "@types/glob": "^8.1.0",
     "@vitejs/plugin-react": "^4.5.0",
     "bun-match-svg": "^0.0.11",
-    "circuit-json": "^0.0.192",
+    "circuit-json": "^0.0.202",
     "circuit-json-to-connectivity-map": "^0.0.22",
     "circuit-to-svg": "^0.0.132",
     "debug": "^4.4.1",
