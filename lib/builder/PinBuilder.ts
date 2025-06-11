@@ -321,7 +321,7 @@ export class PinBuilder {
 
   mark(name: string): this {
     this.chip.addMark(name, this)
-    return this
+    return this.chip.fromMark(name)
   }
 
   // Methods for mark/fromMark state management

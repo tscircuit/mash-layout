@@ -1163,14 +1163,14 @@ export default () => (
         {
           "fromChipId": "J1",
           "fromPinNumber": 4,
-          "toChipId": "R10",
+          "toChipId": "R9",
           "toPinNumber": 1,
           "type": "draw_line_between_pins",
         },
         {
           "fromChipId": "J1",
           "fromPinNumber": 3,
-          "toChipId": "R9",
+          "toChipId": "R10",
           "toPinNumber": 1,
           "type": "draw_line_between_pins",
         },
@@ -1236,8 +1236,8 @@ export default () => (
         },
         {
           "center": {
-            "x": 7.5,
-            "y": 1.6,
+            "x": 5,
+            "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_1",
           "schematic_group_id": "schematic_group_0",
@@ -1247,13 +1247,13 @@ export default () => (
           },
           "source_component_id": "source_component_1",
           "symbol_display_value": "22Ω",
-          "symbol_name": "boxresistor_left",
+          "symbol_name": "boxresistor_down",
           "type": "schematic_component",
         },
         {
           "center": {
-            "x": 7.5,
-            "y": 1.0000000000000004,
+            "x": 7,
+            "y": -0.2999999999999998,
           },
           "schematic_component_id": "schematic_component_2",
           "schematic_group_id": "schematic_group_0",
@@ -1263,13 +1263,13 @@ export default () => (
           },
           "source_component_id": "source_component_2",
           "symbol_display_value": "22Ω",
-          "symbol_name": "boxresistor_left",
+          "symbol_name": "boxresistor_down",
           "type": "schematic_component",
         },
         {
           "center": {
-            "x": 5,
-            "y": -0.2999999999999998,
+            "x": 7.5,
+            "y": 1.0000000000000004,
           },
           "schematic_component_id": "schematic_component_3",
           "schematic_group_id": "schematic_group_0",
@@ -1279,13 +1279,13 @@ export default () => (
           },
           "source_component_id": "source_component_3",
           "symbol_display_value": "5.1kΩ",
-          "symbol_name": "boxresistor_down",
+          "symbol_name": "boxresistor_left",
           "type": "schematic_component",
         },
         {
           "center": {
-            "x": 7,
-            "y": -0.2999999999999998,
+            "x": 7.5,
+            "y": 1.6,
           },
           "schematic_component_id": "schematic_component_4",
           "schematic_group_id": "schematic_group_0",
@@ -1295,7 +1295,7 @@ export default () => (
           },
           "source_component_id": "source_component_4",
           "symbol_display_value": "5.1kΩ",
-          "symbol_name": "boxresistor_down",
+          "symbol_name": "boxresistor_left",
           "type": "schematic_component",
         },
       ]

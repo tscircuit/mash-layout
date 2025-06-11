@@ -71,6 +71,8 @@ export const getCircuitLayoutJson = (
     // Find the lines that are part of this path
     const lines = circuitBuilder.lines.filter((l) => l.pathId === path.pathId)
 
+    if (lines.length === 0) continue
+
     // Find the two references within the lines
     const refs = new Set(
       lines.flatMap((l) => [

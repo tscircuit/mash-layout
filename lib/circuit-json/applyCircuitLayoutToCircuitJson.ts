@@ -45,7 +45,7 @@ export const applyCircuitLayoutToCircuitJson = (
   for (const matchedBox of matchedBoxes) {
     layoutBoxIndexToBoxId.set(
       matchedBox.candidateBoxIndex,
-      matchedBox._targetBoxId!,
+      matchedBox._candidateBoxId!,
     )
   }
 
@@ -63,15 +63,16 @@ export const applyCircuitLayoutToCircuitJson = (
     const layoutBoxId = layoutBoxIndexToBoxId.get(boxIndex)!
 
     if (!layoutBoxId) {
-      // console.warn(`${sourceComponent.name} was not laid out`)
+      console.log(`${sourceComponent.name} was not laid out`)
       continue
     }
 
     const layoutChip = layout.chips.find((c) => c.chipId === layoutBoxId)!
 
     if (!layoutChip) {
-      continue
-      // throw new Error(`Layout chip ${layoutBoxId} not found in layout.chips`)
+      throw new Error(
+        `Layout chip "${layoutBoxId}" not found in layout.chips:${JSON.stringify(layout.chips.map((c) => c.chipId))}`,
+      )
     }
 
     let cjChipWidth = layoutChip.getWidth() - 0.8

@@ -35,12 +35,12 @@ test("template5", () => {
         {
           "connectedPorts": [
             {
-              "boxId": "U2",
-              "pinNumber": 1,
-            },
-            {
               "boxId": "U1",
               "pinNumber": 4,
+            },
+            {
+              "boxId": "U2",
+              "pinNumber": 1,
             },
           ],
         },
