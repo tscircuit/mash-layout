@@ -30,7 +30,6 @@ export class PinBuilder {
   lastDx = 0
   lastDy = 0
 
-  _lastMarkableState: PinConnectionState | null = null
   fromJunctionId: string | null = null
 
   constructor(
@@ -43,18 +42,24 @@ export class PinBuilder {
   }
 
   get lastLineEnd(): { x: number; y: number } {
-    if (!this.lastCreatedLine) {
-      return { x: this.x, y: this.y }
+    if (this.lastCreatedLine) {
+      return { x: this.lastCreatedLine.end.x, y: this.lastCreatedLine.end.y }
     }
-    if (this._lastMarkableState) {
+    if (this.fromJunctionId) {
+      const junction = this.circuit.connectionPoints.find(
+        (c) => c.junctionId === this.fromJunctionId,
+      )
+      if (!junction) {
+        throw new Error(`Junction ${this.fromJunctionId} not found`)
+      }
       return {
-        x: this._lastMarkableState.x,
-        y: this._lastMarkableState.y,
+        x: junction!.x,
+        y: junction!.y,
       }
     }
     return {
-      x: this.lastCreatedLine.end.x,
-      y: this.lastCreatedLine.end.y,
+      x: this.x,
+      y: this.y,
     }
   }
 
@@ -219,6 +224,9 @@ export class PinBuilder {
     // Position passive center by projecting half the passive dimension in the line direction
     const halfWidth = passive.getWidth() / 2
     const halfHeight = passive.getHeight() / 2
+    console.log("junction", this.fromJunctionId)
+    console.log("all connection points", this.circuit.connectionPoints)
+    console.log("making passive", this.lastLineEnd)
     // Project by the dimension aligned with the movement direction
     const centerX =
       this.lastLineEnd.x +
@@ -333,10 +341,10 @@ export class PinBuilder {
 
   applyMarkableState(state: PinConnectionState): void {
     this.lastConnected = state.lastConnected
-    this._lastMarkableState = state
     this.lastDx = state.lastDx
     this.lastDy = state.lastDy
     this.pathId = this.circuit.addPath().pathId
+    this.lastCreatedLine = null
   }
 
   serialize(): SerializedPinBuilder {
