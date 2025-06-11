@@ -741,7 +741,7 @@ test("template9", () => {
   `)
 
   expect(
-    C.chips.find((c) => c.chipId === "R11").serialize(),
+    C.chips.find((c) => c.chipId === "R11")!.serialize(),
   ).toMatchInlineSnapshot(`
     {
       "bottomPinCount": 1,
