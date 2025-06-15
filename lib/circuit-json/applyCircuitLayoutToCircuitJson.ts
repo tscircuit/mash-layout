@@ -139,11 +139,16 @@ export const applyCircuitLayoutToCircuitJson = (
           newOrientation = dx > 0 ? "right" : "left"
         }
 
-        // Update symbol_name if it's a resistor
+        // Update symbol_name for common passives so the oriented symbol is used
         if (schematicComponent.symbol_name.includes("boxresistor")) {
           schematicComponent.symbol_name = `boxresistor_${newOrientation}`
+        } else if (
+          schematicComponent.symbol_name.includes("capacitor_polarized")
+        ) {
+          schematicComponent.symbol_name = `capacitor_polarized_${newOrientation}`
+        } else if (schematicComponent.symbol_name.includes("capacitor")) {
+          schematicComponent.symbol_name = `capacitor_${newOrientation}`
         }
-        // Could extend this for other passive types like capacitors, inductors
       }
     }
   }
